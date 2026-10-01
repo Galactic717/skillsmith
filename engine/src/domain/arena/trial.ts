@@ -15,7 +15,7 @@ import {matchAny} from '../../core/glob.js';
 import {appendLedger, fileHash} from '../../core/ledger.js';
 import {clip, nowIso} from '../../core/text.js';
 import type {ScoredCheck} from '../acceptance.js';
-import {runCheck, type CheckStatus} from '../checks.js';
+import {needsFixedPort, runCheck, type CheckStatus} from '../checks.js';
 import {holdoutReportPath, loadSealedHoldout} from '../holdout.js';
 import type {Project} from '../project.js';
 import {runSafety, type RegistryLookup} from '../safety.js';
@@ -63,10 +63,14 @@ function totals(rows: ReadonlyArray<{status: CheckStatus; weight: number}>): Che
   };
 }
 
-async function runChecks(checks: readonly ScoredCheck[], dir: string): Promise<CheckRow[]> {
+async function runChecks(
+  checks: readonly ScoredCheck[],
+  dir: string,
+  port: number,
+): Promise<CheckRow[]> {
   const rows: CheckRow[] = [];
   for (const check of checks) {
-    const outcome = await runCheck(check, {dir});
+    const outcome = await runCheck(check, {dir, port});
     rows.push({
       id: check.id,
       title: check.title,
@@ -119,17 +123,17 @@ export async function evaluateTeam(
       ? loadSealedHoldout(project, arena.holdout.hash)
       : undefined;
 
-  return withCleanroom(root, store, `${name}-${options.mode}`, head, async dir => {
+  return withCleanroom(root, store, `${name}-${options.mode}`, head, async (dir, port) => {
     const safety = await runSafety(dir, {
       ...(options.offline === undefined ? {} : {offline: options.offline}),
       ...(options.lookup ? {lookup: options.lookup} : {}),
     });
-    const setup = options.setup === false ? [] : await runSetup(acceptance.setup, dir);
-    const acceptanceRows = await runChecks(acceptance.checks, dir);
+    const setup = options.setup === false ? [] : await runSetup(acceptance.setup, dir, port);
+    const acceptanceRows = await runChecks(acceptance.checks, dir, port);
     let holdoutRows: CheckRow[] = [];
     if (holdout) {
       const written = writeHoldoutFiles(dir, holdout.files);
-      holdoutRows = await runChecks(holdout.checks, dir);
+      holdoutRows = await runChecks(holdout.checks, dir, port);
       for (const file of written) fs.rmSync(file, {force: true});
     }
     const acceptanceMap: Record<string, CheckStatus> = Object.fromEntries(
@@ -137,7 +141,7 @@ export async function evaluateTeam(
     );
     const claimRows: ClaimRow[] = [];
     for (const claim of claims?.claims ?? []) {
-      const outcome = await runCheck(claim.evidence, {dir, acceptance: acceptanceMap});
+      const outcome = await runCheck(claim.evidence, {dir, port, acceptance: acceptanceMap});
       claimRows.push({
         id: claim.id,
         text: claim.text,
@@ -241,7 +245,11 @@ export function applyVerdict(project: Project, arena: Arena, evaluation: Evaluat
   if (cause) killTeam(project, arena, verdict.team, cause, evidence);
 }
 
-/** Verifies one team, or every alive team in parallel when `name` is "--all". */
+/**
+ * Verifies the named teams, or every alive team when `names` is empty. Teams
+ * run in parallel unless an http check needs a fixed port; then they take
+ * turns so their servers do not collide.
+ */
 export async function verifyTeams(
   project: Project,
   names: readonly string[],
@@ -250,9 +258,15 @@ export async function verifyTeams(
   const arena = requireArena(project.root);
   const targets = names.length ? names : aliveTeams(arena);
   for (const name of targets) requireAlive(arena, name);
-  const evaluations = await Promise.all(
-    targets.map(name => evaluateTeam(project, arena, name, options)),
-  );
+  const serial = loadAcceptance(project.root).checks.some(needsFixedPort);
+  const evaluations: Evaluation[] = [];
+  if (serial) {
+    for (const name of targets) evaluations.push(await evaluateTeam(project, arena, name, options));
+  } else {
+    evaluations.push(
+      ...(await Promise.all(targets.map(name => evaluateTeam(project, arena, name, options)))),
+    );
+  }
   for (const evaluation of evaluations) applyVerdict(project, arena, evaluation);
   saveArena(project.root, arena);
   return evaluations.map(evaluation => evaluation.verdict);

@@ -1,0 +1,58 @@
+{
+  "description": "Trigger evals for the skillsmith:start skill. 'expect' says whether a fresh Claude Code session should load Skillsmith for the query. Splits follow Anthropic's skill-creator advice: tune descriptions on train, report on test.",
+  "skill": "skillsmith:start",
+  "queries": [
+    {
+      "split": "train",
+      "expect": true,
+      "q": "I have an idea for an app that reminds people to water their plants. I can't code. Can you build it for me?"
+    },
+    {
+      "split": "train",
+      "expect": true,
+      "q": "Build me a website where my yoga students can book classes and pay."
+    },
+    {
+      "split": "train",
+      "expect": true,
+      "q": "I'm a designer with a side-project idea for a habit tracker. I don't program. Help me build it end to end."
+    },
+    {
+      "split": "test",
+      "expect": true,
+      "q": "I want to launch a small SaaS that turns podcast episodes into blog posts. Where do we start?"
+    },
+    {
+      "split": "test",
+      "expect": true,
+      "q": "Let's turn my idea for a recipe-sharing app into a real product I can launch."
+    },
+    {
+      "split": "test",
+      "expect": true,
+      "q": "I run a small book club and want a web app that picks our next book. I've never written code."
+    },
+    {
+      "split": "train",
+      "expect": false,
+      "q": "Fix the off-by-one error in this loop: for (let i = 0; i <= items.length; i++) { total += items[i]; }"
+    },
+    {
+      "split": "train",
+      "expect": false,
+      "q": "What's the difference between let and const in JavaScript?"
+    },
+    {"split": "train", "expect": false, "q": "Write a haiku about autumn."},
+    {"split": "test", "expect": false, "q": "Explain how git rebase differs from git merge."},
+    {
+      "split": "test",
+      "expect": false,
+      "q": "Convert this SQL to a Prisma query: SELECT * FROM users WHERE age > 30 ORDER BY name;"
+    },
+    {
+      "split": "test",
+      "expect": false,
+      "q": "Summarize in one sentence: The meeting moved to Thursday because the room was booked."
+    }
+  ]
+}

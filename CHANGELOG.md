@@ -35,6 +35,12 @@ Projects from 1.x are migrated automatically on first use.
   fusion re-verifies a merge of a loser's strengths.
 - Hooks: a Stop guard against unverified claims; the pre-tool guard now covers
   reads of the private store and shell commands that write records.
+- Every clean room gets its own free port (`$PORT`, `{{port}}` in http check
+  URLs), so teams that serve a web page are verified at the same time.
+- A worked example, `examples/trialguard/`, drives `npm run demo`, the
+  dashboard screenshots and the videos.
+- Live trigger evals through headless Claude Code (`npm run evals:triggers`).
+- New videos, social cards, landing page and marketing kit, English only.
 
 ### Engineering
 

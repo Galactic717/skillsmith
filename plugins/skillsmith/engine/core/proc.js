@@ -4,6 +4,7 @@
  */
 import { spawn, spawnSync } from 'node:child_process';
 import fs from 'node:fs';
+import net from 'node:net';
 /** Largest amount of output kept from one command. */
 export const MAX_OUTPUT_CHARS = 256 * 1024;
 let cachedShell;
@@ -145,6 +146,19 @@ export function startBackground(command, cwd, env) {
         exitCode: () => child.exitCode,
         stop: () => killTree(child),
     };
+}
+/** Asks the operating system for a free TCP port on the loopback interface. */
+export function freePort() {
+    return new Promise((resolve, reject) => {
+        const server = net.createServer();
+        server.unref();
+        server.on('error', reject);
+        server.listen(0, '127.0.0.1', () => {
+            const address = server.address();
+            const port = typeof address === 'object' && address ? address.port : 0;
+            server.close(() => resolve(port));
+        });
+    });
 }
 /** Runs `items` through `worker` with at most `limit` running at once. */
 export async function mapLimit(items, limit, worker) {

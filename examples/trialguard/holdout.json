@@ -1,0 +1,10 @@
+{
+  "files": {
+    "tests/holdout/past-date.mjs": "const {addTrial} = await import(new URL('../../src/trials.mjs', import.meta.url).href);\ntry {\n  addTrial([], {name: 'Old', endsOn: '2001-01-01'});\n  console.log('accepted a trial that already ended');\n  process.exit(1);\n} catch {\n  console.log('rejected');\n}\n",
+    "tests/holdout/empty-name.mjs": "const {addTrial} = await import(new URL('../../src/trials.mjs', import.meta.url).href);\ntry {\n  addTrial([], {name: '  ', endsOn: '2099-01-01'});\n  console.log('accepted an empty name');\n  process.exit(1);\n} catch {\n  console.log('rejected');\n}\n"
+  },
+  "checks": [
+    {"id": "H1", "title": "A trial that already ended is rejected", "covers": ["R1"], "type": "command", "run": "node tests/holdout/past-date.mjs"},
+    {"id": "H2", "title": "A trial without a name is rejected", "covers": ["R1"], "type": "command", "run": "node tests/holdout/empty-name.mjs"}
+  ]
+}

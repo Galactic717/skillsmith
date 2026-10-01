@@ -142,6 +142,9 @@ skillsmith dashboard                   one HTML page with the whole story
 - `npm test` runs 46 tests, including a whole arena in real git repositories:
   a liar deleted, a tamperer deleted, a false accuser deleted, hidden checks
   scored, a forged verdict refused, the winner merged and a fusion re-verified.
+- `npm run evals:triggers` runs live trigger evals through headless Claude
+  Code: does the plugin start for product ideas and stay quiet for ordinary
+  coding questions? On 2026-10-01: 12 of 12 (train 6/6, test 6/6).
 
 ## Proof it works
 
@@ -153,8 +156,10 @@ skillsmith dashboard                   one HTML page with the whole story
   superpowers, spec-kit, gstack, BMAD, Anthropic's official plugins and
   competitive-agents, the study of Google's engineering standards, and the
   state of AI development in October 2026, with sources.
-- `npm run demo` plays a scripted arena on the TrialGuard example and leaves
-  the dashboard on disk. The terminal lines in the videos come from that run.
+- `npm run demo` runs the real line on the [TrialGuard example](examples/trialguard/):
+  every gate, the vacuity check, sealed hidden checks, three teams verified in
+  parallel, a liar deleted, a cross-examination, the crown and a verified
+  ledger. The scores and terminal lines in the videos come from that run.
 
 ## Known limits
 

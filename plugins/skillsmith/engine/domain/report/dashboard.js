@@ -46,8 +46,9 @@ function stationList(data) {
     const now = currentStation(state);
     return STATIONS.map((item, index) => {
         const phase = state.stations[item.id].status === 'done' ? 'done' : now?.id === item.id ? 'now' : 'waiting';
-        const label = phase === 'done' ? 'Done' : phase === 'now' ? 'Now' : 'Waiting';
-        return `<li class="st st-${phase}" style="--temper: var(--t${index + 1})">
+        const skipped = state.stations[item.id].skipped === true;
+        const label = phase === 'done' ? (skipped ? 'Skipped' : 'Done') : phase === 'now' ? 'Now' : 'Waiting';
+        return `<li class="st st-${phase}${skipped ? ' st-skipped' : ''}" style="--temper: var(--t${index + 1})">
       <span class="node" aria-hidden="true"></span>
       <span class="st-name">${esc(item.title)}</span>
       <span class="st-crew">${esc(item.crew)}</span>
@@ -202,6 +203,7 @@ h2 { font-size: 22px; font-weight: 700; margin: 48px 0 16px; }
 .st-crew { font-size: 13px; color: var(--muted); }
 .st-state { font-size: 12px; font-family: var(--mono); color: var(--muted); }
 .st-now .st-state { color: var(--molten); }
+.st-skipped .node { background: var(--bg); border-style: dashed; border-color: var(--temper); }
 .teams { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
 .team { position: relative; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 20px; overflow: hidden; }
 .team header { display: flex; justify-content: space-between; align-items: baseline; }

@@ -64,7 +64,7 @@ export const STATIONS: readonly Station[] = [
   {
     id: 'arena',
     title: 'Arena',
-    crew: '3 managers with their developers and designers, the auditor',
+    crew: '3 rival teams, 1 auditor',
     outputs: ['arena.json', 'scoreboard.md', 'graveyard.md'],
     skill: 'skillsmith:arena',
     skippable: false,
