@@ -1,25 +1,172 @@
 {
   "version": 1,
   "setup": [],
-  "protected": ["tests/**", "docs/dogfood/04-acceptance.json"],
+  "protected": [
+    "tests/**",
+    "docs/dogfood/04-acceptance.json"
+  ],
   "checks": [
-    { "id": "A1", "scene": "1.1", "title": "Plugin manifest exists", "type": "file_exists", "path": "plugins/skillsmith/.claude-plugin/plugin.json" },
-    { "id": "A2", "scene": "1.1", "title": "Marketplace points to the plugin", "type": "file_contains", "path": ".claude-plugin/marketplace.json", "pattern": "./plugins/skillsmith" },
-    { "id": "A18", "scene": "1.1", "title": "No top-level bin/ folder, so Cowork can install it", "type": "file_absent", "path": "plugins/skillsmith/bin" },
-    { "id": "A3", "scene": "1.2", "title": "Claude Code accepts the marketplace and plugin", "type": "command", "run": "claude plugin validate .", "expect": { "exit": 0 }, "timeout": 120, "weight": 3 },
-    { "id": "A4", "scene": "1.2", "title": "The engine runs and lists arena commands", "type": "command", "run": "node plugins/skillsmith/scripts/skillsmith.mjs --help", "expect": { "exit": 0, "includes": "arena verify" } },
-    { "id": "A5", "scene": "1.3", "title": "The Law exists", "type": "file_contains", "path": "plugins/skillsmith/skills/start/references/law.md", "pattern": "deleted" },
-    { "id": "A6", "scene": "2.1", "title": "Interview station exists", "type": "file_exists", "path": "plugins/skillsmith/skills/interview/SKILL.md" },
-    { "id": "A7", "scene": "2.2", "title": "Our own sources file is valid", "type": "command", "run": "node plugins/skillsmith/scripts/skillsmith.mjs sources check docs/dogfood/02-sources.json", "expect": { "exit": 0 } },
-    { "id": "A8", "scene": "2.2", "title": "Our own research passes its gate", "type": "command", "run": "node plugins/skillsmith/scripts/skillsmith.mjs gate research --from docs/dogfood", "expect": { "exit": 0 } },
-    { "id": "A9", "scene": "2.3", "title": "Our own hooks contain no AI slop", "type": "command", "run": "node plugins/skillsmith/scripts/skillsmith.mjs slop docs/dogfood/03-hooks.md", "expect": { "exit": 0 } },
-    { "id": "A10", "scene": "2.3", "title": "Our own hooks pass their gate", "type": "command", "run": "node plugins/skillsmith/scripts/skillsmith.mjs gate hooks --from docs/dogfood", "expect": { "exit": 0 } },
-    { "id": "A11", "scene": "2.4", "title": "Our own screenplay passes its gate", "type": "command", "run": "node plugins/skillsmith/scripts/skillsmith.mjs gate screenplay --from docs/dogfood", "expect": { "exit": 0 } },
-    { "id": "A12", "scene": "2.5", "title": "Full test suite passes, including the arena with a liar", "type": "command", "run": "npm test", "expect": { "exit": 0 }, "timeout": 600, "weight": 5 },
-    { "id": "A13", "scene": "3.1", "title": "Dashboard generator exists", "type": "file_contains", "path": "plugins/skillsmith/scripts/lib/report.mjs", "pattern": "renderDashboard" },
-    { "id": "A14", "scene": "3.2", "title": "Landing page exists", "type": "file_exists", "path": "site/index.html" },
-    { "id": "A15", "scene": "3.3", "title": "Vertical and horizontal videos exist", "type": "command", "run": "node -e \"const fs=require('fs');for(const f of ['marketing/media/skillsmith-vertical.mp4','marketing/media/skillsmith-horizontal.mp4']){if(fs.statSync(f).size<100000)process.exit(1)}\"", "expect": { "exit": 0 } },
-    { "id": "A16", "scene": "3.4", "title": "README tells people how to install", "type": "file_contains", "path": "README.md", "pattern": "/plugin marketplace add galactic717/skillsmith" },
-    { "id": "A17", "scene": "3.4", "title": "CI runs on every push", "type": "file_exists", "path": ".github/workflows/ci.yml" }
+    {
+      "id": "A1",
+      "scene": "1.1",
+      "title": "Plugin manifest exists",
+      "type": "file_exists",
+      "path": "plugins/skillsmith/.claude-plugin/plugin.json"
+    },
+    {
+      "id": "A2",
+      "scene": "1.1",
+      "title": "Marketplace points to the plugin",
+      "type": "file_contains",
+      "path": ".claude-plugin/marketplace.json",
+      "pattern": "./plugins/skillsmith"
+    },
+    {
+      "id": "A18",
+      "scene": "1.1",
+      "title": "No top-level bin/ folder, so Cowork can install it",
+      "type": "file_absent",
+      "path": "plugins/skillsmith/bin"
+    },
+    {
+      "id": "A3",
+      "scene": "1.2",
+      "title": "Claude Code accepts the marketplace and plugin",
+      "type": "command",
+      "run": "claude plugin validate .",
+      "expect": {
+        "exit": 0
+      },
+      "timeout": 120,
+      "weight": 3
+    },
+    {
+      "id": "A4",
+      "scene": "1.2",
+      "title": "The engine runs and lists arena commands",
+      "type": "command",
+      "run": "node plugins/skillsmith/scripts/skillsmith.mjs --help",
+      "expect": {
+        "exit": 0,
+        "includes": "arena verify"
+      }
+    },
+    {
+      "id": "A5",
+      "scene": "1.3",
+      "title": "The Law exists",
+      "type": "file_contains",
+      "path": "plugins/skillsmith/skills/start/references/law.md",
+      "pattern": "deleted"
+    },
+    {
+      "id": "A6",
+      "scene": "2.1",
+      "title": "Interview station exists",
+      "type": "file_exists",
+      "path": "plugins/skillsmith/skills/interview/SKILL.md"
+    },
+    {
+      "id": "A7",
+      "scene": "2.2",
+      "title": "Our own sources file is valid",
+      "type": "command",
+      "run": "node plugins/skillsmith/scripts/skillsmith.mjs sources check docs/dogfood/02-sources.json",
+      "expect": {
+        "exit": 0
+      }
+    },
+    {
+      "id": "A8",
+      "scene": "2.2",
+      "title": "Our own research passes its gate",
+      "type": "command",
+      "run": "node plugins/skillsmith/scripts/skillsmith.mjs gate research --from docs/dogfood",
+      "expect": {
+        "exit": 0
+      }
+    },
+    {
+      "id": "A9",
+      "scene": "2.3",
+      "title": "Our own hooks contain no AI slop",
+      "type": "command",
+      "run": "node plugins/skillsmith/scripts/skillsmith.mjs slop docs/dogfood/03-hooks.md",
+      "expect": {
+        "exit": 0
+      }
+    },
+    {
+      "id": "A10",
+      "scene": "2.3",
+      "title": "Our own hooks pass their gate",
+      "type": "command",
+      "run": "node plugins/skillsmith/scripts/skillsmith.mjs gate hooks --from docs/dogfood",
+      "expect": {
+        "exit": 0
+      }
+    },
+    {
+      "id": "A11",
+      "scene": "2.4",
+      "title": "Our own screenplay passes its gate",
+      "type": "command",
+      "run": "node plugins/skillsmith/scripts/skillsmith.mjs gate screenplay --from docs/dogfood",
+      "expect": {
+        "exit": 0
+      }
+    },
+    {
+      "id": "A12",
+      "scene": "2.5",
+      "title": "Full test suite passes, including the arena with a liar",
+      "type": "command",
+      "run": "npm test",
+      "expect": {
+        "exit": 0
+      },
+      "timeout": 600,
+      "weight": 5
+    },
+    {
+      "id": "A13",
+      "scene": "3.1",
+      "title": "Dashboard generator exists",
+      "type": "file_contains",
+      "path": "plugins/skillsmith/scripts/lib/report.mjs",
+      "pattern": "renderDashboard"
+    },
+    {
+      "id": "A14",
+      "scene": "3.2",
+      "title": "Landing page exists",
+      "type": "file_exists",
+      "path": "site/index.html"
+    },
+    {
+      "id": "A15",
+      "scene": "3.3",
+      "title": "Vertical and horizontal videos exist, in English and Ukrainian",
+      "type": "command",
+      "run": "node -e \"const fs=require('fs');for(const f of ['vertical-en','vertical-uk','horizontal-en','horizontal-uk']){if(fs.statSync('site/media/skillsmith-'+f+'.mp4').size<100000)process.exit(1)}\"",
+      "expect": {
+        "exit": 0
+      }
+    },
+    {
+      "id": "A16",
+      "scene": "3.4",
+      "title": "README tells people how to install",
+      "type": "file_contains",
+      "path": "README.md",
+      "pattern": "/plugin marketplace add galactic717/skillsmith"
+    },
+    {
+      "id": "A17",
+      "scene": "3.4",
+      "title": "CI runs on every push",
+      "type": "file_exists",
+      "path": ".github/workflows/ci.yml"
+    }
   ]
 }

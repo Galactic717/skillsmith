@@ -37,8 +37,8 @@ export function loadArena(root, { required = true } = {}) {
 
 const saveArena = (root, arena) => writeJson(arenaFile(root), arena);
 
-function addEvent(arena, type, team, detail) {
-  arena.events.push({ at: now(), round: arena.round, type, team, detail });
+function addEvent(arena, type, team, detail, data) {
+  arena.events.push({ at: now(), round: arena.round, type, team, detail, ...(data ? { data } : {}) });
 }
 
 function loadGraveyard(root) {
@@ -163,11 +163,14 @@ export function arenaInit(root, { teams: requested, count, force = false, templa
       worktree: toPosix(path.relative(root, p.worktree)),
       dossier: toPosix(path.relative(root, p.dossier)),
     };
-    addEvent(arena, 'enter', name, `${persona} enters the arena: ${motto}`);
+    addEvent(arena, 'enter', name, `${persona} enters the arena: ${motto}`, { persona });
   });
   saveArena(root, arena);
   return { arena, identity, strayChanges, paths: names.map((n) => teamPaths(root, n)) };
 }
+
+// Output from a clean room mentions its temporary path; show it as "./".
+const scrub = (text, dir) => String(text || '').split(`${dir}${path.sep}`).join('./').split(dir).join('.');
 
 async function withCleanroom(root, label, commit, fn) {
   const dir = path.join(root, '.skillsmith', 'arena', `.cleanroom-${label}-${Date.now()}`);
@@ -188,7 +191,7 @@ async function runSetup(commands = [], dir) {
       break;
     }
     const r = await runCheck({ type: 'command', run, timeout: 900 }, { dir });
-    out.push({ run, status: r.status, detail: tail(r.detail, 400) });
+    out.push({ run, status: r.status, detail: tail(scrub(r.detail, dir), 400) });
     if (r.status !== 'pass') break;
   }
   return out;
@@ -236,10 +239,10 @@ export function kill(root, arena, name, cause, evidence) {
   graveyard.entries.push({ team: name, persona: t.persona, at: t.diedAt, cause, causeText, evidence });
   writeJson(ssPath(root, 'graveyard.json'), graveyard);
   writeGraveyardMd(root, graveyard);
-  addEvent(arena, 'death', name, `${t.persona} is out: ${causeText}.`);
+  addEvent(arena, 'death', name, `${t.persona} is out: ${causeText}.`, { persona: t.persona, cause });
   if (Object.values(arena.teams).every((x) => x.status !== 'alive')) {
     arena.status = 'wiped';
-    addEvent(arena, 'wiped', null, 'No team survived. Start a new arena with fresh names.');
+    addEvent(arena, 'wiped', null, 'No team survived. Start a new arena with fresh names.', {});
   }
 }
 
@@ -263,13 +266,13 @@ export async function trial(root, name, { mode = 'verify', setup = true } = {}) 
     const accResults = [];
     for (const check of acceptance.checks) {
       const r = await runCheck(check, { dir });
-      accResults.push({ id: check.id, title: check.title, weight: check.weight ?? 1, status: r.status, detail: tail(r.detail, 500) });
+      accResults.push({ id: check.id, title: check.title, weight: check.weight ?? 1, status: r.status, detail: tail(scrub(r.detail, dir), 500) });
     }
     const accMap = Object.fromEntries(accResults.map((r) => [r.id, r.status]));
     const claimResults = [];
     for (const cl of claimsList) {
       const r = await runCheck(cl?.evidence, { dir, acceptance: accMap });
-      claimResults.push({ id: cl?.id, text: cl?.text, evidence: cl?.evidence, status: CLAIM_STATUS[r.status] || 'unverifiable', check: r.status, detail: tail(r.detail, 500) });
+      claimResults.push({ id: cl?.id, text: cl?.text, evidence: cl?.evidence, status: CLAIM_STATUS[r.status] || 'unverifiable', check: r.status, detail: tail(scrub(r.detail, dir), 500) });
     }
     const passed = accResults.filter((r) => r.status === 'pass');
     return {
@@ -318,7 +321,11 @@ export async function trial(root, name, { mode = 'verify', setup = true } = {}) 
 
   if (mode === 'precheck') {
     writeJson(path.join(p.dossier, 'precheck.json'), verdict);
-    addEvent(arena, 'precheck', name, `${t.persona} ran a private precheck: ${verdict.acceptance.passed}/${verdict.acceptance.total} acceptance checks pass.`);
+    addEvent(arena, 'precheck', name, `${t.persona} ran a private precheck: ${verdict.acceptance.passed}/${verdict.acceptance.total} acceptance checks pass.`, {
+      persona: t.persona,
+      passed: verdict.acceptance.passed,
+      total: verdict.acceptance.total,
+    });
     saveArena(root, arena);
     return verdict;
   }
@@ -329,6 +336,7 @@ export async function trial(root, name, { mode = 'verify', setup = true } = {}) 
     'verify',
     name,
     `${t.persona}: ${verdict.acceptance.passed}/${verdict.acceptance.total} acceptance checks, ${verdict.claims.verified} verified claim(s), ${verdict.claims.false} false.`,
+    { persona: t.persona, passed: verdict.acceptance.passed, total: verdict.acceptance.total, verified: verdict.claims.verified, false: verdict.claims.false },
   );
   if (cause) kill(root, arena, name, cause, evidence);
   saveArena(root, arena);
@@ -361,7 +369,7 @@ export async function accuse(root, accuser, { setup = true, dryRun = false } = {
       for (const a of list) {
         const r = await runCheck(a.evidence, { dir, env: { SKILLSMITH_PROBES: p.probes } });
         const status = r.status === 'pass' ? 'upheld' : r.status === 'fail' ? 'false' : 'dismissed';
-        results.push({ id: a.id, against: target, text: a.text, status, commit: head, detail: tail(r.detail, 500) });
+        results.push({ id: a.id, against: target, text: a.text, status, commit: head, detail: tail(scrub(r.detail, dir), 500) });
       }
     });
   }
@@ -372,8 +380,9 @@ export async function accuse(root, accuser, { setup = true, dryRun = false } = {
   }
   writeJson(path.join(p.dossier, 'accusations-verdict.json'), { accuser, round: arena.round, at: now(), results });
   for (const r of results) {
-    if (r.status === 'upheld') addEvent(arena, 'upheld', accuser, `${t.persona} proved a defect in ${arena.teams[r.against].persona}: ${r.text}`);
-    if (r.status === 'false') addEvent(arena, 'perjury', accuser, `${t.persona} accused ${arena.teams[r.against].persona} without proof: ${r.text}`);
+    const data = { persona: t.persona, target: arena.teams[r.against].persona, text: r.text };
+    if (r.status === 'upheld') addEvent(arena, 'upheld', accuser, `${t.persona} proved a defect in ${data.target}: ${r.text}`, data);
+    if (r.status === 'false') addEvent(arena, 'perjury', accuser, `${t.persona} accused ${data.target} without proof: ${r.text}`, data);
   }
   const perjury = results.filter((r) => r.status === 'false');
   if (perjury.length) {
@@ -399,7 +408,7 @@ export function judge(root) {
   const data = readJson(ssPath(root, 'judge.json'));
   const errors = validateJudge(data, aliveTeams(arena));
   if (!errors.length) {
-    addEvent(arena, 'judge', null, `The auditor scored ${aliveTeams(arena).join(', ')} with evidence.`);
+    addEvent(arena, 'judge', null, `The auditor scored ${aliveTeams(arena).join(', ')} with evidence.`, { teams: aliveTeams(arena) });
     saveArena(root, arena);
   }
   return errors;
@@ -408,7 +417,7 @@ export function judge(root) {
 export function score(root) {
   const arena = loadArena(root);
   const judgeData = readJson(ssPath(root, 'judge.json'), null);
-  const contenders = Object.entries(arena.teams).filter(([, t]) => t.status === 'alive' || t.status === 'crowned').map(([n]) => n);
+  const contenders = Object.entries(arena.teams).filter(([, t]) => t.status !== 'dead').map(([n]) => n);
   const judgeOk = judgeData && validateJudge(judgeData, contenders).length === 0;
   const accusationFiles = Object.keys(arena.teams)
     .map((n) => readJson(path.join(dossierDir(root, n), 'accusations-verdict.json'), null))
@@ -479,7 +488,7 @@ export function crown(root, requested, { force = false } = {}) {
     G.git(['branch', '-m', other.branch, retired], { cwd: root });
     other.status = 'retired';
     other.branch = retired;
-    addEvent(arena, 'retire', name, `${other.persona} lost honestly. Branch kept as ${retired}.`);
+    addEvent(arena, 'retire', name, `${other.persona} lost honestly. Branch kept as ${retired}.`, { persona: other.persona, branch: retired });
   }
 
   saveArena(root, arena);
@@ -504,7 +513,7 @@ export function crown(root, requested, { force = false } = {}) {
   arena.status = 'crowned';
   arena.winner = winner;
   arena.crownedAt = now();
-  addEvent(arena, 'crown', winner, `${t.persona} wins. Their work is merged.`);
+  addEvent(arena, 'crown', winner, `${t.persona} wins. Their work is merged.`, { persona: t.persona });
   saveArena(root, arena);
   const state = loadState(root);
   state.stages.arena = { status: 'done', doneAt: now() };
@@ -532,7 +541,7 @@ export function nextRound(root) {
   const arena = loadArena(root);
   if (arena.status !== 'running') throw new UserError(`The arena is ${arena.status}.`);
   arena.round += 1;
-  addEvent(arena, 'round', null, `Round ${arena.round} begins.`);
+  addEvent(arena, 'round', null, `Round ${arena.round} begins.`, { round: arena.round });
   saveArena(root, arena);
   return arena.round;
 }

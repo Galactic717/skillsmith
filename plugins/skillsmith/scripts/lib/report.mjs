@@ -7,7 +7,31 @@ import { loadArena, score } from './arena.mjs';
 const T = {
   en: {
     stations: { interview: 'Interview', research: 'Research', hooks: 'Hooks', screenplay: 'Screenplay', arena: 'Arena', ship: 'Ship' },
-    crew: { interview: 'Interviewer', research: 'Researcher', hooks: 'Hook writer', screenplay: 'Screenwriter', arena: 'Managers, developers, designers, auditor', ship: 'Conveyor' },
+    crew: { interview: 'Interviewer', research: 'Researchers', hooks: 'Hook writer', screenplay: 'Screenwriter', arena: '3 teams, auditor', ship: 'Conveyor' },
+    motto: {
+      Sprint: 'The smallest product that fully works, shipped first.',
+      Fortress: 'Nothing breaks: tests, edge cases, security, accessibility.',
+      Spark: 'The boldest experience people remember and tell friends about.',
+    },
+    cause: {
+      'false-claim': 'claimed something that its own evidence check proved false',
+      tampering: 'changed protected files (tests or Skillsmith records)',
+      'false-accusation': 'accused a rival with evidence that did not hold up',
+      manual: 'eliminated by the client',
+    },
+    ev: {
+      enter: (d) => `${d.persona} enters the arena.`,
+      precheck: (d) => `${d.persona} ran a private precheck: ${d.passed}/${d.total} checks pass.`,
+      verify: (d) => `${d.persona}: ${d.passed}/${d.total} acceptance checks, ${d.verified} claims proven, ${d.false} false.`,
+      upheld: (d) => `${d.persona} proved a defect in ${d.target}: ${d.text}`,
+      perjury: (d) => `${d.persona} accused ${d.target} without proof: ${d.text}`,
+      death: (d, t) => `${d.persona} is out: ${t.cause[d.cause] || d.cause}.`,
+      wiped: () => 'No team survived.',
+      judge: () => 'The auditor scored the survivors, with evidence.',
+      retire: (d) => `${d.persona} lost honestly. Their branch is kept.`,
+      crown: (d) => `${d.persona} wins. Their work is merged.`,
+      round: (d) => `Round ${d.round} begins.`,
+    },
     done: 'Done',
     now: 'Now',
     waiting: 'Waiting',
@@ -38,7 +62,31 @@ const T = {
   },
   uk: {
     stations: { interview: 'Інтерв’ю', research: 'Дослідження', hooks: 'Хуки', screenplay: 'Сценарій', arena: 'Арена', ship: 'Запуск' },
-    crew: { interview: 'Інтерв’юер', research: 'Дослідник', hooks: 'Автор хуків', screenplay: 'Сценарист', arena: 'Менеджери, розробники, дизайнери, аудитор', ship: 'Конвеєр' },
+    crew: { interview: 'Інтерв’юер', research: 'Дослідники', hooks: 'Автор хуків', screenplay: 'Сценарист', arena: '3 команди, аудитор', ship: 'Конвеєр' },
+    motto: {
+      Sprint: 'Найменший продукт, який повністю працює, і першим.',
+      Fortress: 'Ніщо не ламається: тести, крайні випадки, безпека, доступність.',
+      Spark: 'Найсміливіший досвід, про який розповідають друзям.',
+    },
+    cause: {
+      'false-claim': 'заявив те, що його ж перевірка спростувала',
+      tampering: 'змінив захищені файли (тести або записи Skillsmith)',
+      'false-accusation': 'звинуватив суперника доказом, який не підтвердився',
+      manual: 'вибув за рішенням клієнта',
+    },
+    ev: {
+      enter: (d) => `${d.persona} виходить на арену.`,
+      precheck: (d) => `${d.persona} провів приватну перевірку: ${d.passed}/${d.total}.`,
+      verify: (d) => `${d.persona}: ${d.passed}/${d.total} перевірок приймання, ${d.verified} заяв доведено, ${d.false} хибних.`,
+      upheld: (d) => `${d.persona} довів дефект у ${d.target}: ${d.text}`,
+      perjury: (d) => `${d.persona} звинуватив ${d.target} без доказу: ${d.text}`,
+      death: (d, t) => `${d.persona} вибуває: ${t.cause[d.cause] || d.cause}.`,
+      wiped: () => 'Жодна команда не вижила.',
+      judge: () => 'Аудитор оцінив тих, хто вижив, з доказами.',
+      retire: (d) => `${d.persona} чесно програв. Його гілку збережено.`,
+      crown: (d) => `${d.persona} перемагає. Його роботу злито в проєкт.`,
+      round: (d) => `Починається раунд ${d.round}.`,
+    },
     done: 'Готово',
     now: 'Зараз',
     waiting: 'Чекає',
@@ -115,14 +163,23 @@ export function writeReport(root) {
     if (rows.length) {
       lines.push(`| Team | Manager | ${t.points} |`, '|---|---|---|', ...rows.map((r) => `| ${r.team} | ${r.persona} | ${r.total} |`), '');
     }
-    lines.push(`### ${t.log}`, '', ...arena.events.map((e) => `- ${e.at.slice(11, 16)} ${e.detail}`), '');
+    lines.push(`### ${t.log}`, '', ...arena.events.map((e) => `- ${e.at.slice(11, 16)} ${eventText(e, t)}`), '');
   }
   lines.push(`## ${t.graveyard}`, '');
   if (!graveyard.entries.length) lines.push(t.nobody, '');
-  for (const e of graveyard.entries) lines.push(`- **${e.team} (${e.persona})**: ${e.causeText}. ${(e.evidence || []).map((x) => x.label).join('; ')}`);
+  for (const e of graveyard.entries) lines.push(`- **${e.team} (${e.persona})**: ${t.cause[e.cause] || e.causeText}. ${(e.evidence || []).map((x) => x.label).join('; ')}`);
   lines.push('', `## ${t.next}`, '', ...t.nextSteps.map((s) => `- ${s}`), '');
   writeText(ssPath(root, 'REPORT.md'), lines.join('\n'));
   return ssPath(root, 'REPORT.md');
+}
+
+function eventText(e, t) {
+  try {
+    if (e.data && t.ev[e.type]) return t.ev[e.type](e.data, t);
+  } catch {
+    /* fall back to the stored English text */
+  }
+  return e.detail;
 }
 
 const ICON = { enter: '→', precheck: '◌', verify: '✓', upheld: '⚔', perjury: '✗', death: '✝', retire: '↘', crown: '♛', judge: '⚖', round: '↻', wiped: '∅' };
@@ -162,7 +219,7 @@ export function renderDashboard(root) {
             : `<p class="muted">${esc(t.notVerified)}</p>`;
           return `<article class="team team-${esc(team.status)}">
             <header><h3>${esc(team.persona)}</h3><code>${esc(name)}</code></header>
-            <p class="motto">${esc(team.motto)}</p>
+            <p class="motto">${esc(t.motto[team.persona] || team.motto)}</p>
             <p class="state">${esc(t.status[team.status] || team.status)}</p>
             ${stats}
             ${stamp}
@@ -175,7 +232,7 @@ export function renderDashboard(root) {
     ? arena.events
         .slice()
         .reverse()
-        .map((e) => `<li class="ev ev-${esc(e.type)}"><span class="ev-icon" aria-hidden="true">${ICON[e.type] || '•'}</span><time>${esc(e.at.slice(11, 16))}</time><span>${esc(e.detail)}</span></li>`)
+        .map((e) => `<li class="ev ev-${esc(e.type)}"><span class="ev-icon" aria-hidden="true">${ICON[e.type] || '•'}</span><time>${esc(e.at.slice(11, 16))}</time><span>${esc(eventText(e, t))}</span></li>`)
         .join('')
     : '';
 
@@ -184,7 +241,7 @@ export function renderDashboard(root) {
         .map(
           (e) => `<article class="grave">
           <h3>${esc(e.persona)} <code>${esc(e.team)}</code></h3>
-          <p>${esc(e.causeText)}</p>
+          <p>${esc(t.cause[e.cause] || e.causeText)}</p>
           ${(e.evidence || []).map((x) => `<p class="lie">${esc(x.label)}</p>${x.detail ? `<pre>${esc(x.detail)}</pre>` : ''}`).join('')}
         </article>`,
         )
@@ -268,7 +325,8 @@ dt { color: var(--muted); }
 dd { margin: 0; font-family: var(--mono); font-weight: 600; }
 dl .bad dd, dl .bad dt { color: var(--dead); }
 dl .total { border-top: 1px solid var(--line); padding-top: 6px; margin-top: 4px; font-size: 16px; }
-.stamp { position: absolute; right: 14px; bottom: 18px; transform: rotate(-9deg); font-family: var(--stamp); font-size: 26px; text-transform: uppercase; padding: 4px 12px; border: 3px solid currentColor; border-radius: 4px; color: var(--dead); opacity: 0.92; }
+.team-dead, .team-crowned { padding-bottom: 88px; }
+.stamp { position: absolute; right: 16px; bottom: 20px; transform: rotate(-9deg); font-family: var(--stamp); font-size: 26px; text-transform: uppercase; padding: 4px 12px; border: 3px solid currentColor; border-radius: 4px; color: var(--dead); opacity: 0.92; }
 .team-crowned .stamp { color: var(--molten); }
 .cols { display: grid; grid-template-columns: 3fr 2fr; gap: 32px; }
 .log { list-style: none; padding: 0; margin: 0; border-left: 2px solid var(--line); }
