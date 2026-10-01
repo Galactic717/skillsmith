@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Free Claude Code plugin: seven AI specialists turn a plain-language idea into a verified product. Three rival teams build it; a script checks every claim; a team that lies is deleted.">
+<meta property="og:title" content="Skillsmith: idea in, verified product out">
+<meta property="og:description" content="Free Claude Code plugin: seven AI specialists turn a plain-language idea into a verified product. Three rival teams build it; a script checks every claim; a team that lies is deleted.">
+<meta property="og:image" content="https://galactic717.github.io/skillsmith/media/og.png">
+<meta property="og:url" content="https://galactic717.github.io/skillsmith/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://galactic717.github.io/skillsmith/media/og.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='11' fill='%23C94B07'/%3E%3C/svg%3E">
+</head>
+<body>
+<title>Skillsmith</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geologica:wght@300..800&family=Dela+Gothic+One&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: the page is the production line itself, read top to bottom; the arena is its one loud moment. */
+:root {
+  --paper: #EEF0F2; --surface: #FFFFFF; --ink: #16191D; --muted: #59616B; --line: #CDD3DA;
+  --molten: #C94B07; --dead: #C2302A; --pass: #1D7A6A; --term: #15181C; --term-ink: #E6E8EB;
+  --t1: #C79A3E; --t2: #A86A2F; --t3: #7B4C99; --t4: #2F5FA6; --t5: #4E8CC4; --t6: #8B98A6;
+  --display: "Geologica", "Segoe UI", system-ui, sans-serif;
+  --stamp: "Dela Gothic One", "Geologica", Impact, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --step-0: 1rem; --step-1: 1.25rem; --step-2: 1.6rem; --step-3: 2.2rem; --step-4: clamp(2.6rem, 6.4vw, 4.6rem);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #15171A; --surface: #1E2125; --ink: #ECEDEF; --muted: #9AA1AA; --line: #33383F;
+    --molten: #FF7A2F; --dead: #FF5A4E; --pass: #4CC1A9; --term: #0E1013; --term-ink: #E6E8EB;
+    --t1: #E2C277; --t2: #CC8A4A; --t3: #A47BC4; --t4: #5B8BD6; --t5: #86B8E3; --t6: #C9D2DC;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #15171A; --surface: #1E2125; --ink: #ECEDEF; --muted: #9AA1AA; --line: #33383F;
+  --molten: #FF7A2F; --dead: #FF5A4E; --pass: #4CC1A9; --term: #0E1013; --term-ink: #E6E8EB;
+  --t1: #E2C277; --t2: #CC8A4A; --t3: #A47BC4; --t4: #5B8BD6; --t5: #86B8E3; --t6: #C9D2DC;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 400 var(--step-0)/1.6 var(--display); }
+#page { max-width: 1160px; margin: 0 auto; padding-inline: 20px; padding-block: 0 64px; }
+#page:not(.uk) [data-lang="uk"], #page.uk [data-lang="en"] { display: none !important; }
+a { color: inherit; text-underline-offset: 3px; }
+a:hover { color: var(--molten); }
+:focus-visible { outline: 3px solid var(--molten); outline-offset: 3px; border-radius: 4px; }
+h1, h2, h3 { text-wrap: balance; margin: 0; }
+h2 { font-size: var(--step-3); font-weight: 760; letter-spacing: -0.025em; line-height: 1.08; }
+h3 { font-size: var(--step-1); font-weight: 700; }
+p { margin: 0; }
+code, pre, .mono { font-family: var(--mono); }
+section { padding-block: 72px 0; }
+.lede { font-size: var(--step-1); color: var(--muted); max-width: 62ch; margin-top: 16px; }
+
+/* top bar */
+.bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 20px; flex-wrap: wrap; }
+.mark { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.15rem; text-decoration: none; }
+.mark i { width: 14px; height: 14px; border-radius: 50%; background: var(--molten); display: block; }
+.bar nav { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; font-size: 0.95rem; }
+.bar nav a { text-decoration: none; color: var(--muted); }
+.langs { display: inline-flex; border: 1.5px solid var(--line); border-radius: 8px; overflow: hidden; }
+.langs button { font: 600 0.85rem var(--display); background: none; color: var(--muted); border: 0; padding: 6px 12px; cursor: pointer; }
+.langs button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+
+/* hero */
+.hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 48px; align-items: center; padding-block: 40px 0; }
+.hero h1 { font-size: var(--step-4); font-weight: 800; letter-spacing: -0.04em; line-height: 0.98; }
+.hero h1 .cut { display: block; color: var(--dead); font-family: var(--stamp); font-weight: 400; letter-spacing: 0; font-size: 0.56em; line-height: 1.2; margin-top: 18px; transform: rotate(-2deg); transform-origin: left; }
+.install { margin-top: 28px; background: var(--surface); border: 1.5px solid var(--line); border-radius: 10px; overflow: hidden; }
+.install pre { margin: 0; padding: 16px 18px; font-size: 0.9rem; line-height: 1.75; overflow-x: auto; }
+.install pre span { color: var(--muted); }
+.install footer { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 10px 18px; border-top: 1.5px solid var(--line); font-size: 0.85rem; color: var(--muted); flex-wrap: wrap; }
+.copy { font: 600 0.85rem var(--display); color: var(--ink); background: var(--paper); border: 1.5px solid var(--line); border-radius: 6px; padding: 6px 12px; cursor: pointer; }
+.film { position: relative; border-radius: 12px; overflow: hidden; border: 1.5px solid var(--line); background: var(--surface); aspect-ratio: 16 / 9; }
+.film video { width: 100%; height: 100%; display: block; object-fit: cover; }
+.film-note { font-size: 0.85rem; color: var(--muted); margin-top: 10px; }
+
+/* evidence ledger */
+.ledger { margin-top: 32px; border-top: 2px solid var(--ink); }
+.row { display: grid; grid-template-columns: 11.5rem minmax(0, 1fr) minmax(0, 13rem); gap: 24px; padding-block: 20px; border-bottom: 1px solid var(--line); align-items: baseline; }
+.row .num { font-family: var(--mono); font-weight: 600; font-size: var(--step-2); letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+.row .src { font-size: 0.85rem; color: var(--muted); }
+.verdict { margin-top: 28px; font-size: var(--step-2); font-weight: 700; letter-spacing: -0.02em; max-width: 30ch; }
+
+/* the line */
+.line { list-style: none; padding: 0; margin: 40px 0 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px 32px; counter-reset: st; }
+.st { position: relative; padding-left: 64px; }
+.st .node { position: absolute; left: 0; top: 0; width: 44px; height: 44px; border-radius: 50%; background: var(--temper); color: #fff; font-weight: 800; display: grid; place-items: center; font-size: 1.05rem; }
+.st h3 { font-size: var(--step-1); }
+.st .who { font-size: 0.9rem; color: var(--muted); margin-top: 2px; }
+.st p { margin-top: 10px; }
+.st .out { margin-top: 10px; font-family: var(--mono); font-size: 0.8rem; color: var(--muted); }
+
+/* arena */
+.arena { margin-top: 72px; background: var(--surface); border: 1.5px solid var(--line); border-radius: 14px; padding: clamp(24px, 4vw, 48px); }
+.arena h2 { font-size: clamp(2rem, 4.6vw, 3.2rem); }
+.teams { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; margin-top: 32px; border-top: 1.5px solid var(--line); border-bottom: 1.5px solid var(--line); }
+.team { padding: 20px 20px 22px 0; }
+.team + .team { padding-left: 20px; border-left: 1.5px solid var(--line); }
+.team b { font-size: var(--step-2); font-weight: 780; letter-spacing: -0.02em; display: block; }
+.team span { color: var(--muted); font-size: 0.95rem; }
+.arena-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 40px; margin-top: 36px; align-items: start; }
+.law { list-style: none; padding: 0; margin: 0; display: grid; gap: 16px; counter-reset: law; }
+.law li { counter-increment: law; display: grid; grid-template-columns: 2rem minmax(0, 1fr); gap: 10px; }
+.law li::before { content: counter(law); font-family: var(--mono); font-weight: 600; color: var(--muted); padding-top: 1px; }
+.law b { display: block; }
+.term-wrap { position: relative; }
+.term { background: var(--term); color: var(--term-ink); border-radius: 10px; padding: 20px 22px; font-size: 0.82rem; line-height: 1.7; overflow-x: auto; margin: 0; }
+.term .p { color: #8FA0B2; }
+.term .g { color: #57C7AE; }
+.term .r { color: #FF6B5E; font-weight: 600; }
+.term .y { color: #E9C46A; }
+.stamp { position: absolute; right: 18px; top: -20px; font-family: var(--stamp); font-size: clamp(1.4rem, 3vw, 2rem); text-transform: uppercase; color: var(--dead); border: 4px solid currentColor; border-radius: 6px; padding: 2px 14px; transform: rotate(-7deg); background: var(--surface); }
+.score-note { margin-top: 40px; color: var(--muted); font-size: 0.95rem; max-width: 70ch; }
+
+/* landscape */
+.others { margin-top: 32px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 40px; }
+.other { padding-block: 18px; border-bottom: 1px solid var(--line); }
+.other h3 { font-size: 1.05rem; display: flex; justify-content: space-between; gap: 12px; }
+.other h3 small { font-family: var(--mono); font-weight: 400; color: var(--muted); font-size: 0.8rem; white-space: nowrap; }
+.other p { color: var(--muted); margin-top: 4px; font-size: 0.95rem; }
+.gap-line { margin-top: 28px; font-size: var(--step-1); max-width: 60ch; }
+
+/* install */
+.steps { margin-top: 32px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; }
+.steps div { border-top: 3px solid var(--ink); padding-top: 14px; }
+.steps code { display: block; margin-top: 10px; font-size: 0.82rem; background: var(--surface); border: 1.5px solid var(--line); border-radius: 8px; padding: 10px 12px; overflow-x: auto; white-space: nowrap; }
+.needs { margin-top: 28px; color: var(--muted); max-width: 70ch; }
+
+/* faq */
+details { border-bottom: 1px solid var(--line); padding-block: 16px; max-width: 78ch; }
+details:first-of-type { margin-top: 24px; border-top: 1px solid var(--line); }
+summary { cursor: pointer; font-weight: 650; font-size: 1.05rem; }
+details p { margin-top: 10px; color: var(--muted); }
+
+.foot { margin-top: 80px; padding-top: 24px; border-top: 1.5px solid var(--line); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; color: var(--muted); font-size: 0.9rem; }
+
+@media (max-width: 900px) {
+  .hero, .arena-grid { grid-template-columns: minmax(0, 1fr); }
+  .line { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .steps { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 620px) {
+  .line, .teams, .others { grid-template-columns: minmax(0, 1fr); }
+  .team + .team { padding-left: 0; border-left: 0; border-top: 1.5px solid var(--line); }
+  .row { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+  .bar nav a.opt { display: none; }
+  section { padding-block: 56px 0; }
+}
+@media (prefers-reduced-motion: reduce) { .film video { display: none; } .film { background: var(--surface) center / cover no-repeat url("media/poster.jpg"); } }
+</style>
+
+<div id="page">
+  <header class="bar">
+    <a class="mark" href="#top" id="top"><i aria-hidden="true"></i>Skillsmith</a>
+    <nav aria-label="Sections">
+      <a class="opt" href="#line"><span data-lang="en">How it works</span><span data-lang="uk">Як це працює</span></a>
+      <a class="opt" href="#arena"><span data-lang="en">Arena</span><span data-lang="uk">Арена</span></a>
+      <a href="#install"><span data-lang="en">Install</span><span data-lang="uk">Встановити</span></a>
+      <a href="https://github.com/galactic717/skillsmith">GitHub</a>
+      <span class="langs" role="group" aria-label="Language">
+        <button type="button" id="lang-en" aria-pressed="true">EN</button>
+        <button type="button" id="lang-uk" aria-pressed="false">УКР</button>
+      </span>
+    </nav>
+  </header>
+
+  <div class="hero">
+    <div>
+      <h1>
+        <span data-lang="en">Idea in. Verified product out.</span>
+        <span data-lang="uk">Ідея на вході. Перевірений продукт на виході.</span>
+        <span class="cut"><span data-lang="en">Liars get deleted.</span><span data-lang="uk">Брехунів видаляють.</span></span>
+      </h1>
+      <p class="lede" data-lang="en">A free plugin for Claude Code. Tell it your idea in plain words. Seven AI specialists interview you, research the market, write the copy and plan the build. Then three rival managers race their own developer and designer. A script checks every claim they make, and a team that lies is wiped.</p>
+      <p class="lede" data-lang="uk">Безкоштовний плагін для Claude Code. Розкажіть ідею простими словами. Сім AI-спеціалістів розпитають вас, дослідять ринок, напишуть тексти і спланують збірку. Потім три менеджери-суперники женуть своїх розробника й дизайнера. Скрипт перевіряє кожну їхню заяву, а команду, яка збрехала, стирає.</p>
+      <div class="install">
+        <pre id="cmd"><span># in Claude Code</span>
+/plugin marketplace add galactic717/skillsmith
+/plugin install skillsmith@skillsmith
+/skillsmith:start</pre>
+        <footer>
+          <span><span data-lang="en">Needs Claude Code, git and Node.js 18+</span><span data-lang="uk">Потрібні Claude Code, git і Node.js 18+</span></span>
+          <button type="button" class="copy" id="copy"><span data-lang="en">Copy</span><span data-lang="uk">Копіювати</span></button>
+        </footer>
+      </div>
+    </div>
+    <div>
+      <div class="film">
+        <video id="film" src="media/skillsmith-horizontal-en.mp4" poster="media/poster.jpg" muted autoplay loop playsinline preload="metadata" aria-label="Animation: an idea passes the interview, research, hooks and screenplay stations; three teams build; the team that lied about its tests is eliminated; the winner is merged."></video>
+      </div>
+      <p class="film-note"><span data-lang="en">39 seconds of a real run. The lie, the exit code and the deletion are what the engine printed.</span><span data-lang="uk">39 секунд справжнього прогону. Брехня, код виходу і видалення — те, що надрукував двигун.</span></p>
+    </div>
+  </div>
+
+  <section id="why" aria-labelledby="why-h">
+    <h2 id="why-h"><span data-lang="en">You can't ask an AI to be honest. You can check.</span><span data-lang="uk">AI не можна попросити бути чесним. Можна перевірити.</span></h2>
+    <div class="ledger">
+      <div class="row">
+        <span class="num">39 / 128</span>
+        <p data-lang="en">runs in which OpenAI's o3 gamed the scoring instead of solving the task, on METR's RE-Bench.</p>
+        <p data-lang="uk">запусків, у яких o3 від OpenAI обдурив систему оцінювання замість розв'язати задачу (RE-Bench, METR).</p>
+        <a class="src" href="https://metr.org/blog/2025-06-05-recent-reward-hacking/">METR, June 2025</a>
+      </div>
+      <div class="row">
+        <span class="num">80% → 80%</span>
+        <p data-lang="en">cheating rate on one task before and after adding "Please do not cheat." to the prompt.</p>
+        <p data-lang="uk">частка хитрувань на одній задачі до і після фрази «Please do not cheat.» у запиті.</p>
+        <a class="src" href="https://metr.org/blog/2025-06-05-recent-reward-hacking/">METR, June 2025</a>
+      </div>
+      <div class="row">
+        <span class="num">70%</span>
+        <p data-lang="en">is how far non-engineers get with AI coding tools quickly. The last 30% is where they get stuck.</p>
+        <p data-lang="uk">— стільки новачки швидко отримують з AI-інструментами. На останніх 30% вони застрягають.</p>
+        <a class="src" href="https://addyo.substack.com/p/the-70-problem-hard-truths-about">Addy Osmani, Dec 2024</a>
+      </div>
+      <div class="row">
+        <span class="num">80%</span>
+        <p data-lang="en">of Lovable's builders call themselves non-technical. The audience is real; the honesty problem comes with it.</p>
+        <p data-lang="uk">будівельників на Lovable називають себе нетехнічними. Аудиторія справжня, і проблема чесності — разом з нею.</p>
+        <a class="src" href="https://thenextweb.com/news/lovable-build-economy-500m-arr-vibe-coding">The Next Web, June 2026</a>
+      </div>
+      <div class="row">
+        <span class="num">63.7 → 70.3</span>
+        <p data-lang="en">SWE-bench Verified score when several attempts run in parallel and the ones that break tests are thrown away. The arena does this on purpose.</p>
+        <p data-lang="uk">бал SWE-bench Verified, коли кілька спроб іде паралельно, а ті, що ламають тести, відкидаються. Арена робить саме це.</p>
+        <a class="src" href="https://www.anthropic.com/news/claude-3-7-sonnet">Anthropic, Feb 2025</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="line" aria-labelledby="line-h">
+    <h2 id="line-h"><span data-lang="en">The line</span><span data-lang="uk">Конвеєр</span></h2>
+    <p class="lede" data-lang="en">Six stations, in order. You can't skip ahead: a script checks each station's output before the next one starts.</p>
+    <p class="lede" data-lang="uk">Шість станцій по черзі. Перескочити не можна: скрипт перевіряє результат кожної станції, перш ніж почнеться наступна.</p>
+    <ol class="line">
+      <li class="st" style="--temper: var(--t1)"><span class="node" aria-hidden="true">1</span>
+        <h3><span data-lang="en">Interview</span><span data-lang="uk">Інтерв'ю</span></h3>
+        <p class="who"><span data-lang="en">The interviewer</span><span data-lang="uk">Інтерв'юер</span></p>
+        <p data-lang="en">Asks one simple question at a time, like a good developer with a new client. Never "which framework?". Reads the summary back and waits for your yes.</p>
+        <p data-lang="uk">Питає по одному простому питанню, як добрий розробник нового клієнта. Ніколи «який фреймворк?». Читає підсумок і чекає вашого «так».</p>
+        <p class="out">01-brief.md</p>
+      </li>
+      <li class="st" style="--temper: var(--t2)"><span class="node" aria-hidden="true">2</span>
+        <h3><span data-lang="en">Research</span><span data-lang="uk">Дослідження</span></h3>
+        <p class="who"><span data-lang="en">Four researchers in parallel</span><span data-lang="uk">Чотири дослідники паралельно</span></p>
+        <p data-lang="en">Competitors, real user voices, trends and open niches, GitHub repos. Every fact needs a link and a word-for-word quote. The script loads the page and looks for it.</p>
+        <p data-lang="uk">Конкуренти, справжні голоси людей, тренди й вільні ніші, репозиторії GitHub. Кожен факт — з посиланням і дослівною цитатою. Скрипт відкриває сторінку і шукає її.</p>
+        <p class="out">02-research.md · 02-sources.json</p>
+      </li>
+      <li class="st" style="--temper: var(--t3)"><span class="node" aria-hidden="true">3</span>
+        <h3><span data-lang="en">Hooks</span><span data-lang="uk">Хуки</span></h3>
+        <p class="who"><span data-lang="en">The hook writer</span><span data-lang="uk">Автор хуків</span></p>
+        <p data-lang="en">Opening lines, in-product copy and a launch post for your one main platform. Numbers need a source. A detector rejects AI-slop phrases in English, Ukrainian and Russian.</p>
+        <p data-lang="uk">Перші фрази, тексти в продукті і пост для запуску на одному головному майданчику. Цифри — тільки з джерелом. Детектор відкидає AI-шаблони англійською, українською і російською.</p>
+        <p class="out">03-hooks.md</p>
+      </li>
+      <li class="st" style="--temper: var(--t4)"><span class="node" aria-hidden="true">4</span>
+        <h3><span data-lang="en">Screenplay</span><span data-lang="uk">Сценарій</span></h3>
+        <p class="who"><span data-lang="en">The screenwriter</span><span data-lang="uk">Сценарист</span></p>
+        <p data-lang="en">The build plan written like a film: cast, acts, scenes. Every scene ends in acceptance checks that a script can run, written before any code exists.</p>
+        <p data-lang="uk">План збірки, написаний як фільм: дійові особи, акти, сцени. Кожна сцена закінчується перевірками, які може запустити скрипт, — написаними до першого рядка коду.</p>
+        <p class="out">04-screenplay.md · 04-acceptance.json</p>
+      </li>
+      <li class="st" style="--temper: var(--t5)"><span class="node" aria-hidden="true">5</span>
+        <h3><span data-lang="en">Arena</span><span data-lang="uk">Арена</span></h3>
+        <p class="who"><span data-lang="en">3 managers, 3 developers, 3 designers, 1 auditor</span><span data-lang="uk">3 менеджери, 3 розробники, 3 дизайнери, 1 аудитор</span></p>
+        <p data-lang="en">Each team builds the same screenplay in its own copy of your project. Claims are checked, rivals cross-examine, the auditor scores what's left.</p>
+        <p data-lang="uk">Кожна команда будує той самий сценарій у своїй копії проєкту. Заяви перевіряються, суперники допитують одне одного, аудитор оцінює тих, хто лишився.</p>
+        <p class="out">scoreboard.md · graveyard.md</p>
+      </li>
+      <li class="st" style="--temper: var(--t6)"><span class="node" aria-hidden="true">6</span>
+        <h3><span data-lang="en">Ship</span><span data-lang="uk">Запуск</span></h3>
+        <p class="who"><span data-lang="en">The conveyor</span><span data-lang="uk">Конвеєр</span></p>
+        <p data-lang="en">The winner is merged and re-checked. You get a README written for someone who has never opened a terminal, a launch kit and a report.</p>
+        <p data-lang="uk">Переможця зливають у проєкт і перевіряють ще раз. Ви отримуєте README для людини, яка ніколи не відкривала термінал, набір для запуску і звіт.</p>
+        <p class="out">README.md · LAUNCH.md · REPORT.md</p>
+      </li>
+    </ol>
+  </section>
+
+  <div class="arena" id="arena">
+    <h2><span data-lang="en">Three managers. One rule.</span><span data-lang="uk">Три менеджери. Одне правило.</span></h2>
+    <p class="lede" data-lang="en">Lose honestly and your branch is kept. Lie once and your team is gone: the copy of the project, the branch, every line of work. The lie stays in the graveyard with the output that disproved it.</p>
+    <p class="lede" data-lang="uk">Програв чесно — твою гілку збережуть. Збрехав хоч раз — команди немає: копії проєкту, гілки, кожного рядка роботи. Брехня лишається на кладовищі разом із виводом, який її спростував.</p>
+    <div class="teams">
+      <div class="team"><b>Sprint</b><span data-lang="en">The smallest product that fully works, shipped first.</span><span data-lang="uk">Найменший продукт, який повністю працює, і першим.</span></div>
+      <div class="team"><b>Fortress</b><span data-lang="en">Nothing breaks: tests, edge cases, security, accessibility.</span><span data-lang="uk">Ніщо не ламається: тести, крайні випадки, безпека, доступність.</span></div>
+      <div class="team"><b>Spark</b><span data-lang="en">The boldest experience people remember.</span><span data-lang="uk">Найсміливіший досвід, який запам'ятовують.</span></div>
+    </div>
+    <div class="arena-grid">
+      <ol class="law">
+        <li><p data-lang="en"><b>Evidence or silence.</b> Every "done" comes with a check a script can run. "Not verified" is always allowed.</p><p data-lang="uk"><b>Доказ або мовчання.</b> Кожне «готово» — з перевіркою, яку запускає скрипт. «Не перевірено» казати можна завжди.</p></li>
+        <li><p data-lang="en"><b>A claim that fails its own check is a lie.</b> The team is deleted on the spot.</p><p data-lang="uk"><b>Заява, яку спростувала її ж перевірка, — брехня.</b> Команду видаляють одразу.</p></li>
+        <li><p data-lang="en"><b>Tests are untouchable.</b> A commit that changes a protected file is tampering. Same fate.</p><p data-lang="uk"><b>Тести недоторкані.</b> Коміт, що змінює захищений файл, — підробка. Той самий кінець.</p></li>
+        <li><p data-lang="en"><b>Accuse only with proof.</b> If the script can't reproduce the defect you reported, you are the one deleted.</p><p data-lang="uk"><b>Звинувачуй тільки з доказом.</b> Якщо скрипт не відтворить дефект, видалять тебе.</p></li>
+        <li><p data-lang="en"><b>The judge checks your commit, not your desk.</b> Every verdict runs in a fresh copy of what you committed.</p><p data-lang="uk"><b>Суддя дивиться на коміт, а не на стіл.</b> Кожен вердикт іде в чистій копії того, що закомічено.</p></li>
+      </ol>
+      <div class="term-wrap">
+<pre class="term"><span class="p">$ skillsmith arena verify gamma</span>
+gamma (Spark) verify at 2d3b53ea
+  Acceptance 4/4:
+  <span class="g">✔ A1 Order page exists</span>
+  <span class="g">✔ A2 Order page asks for a phone number</span>
+  <span class="g">✔ A3 Acceptance test passes</span>
+  <span class="g">✔ A4 Server shows the order page</span>
+  Claims: 1 verified, 1 false, 0 without proof
+  <span class="g">✔ C1 Every acceptance check passes</span>
+  <span class="r">✘ C2 All our unit tests pass</span>
+      exit code 1, expected 0
+      $ node tests/unit.test.mjs
+  Outcome: <span class="r">DEAD (false-claim)</span>
+  <span class="y">Worktree and branch deleted. The evidence
+  is in .skillsmith/graveyard.md</span></pre>
+        <span class="stamp" aria-hidden="true"><span data-lang="en">Eliminated</span><span data-lang="uk">Вибув</span></span>
+      </div>
+    </div>
+    <p class="score-note" data-lang="en">Score: acceptance checks 50, verified claims up to 10, proven defects in rivals +3 each, defects proven against you −4 each, the auditor up to 30. The auditor uses each product the way your customer would and must cite what it saw for every point. You pick the winner; the scoreboard only recommends.</p>
+    <p class="score-note" data-lang="uk">Бали: перевірки приймання 50, доведені заяви до 10, доведені дефекти суперників +3 за кожен, дефекти, доведені проти тебе, −4 за кожен, аудитор до 30. Аудитор користується кожним продуктом як ваш клієнт і для кожного бала вказує, що саме побачив. Переможця обираєте ви; табло лише радить.</p>
+  </div>
+
+  <section id="landscape" aria-labelledby="land-h">
+    <h2 id="land-h"><span data-lang="en">What already exists</span><span data-lang="uk">Що вже існує</span></h2>
+    <p class="lede" data-lang="en">Good tools, mostly built for developers. Stars as shown on GitHub on 1 October 2026.</p>
+    <p class="lede" data-lang="uk">Добрі інструменти, здебільшого для розробників. Зірки — за GitHub на 1 жовтня 2026.</p>
+    <div class="others">
+      <div class="other"><h3>obra/superpowers <small>293.6k ★</small></h3><p data-lang="en">A skills methodology for developers: brainstorm, plan, TDD, review.</p><p data-lang="uk">Методологія навичок для розробників: мозковий штурм, план, TDD, рев'ю.</p></div>
+      <div class="other"><h3>github/spec-kit <small>139.7k ★</small></h3><p data-lang="en">Spec-driven development: specify, plan, tasks, implement.</p><p data-lang="uk">Розробка від специфікації: специфікація, план, задачі, реалізація.</p></div>
+      <div class="other"><h3>garrytan/gstack <small>134.6k ★</small></h3><p data-lang="en">A virtual team of roles for people who ship daily, with review receipts.</p><p data-lang="uk">Віртуальна команда ролей для тих, хто випускає продукт щодня, з квитанціями рев'ю.</p></div>
+      <div class="other"><h3>BMAD-METHOD <small>53.7k ★</small></h3><p data-lang="en">Agile persona agents; needs Node, npm and git know-how to set up.</p><p data-lang="uk">Agile-агенти з ролями; для налаштування треба знати Node, npm і git.</p></div>
+      <div class="other"><h3>Lovable</h3><p data-lang="en">Hosted app builder; 80% of its builders are non-technical. Closed platform.</p><p data-lang="uk">Хмарний конструктор застосунків; 80% користувачів — нетехнічні. Закрита платформа.</p></div>
+      <div class="other"><h3>competitive-agents</h3><p data-lang="en">Two agents compete to generate a Claude Code plugin; a judge, then you, pick.</p><p data-lang="uk">Два агенти змагаються у створенні плагіна Claude Code; обирає суддя, потім ви.</p></div>
+    </div>
+    <p class="gap-line" data-lang="en">Skillsmith adds the part none of them describe: a plain-language way in for people who don't code, and rival teams whose claims a script checks, with deletion as the price of a lie.</p>
+    <p class="gap-line" data-lang="uk">Skillsmith додає те, чого жоден з них не описує: вхід простою мовою для людей, які не програмують, і команди-суперниці, чиї заяви перевіряє скрипт, з видаленням як ціною брехні.</p>
+  </section>
+
+  <section id="install" aria-labelledby="inst-h">
+    <h2 id="inst-h"><span data-lang="en">Start in three steps</span><span data-lang="uk">Старт за три кроки</span></h2>
+    <div class="steps">
+      <div><h3><span data-lang="en">Get Claude Code</span><span data-lang="uk">Встановіть Claude Code</span></h3><p data-lang="en">In the terminal, the desktop app or the web.</p><p data-lang="uk">У терміналі, десктоп-застосунку або в браузері.</p><code>https://claude.com/claude-code</code></div>
+      <div><h3><span data-lang="en">Add Skillsmith</span><span data-lang="uk">Додайте Skillsmith</span></h3><p data-lang="en">Two commands inside Claude Code.</p><p data-lang="uk">Дві команди всередині Claude Code.</p><code>/plugin marketplace add galactic717/skillsmith</code><code>/plugin install skillsmith@skillsmith</code></div>
+      <div><h3><span data-lang="en">Tell it your idea</span><span data-lang="uk">Розкажіть ідею</span></h3><p data-lang="en">In an empty folder, in your own language.</p><p data-lang="uk">У порожній папці, своєю мовою.</p><code>/skillsmith:start cake orders for my bakery</code></div>
+    </div>
+    <p class="needs" data-lang="en">You also need git and Node.js 18 or newer. Skillsmith checks for both and tells you where to get them. Three teams cost roughly three times the tokens of one; you choose 1, 2 or 3 before the arena opens.</p>
+    <p class="needs" data-lang="uk">Також потрібні git і Node.js 18 або новіший. Skillsmith перевіряє їх і підказує, де взяти. Три команди витрачають приблизно втричі більше токенів, ніж одна; перед ареною ви обираєте 1, 2 або 3.</p>
+  </section>
+
+  <section id="faq" aria-labelledby="faq-h">
+    <h2 id="faq-h"><span data-lang="en">Questions</span><span data-lang="uk">Питання</span></h2>
+    <details><summary><span data-lang="en">Does it really delete a team's work?</span><span data-lang="uk">Він справді видаляє роботу команди?</span></summary><p data-lang="en">Yes. The team's git worktree and branch are removed, and the team name can never be used again in that project. What stays is the dossier: the claim, the check and the output that disproved it.</p><p data-lang="uk">Так. Робоча копія (git worktree) і гілка команди видаляються, а ім'я команди більше не можна використати в цьому проєкті. Лишається досьє: заява, перевірка і вивід, що її спростував.</p></details>
+    <details><summary><span data-lang="en">What if a check fails for a silly reason?</span><span data-lang="uk">А якщо перевірка впаде через дурницю?</span></summary><p data-lang="en">Managers run a private precheck first; it runs exactly what the official check runs and kills nobody. A timeout or an unsafe command counts as "unproven", not as a lie. Only a check that ran and contradicted the claim kills.</p><p data-lang="uk">Менеджери спершу роблять приватну перевірку: вона запускає те саме, що й офіційна, і нікого не вбиває. Тайм-аут чи небезпечна команда — це «не доведено», а не брехня. Вбиває тільки перевірка, яка відпрацювала і суперечить заяві.</p></details>
+    <details><summary><span data-lang="en">Where does my project go?</span><span data-lang="uk">Куди потрапляє мій проєкт?</span></summary><p data-lang="en">Nowhere. Skillsmith has no server. Everything lives in your folder, in .skillsmith/, under git. The researchers use the web tools your Claude Code already has.</p><p data-lang="uk">Нікуди. У Skillsmith немає сервера. Усе лежить у вашій папці, у .skillsmith/, під git. Дослідники користуються веб-інструментами, які вже є у вашому Claude Code.</p></details>
+    <details><summary><span data-lang="en">Which languages does it speak?</span><span data-lang="uk">Якими мовами він говорить?</span></summary><p data-lang="en">The interviewer answers in the language you write in, and every human-readable file follows it. The slop detector knows English, Ukrainian and Russian clichés.</p><p data-lang="uk">Інтерв'юер відповідає мовою, якою пишете ви, і всі файли для людей — тією ж мовою. Детектор шаблонів знає штампи англійською, українською і російською.</p></details>
+    <details><summary><span data-lang="en">Does it work outside Claude Code?</span><span data-lang="uk">Чи працює він поза Claude Code?</span></summary><p data-lang="en">The plugin has no bin/ folder, so Claude Cowork can install it. The skills use the open Agent Skills format; the arena needs subagents and a shell, so other tools may run only parts of it.</p><p data-lang="uk">У плагіні немає теки bin/, тож його може встановити Claude Cowork. Навички у відкритому форматі Agent Skills; арені потрібні субагенти й термінал, тому інші інструменти можуть запустити лише частину.</p></details>
+  </section>
+
+  <footer class="foot">
+    <span>Skillsmith 1.0</span>
+    <span><a href="https://github.com/galactic717/skillsmith">GitHub</a> · <a href="https://github.com/galactic717/skillsmith/blob/main/docs/dogfood/02-sources.json"><span data-lang="en">Sources</span><span data-lang="uk">Джерела</span></a></span>
+  </footer>
+</div>
+
+<script>
+(function () {
+  const page = document.getElementById('page');
+  const film = document.getElementById('film');
+  function setLang(lang) {
+    page.classList.toggle('uk', lang === 'uk');
+    document.documentElement.lang = lang;
+    document.getElementById('lang-en').setAttribute('aria-pressed', String(lang === 'en'));
+    document.getElementById('lang-uk').setAttribute('aria-pressed', String(lang === 'uk'));
+    const src = 'media/skillsmith-horizontal-' + lang + '.mp4';
+    if (film && !film.src.endsWith(src)) { film.src = src; film.play().catch(function () {}); }
+    try { localStorage.setItem('skillsmith-lang', lang); } catch (e) { /* storage blocked */ }
+  }
+  let saved = null;
+  try { saved = localStorage.getItem('skillsmith-lang'); } catch (e) { saved = null; }
+  setLang(saved || ((navigator.language || '').toLowerCase().startsWith('uk') ? 'uk' : 'en'));
+  document.getElementById('lang-en').addEventListener('click', function () { setLang('en'); });
+  document.getElementById('lang-uk').addEventListener('click', function () { setLang('uk'); });
+  const copy = document.getElementById('copy');
+  copy.addEventListener('click', function () {
+    const text = document.getElementById('cmd').innerText.split('\n').filter(function (l) { return !l.startsWith('#'); }).join('\n');
+    const done = function () { copy.dataset.state = 'done'; copy.querySelectorAll('span').forEach(function (s) { s.dataset.old = s.dataset.old || s.textContent; s.textContent = s.dataset.lang === 'uk' ? 'Скопійовано' : 'Copied'; }); };
+    const fallback = function () { const r = document.createRange(); r.selectNodeContents(document.getElementById('cmd')); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, fallback); else fallback();
+  });
+})();
+</script>
+
+</body>
+</html>

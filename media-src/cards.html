@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Skillsmith cards</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geologica:wght@300..800&family=Dela+Gothic+One&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* Social cards: one layout per ?card=, same tokens as the reel. */
+:root {
+  --paper: #EEF0F2; --surface: #FFFFFF; --ink: #16191D; --muted: #5B636D; --line: #CDD3DA;
+  --molten: #E0560F; --pass: #1F7F6E; --dead: #C8322A;
+  --t1: #C79A3E; --t2: #A86A2F; --t3: #7B4C99; --t4: #2F5FA6; --t5: #4E8CC4; --t6: #8B98A6;
+  --display: "Geologica", sans-serif; --stamp: "Dela Gothic One", "Geologica", sans-serif; --mono: "JetBrains Mono", monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--paper); color: var(--ink); font-family: var(--display); overflow: hidden; }
+.card { position: relative; width: 100vw; height: 100vh; padding: 64px 72px; display: flex; flex-direction: column; }
+.bug { font-weight: 700; font-size: 30px; display: flex; align-items: center; gap: 12px; }
+.bug i { width: 20px; height: 20px; border-radius: 50%; background: var(--molten); display: block; }
+h1 { font-weight: 800; letter-spacing: -0.035em; line-height: 0.98; text-wrap: balance; }
+.red { color: var(--dead); }
+.muted { color: var(--muted); }
+.stamp { font-family: var(--stamp); text-transform: uppercase; color: var(--dead); border: 6px solid currentColor; border-radius: 8px; padding: 6px 18px; display: inline-block; transform: rotate(-8deg); background: color-mix(in srgb, var(--surface) 75%, transparent); white-space: nowrap; }
+.stamp.win { color: var(--molten); }
+.line { display: flex; align-items: center; gap: 0; }
+.line span { width: 34px; height: 34px; border-radius: 50%; flex: none; }
+.line b { height: 4px; flex: 1; background: var(--line); }
+.lanes { display: grid; gap: 14px; }
+.lane { position: relative; background: var(--surface); border: 3px solid var(--line); border-radius: 12px; padding: 18px 24px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+.lane h3 { font-size: 40px; font-weight: 800; letter-spacing: -0.02em; }
+.lane .num { font-family: var(--mono); font-weight: 700; font-size: 44px; }
+.lanes.big .lane { padding: 40px 44px; }
+.lanes.big h3 { font-size: 72px; }
+.lanes.big .num { font-size: 72px; }
+.lane.dead { border-color: var(--dead); }
+.lane.dead h3, .lane.dead .num { color: #A7AEB6; }
+.lane.win { border-color: var(--molten); }
+.lane .stamp { position: absolute; left: 62%; top: 50%; transform: translate(-50%, -50%) rotate(-9deg); font-size: 34px; border-width: 5px; }
+.install { font-family: var(--mono); background: var(--surface); border: 3px solid var(--ink); border-radius: 10px; padding: 14px 22px; display: inline-block; }
+.cap { font-weight: 600; }
+.stations { display: grid; gap: 18px; }
+.station { display: grid; grid-template-columns: 52px 1fr; align-items: center; gap: 22px; }
+.station i { width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; color: #fff; font-style: normal; font-weight: 800; font-size: 26px; }
+.station b { font-size: 36px; }
+.station small { display: block; font-size: 24px; color: var(--muted); font-weight: 400; }
+[hidden] { display: none !important; }
+html[lang="uk"] [data-card^="og"] h1 { font-size: 58px !important; }
+html[lang="uk"] [data-card^="og"] .lane .stamp { font-size: 22px !important; left: 72% !important; }
+</style>
+</head>
+<body>
+
+<!-- 1200x630 link preview -->
+<section class="card" data-card="og og-uk" style="justify-content: space-between">
+  <div class="bug"><i></i>Skillsmith</div>
+  <div style="display: grid; grid-template-columns: 1.15fr 1fr; gap: 48px; align-items: center">
+    <div>
+      <h1 style="font-size: 74px" data-t="ogTitle"></h1>
+      <p style="margin-top: 28px"><span class="stamp" style="font-size: 40px" data-t="liars"></span></p>
+    </div>
+    <div class="lanes">
+      <div class="lane"><h3>Sprint</h3></div>
+      <div class="lane win"><h3>Fortress</h3><span class="stamp win" style="font-size: 28px; left: 70%" data-t="winner"></span></div>
+      <div class="lane dead"><h3>Spark</h3><span class="stamp" style="font-size: 28px; left: 66%" data-t="dead"></span></div>
+    </div>
+  </div>
+  <div style="display: flex; justify-content: space-between; align-items: center">
+    <div class="line" style="width: 46%"><span style="background: var(--t1)"></span><b></b><span style="background: var(--t2)"></span><b></b><span style="background: var(--t3)"></span><b></b><span style="background: var(--t4)"></span><b></b><span style="background: var(--t5)"></span><b></b><span style="background: var(--t6)"></span></div>
+    <span class="muted" style="font-size: 26px" data-t="free"></span>
+  </div>
+</section>
+
+<!-- 1280x720 YouTube thumbnail -->
+<section class="card" data-card="youtube-thumb youtube-thumb-uk" style="padding: 56px 64px">
+  <style>[data-card^="youtube"] .lane h3 { font-size: 50px; } [data-card^="youtube"] .lane { padding-block: 24px; }</style>
+  <div style="display: grid; grid-template-columns: 1.05fr 1fr; gap: 40px; align-items: center; height: 100%">
+    <div>
+      <h1 style="font-size: 104px" data-t="thumb1"></h1>
+      <h1 class="red" style="font-size: 104px; margin-top: 12px" data-t="thumb2"></h1>
+    </div>
+    <div class="lanes" style="gap: 18px">
+      <div class="lane"><h3>Sprint</h3><span class="num">✔</span></div>
+      <div class="lane"><h3>Fortress</h3><span class="num">✔</span></div>
+      <div class="lane dead" style="padding-block: 34px"><h3>Spark</h3><span class="num">✘</span><span class="stamp" style="font-size: 46px" data-t="dead"></span></div>
+      <p style="font-family: var(--mono); font-size: 26px; color: var(--dead); margin-top: 8px">exit code 1, expected 0</p>
+    </div>
+  </div>
+</section>
+
+<!-- 1080x1920 TikTok / Reels / Shorts cover -->
+<section class="card" data-card="tiktok-cover tiktok-cover-uk" style="padding: 110px 80px 120px; justify-content: space-between">
+  <div class="bug" style="font-size: 40px"><i></i>Skillsmith</div>
+  <div>
+    <h1 style="font-size: 140px" data-t="thumb1"></h1>
+    <h1 class="red" style="font-size: 140px; margin-top: 16px" data-t="thumb2"></h1>
+  </div>
+  <div class="lanes big" style="gap: 22px">
+    <div class="lane"><h3>Sprint</h3><span class="num">✔</span></div>
+    <div class="lane"><h3>Fortress</h3><span class="num">✔</span></div>
+    <div class="lane dead"><h3>Spark</h3><span class="num">✘</span><span class="stamp" style="font-size: 64px" data-t="dead"></span></div>
+  </div>
+  <p class="muted" style="font-size: 40px; font-weight: 600" data-t="free"></p>
+</section>
+
+<!-- 1080x1080 how it works -->
+<section class="card" data-card="square" style="padding: 72px; justify-content: space-between">
+  <div class="bug"><i></i>Skillsmith</div>
+  <h1 style="font-size: 64px">Idea in. Verified product out.</h1>
+  <div class="stations">
+    <div class="station"><i style="background: var(--t1)">1</i><b>Interview<small>plain words, no tech questions</small></b></div>
+    <div class="station"><i style="background: var(--t2)">2</i><b>Research<small>every fact has a link and an exact quote</small></b></div>
+    <div class="station"><i style="background: var(--t3)">3</i><b>Hooks<small>copy that passes an AI-slop detector</small></b></div>
+    <div class="station"><i style="background: var(--t4)">4</i><b>Screenplay<small>acceptance checks written before code</small></b></div>
+    <div class="station"><i style="background: var(--t5)">5</i><b>Arena<small>3 rival teams; a script checks every claim; liars are deleted</small></b></div>
+    <div class="station"><i style="background: var(--t6)">6</i><b>Ship<small>the winner is merged, with a README you can follow</small></b></div>
+  </div>
+</section>
+
+<script>
+const T = {
+  en: { ogTitle: 'Idea in. Verified product out.', liars: 'Liars get deleted', winner: 'Winner', dead: 'Eliminated', free: 'Free Claude Code plugin', thumb1: '3 AI managers.', thumb2: '1 lied.' },
+  uk: { ogTitle: 'Ідея на вході. Перевірений продукт на виході.', liars: 'Брехунів видаляють', winner: 'Переможець', dead: 'Вибув', free: 'Безкоштовний плагін для Claude Code', thumb1: '3 AI-менеджери.', thumb2: '1 збрехав.' },
+};
+const card = new URLSearchParams(location.search).get('card') || 'og';
+const lang = card.endsWith('-uk') ? 'uk' : 'en';
+document.documentElement.lang = lang;
+document.querySelectorAll('[data-card]').forEach((el) => { el.hidden = !el.dataset.card.split(' ').includes(card); });
+document.querySelectorAll('[data-t]').forEach((el) => { el.textContent = T[lang][el.dataset.t]; });
+</script>
+</body>
+</html>

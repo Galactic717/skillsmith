@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Skillsmith reel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geologica:wght@300..800&family=Dela+Gothic+One&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* A time-driven film: seek(t) sets every element from t alone, so frames render deterministically. */
+:root {
+  --paper: #EEF0F2; --surface: #FFFFFF; --ink: #16191D; --muted: #5B636D; --line: #CDD3DA;
+  --molten: #E0560F; --pass: #1F7F6E; --dead: #C8322A;
+  --t1: #C79A3E; --t2: #A86A2F; --t3: #7B4C99; --t4: #2F5FA6; --t5: #4E8CC4; --t6: #8B98A6;
+  --display: "Geologica", sans-serif; --stamp: "Dela Gothic One", "Geologica", sans-serif; --mono: "JetBrains Mono", monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: var(--paper); }
+body { overflow: hidden; }
+#stage { position: relative; overflow: hidden; background: var(--paper); color: var(--ink); font-family: var(--display); }
+#stage[data-format="vertical"] { width: 1080px; height: 1920px; }
+#stage[data-format="horizontal"] { width: 1920px; height: 1080px; }
+.abs { position: absolute; }
+.scene { position: absolute; inset: 0; }
+
+/* chrome */
+.bug { font-weight: 700; font-size: 34px; color: var(--ink); letter-spacing: -0.01em; display: flex; align-items: center; gap: 14px; }
+.bug i { width: 22px; height: 22px; border-radius: 50%; background: var(--molten); display: block; }
+.track { display: flex; gap: 14px; align-items: center; }
+.track span { width: 22px; height: 22px; border-radius: 50%; border: 3px solid var(--line); background: var(--paper); }
+[data-format="vertical"] .bug { left: 72px; top: 76px; }
+[data-format="vertical"] .track { right: 72px; top: 80px; }
+[data-format="horizontal"] .bug { left: 80px; top: 56px; }
+[data-format="horizontal"] .track { right: 80px; top: 60px; }
+
+/* hook */
+.hook { left: 0; right: 0; padding: 0 80px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.02; }
+[data-format="vertical"] .hook { font-size: 118px; }
+[data-format="horizontal"] .hook { font-size: 112px; text-align: center; }
+[data-format="vertical"] .h1 { top: 560px; }
+[data-format="vertical"] .h2 { top: 880px; color: var(--dead); }
+[data-format="vertical"] .h3 { top: 1240px; font-size: 54px; font-weight: 500; color: var(--muted); letter-spacing: -0.01em; }
+[data-format="horizontal"] .h1 { top: 290px; }
+[data-format="horizontal"] .h2 { top: 430px; color: var(--dead); }
+[data-format="horizontal"] .h3 { top: 640px; font-size: 48px; font-weight: 500; color: var(--muted); letter-spacing: -0.01em; }
+
+/* line */
+.idea { background: var(--surface); border: 3px solid var(--ink); border-radius: 10px; padding: 26px 34px; box-shadow: 10px 10px 0 var(--ink); }
+.idea small { display: block; font-size: 26px; font-weight: 600; color: var(--molten); margin-bottom: 6px; }
+.idea b { font-weight: 700; }
+[data-format="vertical"] .idea { left: 72px; right: 72px; top: 220px; font-size: 50px; }
+[data-format="horizontal"] .idea { left: 80px; width: 1240px; top: 150px; font-size: 44px; }
+.stations { list-style: none; }
+.station { display: flex; align-items: center; gap: 26px; }
+.station .node { width: 58px; height: 58px; border-radius: 50%; border: 4px solid var(--line); background: var(--paper); flex: none; display: grid; place-items: center; color: #fff; font-weight: 800; font-size: 30px; }
+.station .name { font-weight: 700; }
+.station .who { color: var(--muted); font-weight: 400; }
+[data-format="vertical"] .stations { left: 72px; right: 72px; top: 520px; display: grid; gap: 30px; }
+[data-format="vertical"] .station { font-size: 46px; }
+[data-format="vertical"] .station .who { font-size: 32px; margin-left: auto; }
+[data-format="horizontal"] .stations { left: 80px; right: 80px; top: 360px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+[data-format="horizontal"] .station { font-size: 38px; flex-wrap: wrap; row-gap: 6px; }
+[data-format="horizontal"] .station .who { font-size: 26px; width: 100%; padding-left: 84px; }
+.panel { background: var(--surface); border: 2px solid var(--line); border-radius: 14px; overflow: hidden; }
+[data-format="vertical"] .vig { left: 72px; right: 72px; top: 1000px; height: 780px; padding: 60px; font-size: 58px; }
+[data-format="horizontal"] .vig { left: 80px; right: 80px; top: 540px; height: 420px; padding: 44px 56px; font-size: 40px; }
+.vig .v { position: absolute; inset: 0; padding: inherit; display: grid; align-content: start; gap: 28px; }
+.bubble { padding: 22px 30px; border-radius: 22px; max-width: 88%; line-height: 1.25; }
+.bubble.q { background: var(--paper); border-top-left-radius: 4px; }
+.bubble.a { background: var(--ink); color: var(--paper); justify-self: end; border-top-right-radius: 4px; }
+.chip { display: flex; align-items: baseline; gap: 18px; font-family: var(--mono); font-size: 0.78em; line-height: 1.3; }
+.chip b { font-family: var(--display); font-size: 1.25em; }
+.ok { color: var(--pass); }
+.bad { color: var(--dead); }
+.strike { color: var(--muted); background: linear-gradient(var(--dead), var(--dead)) no-repeat 0 58% / calc(var(--sp, 0) * 100%) 6px; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.good-copy { font-weight: 700; line-height: 1.15; }
+.acts { display: grid; gap: 16px; }
+.act { display: flex; align-items: center; gap: 18px; }
+.act .tag { font-weight: 700; min-width: 5.2em; }
+.box { font-family: var(--mono); font-size: 0.7em; padding: 4px 12px; border: 2px solid var(--line); border-radius: 6px; color: var(--muted); }
+
+/* arena */
+.caption { font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; }
+[data-format="vertical"] .caption { left: 72px; right: 72px; font-size: 62px; }
+[data-format="horizontal"] .caption { left: 80px; right: 80px; font-size: 54px; }
+[data-format="vertical"] .cap1 { top: 210px; }
+[data-format="horizontal"] .cap1 { top: 130px; }
+.lanes { display: grid; grid-template-rows: repeat(3, 1fr); gap: 22px; }
+[data-format="vertical"] .lanes { left: 72px; right: 72px; top: 370px; height: 620px; }
+[data-format="horizontal"] .lanes { left: 80px; width: 1040px; top: 250px; height: 620px; }
+.lane { position: relative; background: var(--surface); border: 3px solid var(--line); border-radius: 12px; padding: 22px 30px; display: grid; grid-template-columns: 1.15fr 1fr auto; align-items: center; column-gap: 30px; }
+.lane h3 { font-size: 52px; font-weight: 800; letter-spacing: -0.02em; line-height: 1; }
+.lane .motto { font-size: 25px; color: var(--muted); line-height: 1.25; margin-top: 8px; }
+.mid { display: grid; gap: 12px; }
+.crew { display: flex; gap: 10px; flex-wrap: wrap; }
+.crew span { font-size: 22px; font-weight: 600; padding: 6px 14px; border-radius: 99px; background: var(--paper); }
+.bar { height: 14px; border-radius: 7px; background: var(--paper); overflow: hidden; }
+.bar span { display: block; height: 100%; width: 0; background: var(--pass); }
+.pct { font-family: var(--mono); font-size: 26px; color: var(--muted); }
+.score { font-family: var(--mono); font-weight: 700; font-size: 72px; letter-spacing: -0.02em; min-width: 2.4ch; text-align: right; line-height: 1; }
+.score small { font-family: var(--display); font-size: 22px; font-weight: 500; color: var(--muted); display: block; letter-spacing: 0; margin-top: 6px; }
+.stamp { position: absolute; left: 57%; top: 50%; font-family: var(--stamp); text-transform: uppercase; font-size: 46px; padding: 8px 18px; border: 6px solid currentColor; border-radius: 8px; color: var(--dead); white-space: nowrap; background: color-mix(in srgb, var(--surface) 70%, transparent); }
+.stamp.win { color: var(--molten); }
+.term { background: #15181C; color: #E6E8EB; border-radius: 14px; font-family: var(--mono); padding: 40px 44px; white-space: pre-wrap; line-height: 1.45; }
+[data-format="vertical"] .term { left: 72px; right: 72px; top: 1030px; height: 620px; font-size: 33px; }
+[data-format="horizontal"] .term { left: 1160px; right: 80px; top: 250px; height: 620px; font-size: 27px; }
+.term .p { color: #8FA0B2; }
+.term .g { color: #57C7AE; }
+.term .r { color: #FF6B5E; font-weight: 700; }
+.term .y { color: #E9C46A; }
+.cursor { display: inline-block; width: 0.55em; height: 1.05em; background: #E6E8EB; vertical-align: text-bottom; }
+[data-format="vertical"] .cap2 { top: 1700px; font-size: 52px; }
+[data-format="horizontal"] .cap2 { top: 920px; font-size: 46px; }
+.phone { background: var(--ink); border-radius: 56px; padding: 22px; box-shadow: 0 30px 60px rgba(22, 25, 29, 0.25); }
+.phone .screen { background: #FFF8EF; border-radius: 38px; height: 100%; padding: 48px 36px; display: grid; align-content: start; gap: 24px; color: #2B1D12; }
+.phone .screen h4 { font-size: 54px; font-weight: 800; letter-spacing: -0.02em; line-height: 1; }
+.phone .field { border: 3px solid #E4D3BE; border-radius: 14px; padding: 18px 20px; font-size: 26px; color: #8A6E55; background: #fff; }
+.phone .btn { background: #2B1D12; color: #FFF8EF; border-radius: 14px; padding: 22px; font-size: 30px; font-weight: 700; text-align: center; }
+.phone .call { font-size: 26px; font-weight: 600; color: #A8521C; text-align: center; }
+[data-format="vertical"] .phone { left: 290px; width: 500px; top: 1030px; height: 630px; }
+[data-format="horizontal"] .phone { left: 1300px; width: 440px; top: 250px; height: 620px; }
+
+/* end */
+.end { left: 0; right: 0; text-align: center; }
+.word { font-weight: 800; letter-spacing: -0.04em; }
+[data-format="vertical"] .word { top: 600px; font-size: 150px; }
+[data-format="horizontal"] .word { top: 250px; font-size: 150px; }
+.tagline { font-weight: 600; color: var(--ink); }
+[data-format="vertical"] .tagline { top: 820px; font-size: 60px; }
+[data-format="horizontal"] .tagline { top: 450px; font-size: 56px; }
+.tag2 { font-family: var(--stamp); text-transform: uppercase; color: var(--dead); }
+[data-format="vertical"] .tag2 { top: 960px; font-size: 64px; }
+[data-format="horizontal"] .tag2 { top: 560px; font-size: 60px; }
+.install { display: inline-block; font-family: var(--mono); background: var(--surface); border: 3px solid var(--ink); border-radius: 12px; padding: 20px 30px; }
+[data-format="vertical"] .inst { top: 1180px; font-size: 32px; }
+[data-format="horizontal"] .inst { top: 740px; font-size: 32px; }
+.free { color: var(--muted); }
+[data-format="vertical"] .free { top: 1320px; font-size: 36px; }
+[data-format="horizontal"] .free { top: 860px; font-size: 32px; }
+</style>
+</head>
+<body>
+<div id="stage" data-format="vertical">
+  <div class="abs bug"><i></i>Skillsmith</div>
+  <div class="abs track"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+
+  <div class="scene" id="s-hook">
+    <p class="abs hook h1" data-t="hook1"></p>
+    <p class="abs hook h2" data-t="hook2"></p>
+    <p class="abs hook h3" data-t="hook3"></p>
+  </div>
+
+  <div class="scene" id="s-line">
+    <div class="abs idea"><small data-t="ideaLabel"></small><b data-t="idea"></b></div>
+    <ol class="abs stations">
+      <li class="station"><span class="node">1</span><span class="name" data-t="st1"></span><span class="who" data-t="who1"></span></li>
+      <li class="station"><span class="node">2</span><span class="name" data-t="st2"></span><span class="who" data-t="who2"></span></li>
+      <li class="station"><span class="node">3</span><span class="name" data-t="st3"></span><span class="who" data-t="who3"></span></li>
+      <li class="station"><span class="node">4</span><span class="name" data-t="st4"></span><span class="who" data-t="who4"></span></li>
+    </ol>
+    <div class="abs panel vig">
+      <div class="v" id="v1">
+        <p class="bubble q" data-t="q1"></p>
+        <p class="bubble a" data-t="a1"></p>
+        <p class="bubble q" data-t="q2"></p>
+      </div>
+      <div class="v" id="v2">
+        <p class="chip"><b class="ok">✔</b><span data-t="src1"></span></p>
+        <p class="chip"><b class="ok">✔</b><span data-t="src2"></span></p>
+        <p class="chip"><b class="bad">✘</b><span data-t="src3"></span></p>
+        <p class="chip bad"><b>↳</b><span data-t="src4"></span></p>
+      </div>
+      <div class="v" id="v3">
+        <p><span class="strike" id="k1" data-t="slop1"></span></p>
+        <p><span class="strike" id="k2" data-t="slop2"></span></p>
+        <p class="good-copy" data-t="hookLine"></p>
+      </div>
+      <div class="v" id="v4">
+        <div class="acts">
+          <p class="act"><span class="tag" data-t="act1"></span><span class="box">A1</span><span class="box">A2</span></p>
+          <p class="act"><span class="tag" data-t="act2"></span><span class="box">A3</span><span class="box">A4</span><span class="box">A5</span></p>
+          <p class="act"><span class="tag" data-t="act3"></span><span class="box">A6</span></p>
+        </div>
+        <p class="chip"><span data-t="checksNote"></span></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="scene" id="s-arena">
+    <p class="abs caption cap1" data-t="cap1"></p>
+    <div class="abs lanes">
+      <div class="lane" id="lane1"><div><h3>Sprint</h3><p class="motto" data-t="m1"></p></div><div class="mid"><div class="crew"><span data-t="dev"></span><span data-t="des"></span></div><div class="bar"><span></span></div><p class="pct"></p></div><p class="score"></p><span class="stamp"></span></div>
+      <div class="lane" id="lane2"><div><h3>Fortress</h3><p class="motto" data-t="m2"></p></div><div class="mid"><div class="crew"><span data-t="dev"></span><span data-t="des"></span></div><div class="bar"><span></span></div><p class="pct"></p></div><p class="score"></p><span class="stamp win"></span></div>
+      <div class="lane" id="lane3"><div><h3>Spark</h3><p class="motto" data-t="m3"></p></div><div class="mid"><div class="crew"><span data-t="dev"></span><span data-t="des"></span></div><div class="bar"><span></span></div><p class="pct"></p></div><p class="score"></p><span class="stamp"></span></div>
+    </div>
+    <pre class="abs term" id="term"></pre>
+    <div class="abs phone" id="phone"><div class="screen"><h4 data-t="phoneTitle"></h4><p class="field" data-t="phoneDate"></p><p class="field" data-t="phonePhone"></p><p class="btn" data-t="phoneBtn"></p><p class="call" data-t="phoneCall"></p></div></div>
+    <p class="abs caption cap2" id="cap2"></p>
+  </div>
+
+  <div class="scene" id="s-end">
+    <p class="abs end word">Skillsmith</p>
+    <p class="abs end tagline" data-t="tagline"></p>
+    <p class="abs end tag2" data-t="tag2"></p>
+    <p class="abs end inst"><span class="install">/plugin marketplace add galactic717/skillsmith</span></p>
+    <p class="abs end free" data-t="free"></p>
+  </div>
+</div>
+
+<script>
+const TEXT = {
+  en: {
+    hook1: 'I hired 3 AI managers.', hook2: 'One of them lied.', hook3: 'Watch what happened to its team.',
+    ideaLabel: 'Idea in', idea: 'Cake orders for my bakery',
+    st1: 'Interview', who1: 'plain words only', st2: 'Research', who2: 'every fact quoted', st3: 'Hooks', who3: 'no AI slop', st4: 'Screenplay', who4: 'checks before code',
+    q1: 'Who orders your cakes most often?', a1: 'Regulars. From their phones.', q2: 'When did an order last get lost?',
+    src1: 'Competitors: quote found on page', src2: 'User pain: quote found on page', src3: 'Market size: quote NOT on page', src4: 'Whole batch deleted, redone',
+    slop1: 'Revolutionize your cake experience', slop2: 'Seamless ordering solution', hookLine: '“Your cake order, never lost in a chat again.”',
+    act1: 'Act I', act2: 'Act II', act3: 'Act III', checksNote: '6 acceptance checks, written before any code',
+    cap1: 'Same screenplay. Three rival teams.',
+    m1: 'Smallest product that fully works.', m2: 'Nothing breaks.', m3: 'The boldest experience.',
+    dev: 'Developer', des: 'Designer', points: 'points',
+    cap2a: 'Spark said its tests pass. A script ran them.', cap2b: 'Team deleted. The lie goes to the graveyard.', cap2c: 'Fortress proved a real defect in Sprint.', cap2d: 'Fortress wins. Its work is merged.',
+    dead: 'Eliminated', win: 'Winner',
+    phoneTitle: 'Order a cake', phoneDate: 'Date: Saturday, 14:00', phonePhone: 'Phone: +380 …', phoneBtn: 'Order the cake', phoneCall: 'Call Marta',
+    tagline: 'Idea in. Verified product out.', tag2: 'Liars get deleted.', free: 'Free plugin for Claude Code',
+    term: [
+      ['p', '$ skillsmith arena verify gamma'],
+      ['g', '✔ A1–A4  acceptance checks pass'],
+      ['', 'claim C2: "All our unit tests pass"'],
+      ['p', '$ node tests/unit.test.mjs'],
+      ['r', '✘ exit code 1, expected 0'],
+      ['r', 'Outcome: DEAD (false-claim)'],
+      ['y', 'Worktree and branch deleted.'],
+    ],
+    term2: [
+      ['p', '$ skillsmith arena accuse beta'],
+      ['g', '⚔ upheld  X1 vs alpha:'],
+      ['', '  customers cannot tap to call'],
+    ],
+  },
+  uk: {
+    hook1: 'Я найняв 3 AI-менеджерів.', hook2: 'Один збрехав.', hook3: 'Дивіться, що стало з його командою.',
+    ideaLabel: 'Ідея на вході', idea: 'Замовлення тортів для моєї пекарні',
+    st1: 'Інтерв’ю', who1: 'тільки прості слова', st2: 'Дослідження', who2: 'кожен факт з цитатою', st3: 'Хуки', who3: 'без AI-шаблонів', st4: 'Сценарій', who4: 'перевірки до коду',
+    q1: 'Хто найчастіше замовляє у вас торти?', a1: 'Постійні клієнти. З телефона.', q2: 'Коли замовлення губилося востаннє?',
+    src1: 'Конкуренти: цитату знайдено', src2: 'Біль клієнтів: цитату знайдено', src3: 'Розмір ринку: цитати НЕМАЄ', src4: 'Всю партію видалено, переробили',
+    slop1: 'Революційний досвід замовлення тортів', slop2: 'Інноваційне рішення для кожного', hookLine: '«Ваше замовлення торта більше не загубиться в чаті.»',
+    act1: 'Акт I', act2: 'Акт II', act3: 'Акт III', checksNote: '6 перевірок приймання, написаних до коду',
+    cap1: 'Один сценарій. Три команди-суперниці.',
+    m1: 'Найменший продукт, що повністю працює.', m2: 'Ніщо не ламається.', m3: 'Найсміливіший досвід.',
+    dev: 'Розробник', des: 'Дизайнер', points: 'балів',
+    cap2a: 'Spark сказав, що тести проходять. Скрипт їх запустив.', cap2b: 'Команду видалено. Брехня — на кладовище.', cap2c: 'Fortress довів справжній дефект у Sprint.', cap2d: 'Fortress перемагає. Його роботу злито.',
+    dead: 'Вибув', win: 'Переможець',
+    phoneTitle: 'Замовити торт', phoneDate: 'Дата: субота, 14:00', phonePhone: 'Телефон: +380 …', phoneBtn: 'Замовити торт', phoneCall: 'Подзвонити Марті',
+    tagline: 'Ідея на вході. Перевірений продукт на виході.', tag2: 'Брехунів видаляють.', free: 'Безкоштовний плагін для Claude Code',
+    term: [
+      ['p', '$ skillsmith arena verify gamma'],
+      ['g', '✔ A1–A4  перевірки приймання'],
+      ['', 'заява C2: "All our unit tests pass"'],
+      ['p', '$ node tests/unit.test.mjs'],
+      ['r', '✘ exit code 1, expected 0'],
+      ['r', 'Outcome: DEAD (false-claim)'],
+      ['y', 'Worktree і гілку видалено.'],
+    ],
+    term2: [
+      ['p', '$ skillsmith arena accuse beta'],
+      ['g', '⚔ upheld  X1 vs alpha:'],
+      ['', '  немає кнопки «подзвонити»'],
+    ],
+  },
+};
+
+const params = new URLSearchParams(location.search);
+const LANG = TEXT[params.get('lang')] ? params.get('lang') : 'en';
+const L = TEXT[LANG];
+const stage = document.getElementById('stage');
+stage.dataset.format = params.get('format') === 'horizontal' ? 'horizontal' : 'vertical';
+document.documentElement.lang = LANG;
+document.querySelectorAll('[data-t]').forEach((el) => { el.textContent = L[el.dataset.t] ?? ''; });
+document.querySelectorAll('#lane1 .stamp, #lane3 .stamp').forEach((el) => { el.textContent = L.dead; });
+document.querySelector('#lane2 .stamp').textContent = L.win;
+document.querySelector('#lane1 .stamp').style.display = 'none';
+
+const DURATION = 39;
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const prog = (t, a, b) => clamp((t - a) / (b - a));
+const outCubic = (x) => 1 - Math.pow(1 - x, 3);
+const outBack = (x) => { const c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); };
+const $ = (s) => document.querySelector(s);
+const $$ = (s) => [...document.querySelectorAll(s)];
+const show = (el, o, dy = 0, s = 1) => { el.style.opacity = o; el.style.transform = `translateY(${dy}px) scale(${s})`; };
+const fadeWin = (t, a, b, f = 0.35) => Math.min(prog(t, a, a + f), 1 - prog(t, b - f, b));
+const temper = ['--t1', '--t2', '--t3', '--t4', '--t5', '--t6'];
+const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+
+function typeLines(lines, t0, cps, t) {
+  let out = '';
+  let clock = t0;
+  for (const [cls, text] of lines) {
+    const n = Math.floor(clamp((t - clock) * cps, 0, text.length));
+    if (t < clock) break;
+    out += `<span class="${cls}">${text.slice(0, n).replace(/&/g, '&amp;').replace(/</g, '&lt;')}</span>`;
+    if (n < text.length) { out += '<span class="cursor"></span>'; return out; }
+    out += '\n';
+    clock += text.length / cps + 0.35;
+  }
+  return out;
+}
+
+function seek(t) {
+  // progress dots: stations 1-4 during the line, 5 in the arena, 6 at the end
+  const stationTimes = [4.6, 6.8, 9.0, 11.2, 14.4, 34];
+  $$('.track span').forEach((dot, i) => {
+    const on = t >= stationTimes[i];
+    dot.style.background = on ? css(temper[i]) : '';
+    dot.style.borderColor = on ? css(temper[i]) : '';
+  });
+
+  // scene 1: hook
+  const hookOut = 1 - prog(t, 3.1, 3.5);
+  $('#s-hook').style.opacity = hookOut;
+  [['.h1', 0.15], ['.h2', 1.15], ['.h3', 2.1]].forEach(([s, a]) => {
+    const p = outBack(prog(t, a, a + 0.45));
+    show($(s), prog(t, a, a + 0.2), (1 - p) * 40, 0.92 + 0.08 * p);
+  });
+
+  // scene 2: the line
+  const lineOn = fadeWin(t, 3.4, 14.4, 0.4);
+  $('#s-line').style.opacity = lineOn;
+  const ip = outBack(prog(t, 3.5, 4.1));
+  show($('.idea'), prog(t, 3.5, 3.7), (1 - ip) * -80);
+  const starts = [4.6, 6.8, 9.0, 11.2];
+  $$('.station').forEach((st, i) => {
+    const a = starts[i];
+    const appear = prog(t, 3.9 + i * 0.12, 4.3 + i * 0.12);
+    show(st, appear, (1 - appear) * 20);
+    const node = st.querySelector('.node');
+    const lit = t >= a;
+    node.style.background = lit ? css(temper[i]) : '';
+    node.style.borderColor = lit ? css(temper[i]) : '';
+    const active = t >= a && t < a + 2.2;
+    const pulse = active ? 1 + 0.08 * Math.sin((t - a) * 6) : 1;
+    node.style.transform = `scale(${pulse})`;
+    st.style.fontWeight = active ? '700' : '';
+  });
+  show($('.vig'), prog(t, 4.4, 4.7), (1 - prog(t, 4.4, 4.7)) * 30);
+  ['#v1', '#v2', '#v3', '#v4'].forEach((id, i) => {
+    const a = starts[i];
+    $(id).style.opacity = i < 3 ? fadeWin(t, a, a + 2.2, 0.25) : prog(t, a, a + 0.25);
+  });
+  $$('#v1 .bubble').forEach((b, i) => show(b, prog(t, 4.7 + i * 0.55, 4.95 + i * 0.55), (1 - prog(t, 4.7 + i * 0.55, 4.95 + i * 0.55)) * 16));
+  $$('#v2 .chip').forEach((c, i) => show(c, prog(t, 6.9 + i * 0.4, 7.1 + i * 0.4)));
+  $('#k1').style.setProperty('--sp', prog(t, 9.3, 9.8));
+  $('#k2').style.setProperty('--sp', prog(t, 9.7, 10.2));
+  show($('#v3 .good-copy'), prog(t, 10.2, 10.5), (1 - prog(t, 10.2, 10.5)) * 16);
+  $$('#v4 .act').forEach((a, i) => show(a, prog(t, 11.3 + i * 0.3, 11.5 + i * 0.3)));
+  show($('#v4 .chip'), prog(t, 12.4, 12.7));
+
+  // scene 3: arena
+  const arenaOn = fadeWin(t, 14.2, 34.0, 0.4);
+  $('#s-arena').style.opacity = arenaOn;
+  show($('.cap1'), fadeWin(t, 14.5, 19.2, 0.3), 0);
+  const finish = [17.6, 18.6, 18.1];
+  const lanes = ['#lane1', '#lane2', '#lane3'];
+  lanes.forEach((id, i) => {
+    const lane = $(id);
+    const ap = outCubic(prog(t, 14.5 + i * 0.15, 15.0 + i * 0.15));
+    show(lane, ap, (1 - ap) * 40);
+    const fill = outCubic(prog(t, 15.2, finish[i]));
+    lane.querySelector('.bar span').style.width = `${fill * 100}%`;
+    lane.querySelector('.pct').textContent = t > 15.2 ? (fill >= 1 ? '✔ 4/4' : `${Math.round(fill * 4)}/4`) : '';
+  });
+  // terminal: verify gamma, then the cross-examination
+  const termOn = fadeWin(t, 19.0, 31.0, 0.3);
+  $('#term').style.opacity = termOn;
+  $('#term').innerHTML = t < 27.4 ? typeLines(L.term, 19.3, 38, t) : typeLines(L.term2, 27.5, 40, t);
+  // Spark dies
+  const lane3 = $('#lane3');
+  const sp = outBack(prog(t, 24.0, 24.35));
+  const s3 = lane3.querySelector('.stamp');
+  s3.style.opacity = prog(t, 24.0, 24.1);
+  s3.style.transform = `translate(-50%, -50%) rotate(-12deg) scale(${1.8 - 0.8 * sp})`;
+  const grey = prog(t, 24.4, 25.4);
+  lane3.querySelectorAll(':scope > :not(.stamp)').forEach((el) => { el.style.opacity = 1 - 0.6 * grey; el.style.filter = `grayscale(${grey})`; });
+  lane3.style.borderColor = grey > 0 ? css('--dead') : '';
+  // scores
+  const sc = outCubic(prog(t, 28.6, 30.2));
+  $('#lane1 .score').innerHTML = t > 28.6 ? `${Math.round(68 * sc)}<small>${L.points}</small>` : '';
+  $('#lane2 .score').innerHTML = t > 28.6 ? `${Math.round(82 * sc)}<small>${L.points}</small>` : '';
+  $('#lane1').style.borderColor = t > 28.2 && t < 30.5 ? css('--dead') : '';
+  // Fortress crowned
+  const lane2 = $('#lane2');
+  const wp = outBack(prog(t, 30.8, 31.15));
+  const s2 = lane2.querySelector('.stamp');
+  s2.style.opacity = prog(t, 30.8, 30.9);
+  s2.style.transform = `translate(-50%, -50%) rotate(-10deg) scale(${1.8 - 0.8 * wp})`;
+  lane2.style.borderColor = t > 30.8 ? css('--molten') : '';
+  lane2.style.boxShadow = t > 30.8 ? `0 0 0 ${8 * prog(t, 30.8, 31.4)}px color-mix(in srgb, ${css('--molten')} 22%, transparent)` : '';
+  const ph = outCubic(prog(t, 31.3, 32.2));
+  show($('#phone'), prog(t, 31.3, 31.5), (1 - ph) * 400);
+  // captions
+  const cap2 = $('#cap2');
+  const capText = t < 23.9 ? L.cap2a : t < 27.4 ? L.cap2b : t < 30.7 ? L.cap2c : L.cap2d;
+  cap2.textContent = capText;
+  cap2.style.color = t >= 23.9 && t < 27.4 ? css('--dead') : t >= 30.7 ? css('--molten') : '';
+  const capOn = t < 19.6 ? 0 : t < 23.9 ? prog(t, 19.6, 19.9) : t < 27.4 ? prog(t, 23.9, 24.2) : t < 30.7 ? prog(t, 27.4, 27.7) : prog(t, 30.7, 31.0);
+  cap2.style.opacity = capOn;
+
+  // scene 4: end card
+  $('#s-end').style.opacity = prog(t, 33.8, 34.3);
+  const ep = outBack(prog(t, 34.0, 34.5));
+  show($('.word'), prog(t, 34.0, 34.2), (1 - ep) * 30);
+  show($('.tagline'), prog(t, 34.6, 34.9), (1 - prog(t, 34.6, 34.9)) * 20);
+  const tp = outBack(prog(t, 35.4, 35.75));
+  const tag2 = $('.tag2');
+  tag2.style.opacity = prog(t, 35.4, 35.5);
+  tag2.style.transform = `rotate(-3deg) scale(${1.6 - 0.6 * tp})`;
+  show($('.inst'), prog(t, 36.2, 36.5));
+  show($('.free'), prog(t, 36.6, 36.9));
+}
+
+window.DURATION = DURATION;
+window.seek = seek;
+window.ready = document.fonts.ready.then(() => seek(0));
+if (params.get('mode') !== 'render') {
+  const t0 = performance.now();
+  const loop = (now) => { seek(((now - t0) / 1000) % DURATION); requestAnimationFrame(loop); };
+  window.ready.then(() => requestAnimationFrame(loop));
+}
+</script>
+</body>
+</html>
