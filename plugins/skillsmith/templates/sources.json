@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "accessed": "YYYY-MM-DD",
+  "sources": [
+    {
+      "id": "S1",
+      "title": "Page or paper title",
+      "url": "https://example.com/the-exact-page",
+      "publisher": "Who published it",
+      "published": "YYYY-MM-DD",
+      "kind": "repo | news | research | official | docs | forum | article",
+      "accessed": "YYYY-MM-DD",
+      "quote": "Exact sentence copied from the page, at least 15 characters.",
+      "claim": "What we use this source to prove.",
+      "status": "verified"
+    }
+  ],
+  "rejected": [
+    {
+      "claim": "A number or statement you found",
+      "why": "Why it is not trustworthy enough to use"
+    }
+  ]
+}

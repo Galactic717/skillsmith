@@ -1,0 +1,29 @@
+{
+  "team": "alpha",
+  "summary": "Two or three sentences: what we built and what we did not get to.",
+  "claims": [
+    {
+      "id": "C1",
+      "text": "Every acceptance check passes",
+      "evidence": { "type": "acceptance", "ids": ["A1", "A2", "A3", "A4"] }
+    },
+    {
+      "id": "C2",
+      "text": "Our own test suite passes",
+      "evidence": { "type": "command", "run": "npm test", "expect": { "exit": 0 } }
+    },
+    {
+      "id": "C3",
+      "text": "The order form rejects an empty phone number",
+      "evidence": { "type": "command", "run": "node tests/order-form.test.mjs", "expect": { "exit": 0, "includes": "empty phone rejected" } }
+    },
+    {
+      "id": "C4",
+      "text": "The layout works on a 375px phone screen",
+      "evidence": { "type": "manual", "note": "Screenshot: .skillsmith/teams/alpha/shots/mobile-375.png. Not machine-checked." }
+    }
+  ],
+  "known_issues": [
+    "The admin page has no search yet."
+  ]
+}
