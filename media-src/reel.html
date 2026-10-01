@@ -78,6 +78,7 @@ body { overflow: hidden; }
 .act { display: flex; align-items: center; gap: 18px; }
 .act .tag { font-weight: 700; min-width: 5.2em; }
 .box { font-family: var(--mono); font-size: 0.7em; padding: 4px 12px; border: 2px solid var(--line); border-radius: 6px; color: var(--muted); }
+.box.hidden { border-style: dashed; border-color: var(--ink); color: var(--ink); }
 
 /* arena */
 .caption { font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; }
@@ -112,11 +113,11 @@ body { overflow: hidden; }
 [data-format="vertical"] .cap2 { top: 1700px; font-size: 52px; }
 [data-format="horizontal"] .cap2 { top: 920px; font-size: 46px; }
 .phone { background: var(--ink); border-radius: 56px; padding: 22px; box-shadow: 0 30px 60px rgba(22, 25, 29, 0.25); }
-.phone .screen { background: #FFF8EF; border-radius: 38px; height: 100%; padding: 48px 36px; display: grid; align-content: start; gap: 24px; color: #2B1D12; }
-.phone .screen h4 { font-size: 54px; font-weight: 800; letter-spacing: -0.02em; line-height: 1; }
-.phone .field { border: 3px solid #E4D3BE; border-radius: 14px; padding: 18px 20px; font-size: 26px; color: #8A6E55; background: #fff; }
-.phone .btn { background: #2B1D12; color: #FFF8EF; border-radius: 14px; padding: 22px; font-size: 30px; font-weight: 700; text-align: center; }
-.phone .call { font-size: 26px; font-weight: 600; color: #A8521C; text-align: center; }
+.phone .screen { background: #F4F6F9; border-radius: 38px; height: 100%; padding: 48px 36px; display: grid; align-content: start; gap: 22px; color: #14202E; }
+.phone .screen h4 { font-size: 44px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.05; }
+.phone .field { border: 3px solid #D3DBE5; border-radius: 14px; padding: 18px 20px; font-size: 26px; color: #4A5A6C; background: #fff; }
+.phone .btn { background: #1F4F7A; color: #fff; border-radius: 14px; padding: 22px; font-size: 30px; font-weight: 700; text-align: center; }
+.phone .call { font-size: 25px; font-weight: 600; color: #1F7F6E; text-align: center; }
 [data-format="vertical"] .phone { left: 290px; width: 500px; top: 1030px; height: 630px; }
 [data-format="horizontal"] .phone { left: 1300px; width: 440px; top: 250px; height: 620px; }
 
@@ -145,144 +146,102 @@ body { overflow: hidden; }
   <div class="abs track"><span></span><span></span><span></span><span></span><span></span><span></span></div>
 
   <div class="scene" id="s-hook">
-    <p class="abs hook h1" data-t="hook1"></p>
-    <p class="abs hook h2" data-t="hook2"></p>
-    <p class="abs hook h3" data-t="hook3"></p>
+    <p class="abs hook h1">I hired 3 AI managers.</p>
+    <p class="abs hook h2">One of them lied.</p>
+    <p class="abs hook h3">Watch what happened to its team.</p>
   </div>
 
   <div class="scene" id="s-line">
-    <div class="abs idea"><small data-t="ideaLabel"></small><b data-t="idea"></b></div>
+    <div class="abs idea"><small>Maya's idea</small><b>A site that warns me before a free trial charges</b></div>
     <ol class="abs stations">
-      <li class="station"><span class="node">1</span><span class="name" data-t="st1"></span><span class="who" data-t="who1"></span></li>
-      <li class="station"><span class="node">2</span><span class="name" data-t="st2"></span><span class="who" data-t="who2"></span></li>
-      <li class="station"><span class="node">3</span><span class="name" data-t="st3"></span><span class="who" data-t="who3"></span></li>
-      <li class="station"><span class="node">4</span><span class="name" data-t="st4"></span><span class="who" data-t="who4"></span></li>
+      <li class="station"><span class="node">1</span><span class="name">Interview</span><span class="who">plain words, one hard question</span></li>
+      <li class="station"><span class="node">2</span><span class="name">Research</span><span class="who">every fact quoted</span></li>
+      <li class="station"><span class="node">3</span><span class="name">Hooks</span><span class="who">no AI slop</span></li>
+      <li class="station"><span class="node">4</span><span class="name">Screenplay</span><span class="who">checks before code</span></li>
     </ol>
     <div class="abs panel vig">
       <div class="v" id="v1">
-        <p class="bubble q" data-t="q1"></p>
-        <p class="bubble a" data-t="a1"></p>
-        <p class="bubble q" data-t="q2"></p>
+        <p class="bubble q">When did a trial last charge you by surprise?</p>
+        <p class="bubble a">Last month. An app I never opened.</p>
+        <p class="bubble q">Your bank already shows charges. Why build this?</p>
       </div>
       <div class="v" id="v2">
-        <p class="chip"><b class="ok">✔</b><span data-t="src1"></span></p>
-        <p class="chip"><b class="ok">✔</b><span data-t="src2"></span></p>
-        <p class="chip"><b class="bad">✘</b><span data-t="src3"></span></p>
-        <p class="chip bad"><b>↳</b><span data-t="src4"></span></p>
+        <p class="chip"><b class="ok">✔</b><span>Competitors: quote found on the page</span></p>
+        <p class="chip"><b class="ok">✔</b><span>Real complaints: quote found on the page</span></p>
+        <p class="chip"><b class="bad">✘</b><span>Market size: quote NOT on the page</span></p>
+        <p class="chip bad"><b>↳</b><span>Whole batch deleted, redone</span></p>
       </div>
       <div class="v" id="v3">
-        <p><span class="strike" id="k1" data-t="slop1"></span></p>
-        <p><span class="strike" id="k2" data-t="slop2"></span></p>
-        <p class="good-copy" data-t="hookLine"></p>
+        <p><span class="strike" id="k1">Revolutionize your subscriptions</span></p>
+        <p><span class="strike" id="k2">A seamless trial management solution</span></p>
+        <p class="good-copy">“Never pay for a forgotten free trial again.”</p>
       </div>
       <div class="v" id="v4">
         <div class="acts">
-          <p class="act"><span class="tag" data-t="act1"></span><span class="box">A1</span><span class="box">A2</span></p>
-          <p class="act"><span class="tag" data-t="act2"></span><span class="box">A3</span><span class="box">A4</span><span class="box">A5</span></p>
-          <p class="act"><span class="tag" data-t="act3"></span><span class="box">A6</span></p>
+          <p class="act"><span class="tag">Act I</span><span class="box">A1</span></p>
+          <p class="act"><span class="tag">Act II</span><span class="box">A2</span></p>
+          <p class="act"><span class="tag">Act III</span><span class="box">A3</span><span class="box">A4</span></p>
+          <p class="act"><span class="tag">Sealed</span><span class="box hidden">H1</span><span class="box hidden">H2</span></p>
         </div>
-        <p class="chip"><span data-t="checksNote"></span></p>
+        <p class="chip"><span>Every check fails before code exists. Two are hidden from the builders.</span></p>
       </div>
     </div>
   </div>
 
   <div class="scene" id="s-arena">
-    <p class="abs caption cap1" data-t="cap1"></p>
+    <p class="abs caption cap1">Same screenplay. Three rival teams.</p>
     <div class="abs lanes">
-      <div class="lane" id="lane1"><div><h3>Sprint</h3><p class="motto" data-t="m1"></p></div><div class="mid"><div class="crew"><span data-t="dev"></span><span data-t="des"></span></div><div class="bar"><span></span></div><p class="pct"></p></div><p class="score"></p><span class="stamp"></span></div>
-      <div class="lane" id="lane2"><div><h3>Fortress</h3><p class="motto" data-t="m2"></p></div><div class="mid"><div class="crew"><span data-t="dev"></span><span data-t="des"></span></div><div class="bar"><span></span></div><p class="pct"></p></div><p class="score"></p><span class="stamp win"></span></div>
-      <div class="lane" id="lane3"><div><h3>Spark</h3><p class="motto" data-t="m3"></p></div><div class="mid"><div class="crew"><span data-t="dev"></span><span data-t="des"></span></div><div class="bar"><span></span></div><p class="pct"></p></div><p class="score"></p><span class="stamp"></span></div>
+      <div class="lane" id="lane1"><div><h3>Sprint</h3><p class="motto">Smallest product that fully works.</p></div><div class="mid"><div class="crew"><span>Developer</span><span>Designer</span></div><div class="bar"><span></span></div><p class="pct"></p></div><p class="score"></p><span class="stamp">Eliminated</span></div>
+      <div class="lane" id="lane2"><div><h3>Fortress</h3><p class="motto">Nothing breaks.</p></div><div class="mid"><div class="crew"><span>Developer</span><span>Designer</span></div><div class="bar"><span></span></div><p class="pct"></p></div><p class="score"></p><span class="stamp win">Winner</span></div>
+      <div class="lane" id="lane3"><div><h3>Spark</h3><p class="motto">The boldest experience.</p></div><div class="mid"><div class="crew"><span>Developer</span><span>Designer</span></div><div class="bar"><span></span></div><p class="pct"></p></div><p class="score"></p><span class="stamp">Eliminated</span></div>
     </div>
     <pre class="abs term" id="term"></pre>
-    <div class="abs phone" id="phone"><div class="screen"><h4 data-t="phoneTitle"></h4><p class="field" data-t="phoneDate"></p><p class="field" data-t="phonePhone"></p><p class="btn" data-t="phoneBtn"></p><p class="call" data-t="phoneCall"></p></div></div>
+    <div class="abs phone" id="phone"><div class="screen"><h4>Never pay for a forgotten trial</h4><p class="field">Trial: Netflix</p><p class="field">Ends: 20 Dec</p><p class="btn">Add trial</p><p class="call">Warning on 17 Dec</p></div></div>
     <p class="abs caption cap2" id="cap2"></p>
   </div>
 
   <div class="scene" id="s-end">
     <p class="abs end word">Skillsmith</p>
-    <p class="abs end tagline" data-t="tagline"></p>
-    <p class="abs end tag2" data-t="tag2"></p>
+    <p class="abs end tagline">Your idea in. A verified product out.</p>
+    <p class="abs end tag2">Liars get deleted.</p>
     <p class="abs end inst"><span class="install">/plugin marketplace add galactic717/skillsmith</span></p>
-    <p class="abs end free" data-t="free"></p>
+    <p class="abs end free">Free plugin for Claude Code</p>
   </div>
 </div>
 
 <script>
-const TEXT = {
-  en: {
-    hook1: 'I hired 3 AI managers.', hook2: 'One of them lied.', hook3: 'Watch what happened to its team.',
-    ideaLabel: 'Idea in', idea: 'Cake orders for my bakery',
-    st1: 'Interview', who1: 'plain words only', st2: 'Research', who2: 'every fact quoted', st3: 'Hooks', who3: 'no AI slop', st4: 'Screenplay', who4: 'checks before code',
-    q1: 'Who orders your cakes most often?', a1: 'Regulars. From their phones.', q2: 'When did an order last get lost?',
-    src1: 'Competitors: quote found on page', src2: 'User pain: quote found on page', src3: 'Market size: quote NOT on page', src4: 'Whole batch deleted, redone',
-    slop1: 'Revolutionize your cake experience', slop2: 'Seamless ordering solution', hookLine: '“Your cake order, never lost in a chat again.”',
-    act1: 'Act I', act2: 'Act II', act3: 'Act III', checksNote: '6 acceptance checks, written before any code',
-    cap1: 'Same screenplay. Three rival teams.',
-    m1: 'Smallest product that fully works.', m2: 'Nothing breaks.', m3: 'The boldest experience.',
-    dev: 'Developer', des: 'Designer', points: 'points',
-    cap2a: 'Spark said its tests pass. A script ran them.', cap2b: 'Team deleted. The lie goes to the graveyard.', cap2c: 'Fortress proved a real defect in Sprint.', cap2d: 'Fortress wins. Its work is merged.',
-    dead: 'Eliminated', win: 'Winner',
-    phoneTitle: 'Order a cake', phoneDate: 'Date: Saturday, 14:00', phonePhone: 'Phone: +380 …', phoneBtn: 'Order the cake', phoneCall: 'Call Marta',
-    tagline: 'Idea in. Verified product out.', tag2: 'Liars get deleted.', free: 'Free plugin for Claude Code',
-    term: [
-      ['p', '$ skillsmith arena verify gamma'],
-      ['g', '✔ A1–A4  acceptance checks pass'],
-      ['', 'claim C2: "All our unit tests pass"'],
-      ['p', '$ node tests/unit.test.mjs'],
-      ['r', '✘ exit code 1, expected 0'],
-      ['r', 'Outcome: DEAD (false-claim)'],
-      ['y', 'Worktree and branch deleted.'],
-    ],
-    term2: [
-      ['p', '$ skillsmith arena accuse beta'],
-      ['g', '⚔ upheld  X1 vs alpha:'],
-      ['', '  customers cannot tap to call'],
-    ],
-  },
-  uk: {
-    hook1: 'Я найняв 3 AI-менеджерів.', hook2: 'Один збрехав.', hook3: 'Дивіться, що стало з його командою.',
-    ideaLabel: 'Ідея на вході', idea: 'Замовлення тортів для моєї пекарні',
-    st1: 'Інтерв’ю', who1: 'тільки прості слова', st2: 'Дослідження', who2: 'кожен факт з цитатою', st3: 'Хуки', who3: 'без AI-шаблонів', st4: 'Сценарій', who4: 'перевірки до коду',
-    q1: 'Хто найчастіше замовляє у вас торти?', a1: 'Постійні клієнти. З телефона.', q2: 'Коли замовлення губилося востаннє?',
-    src1: 'Конкуренти: цитату знайдено', src2: 'Біль клієнтів: цитату знайдено', src3: 'Розмір ринку: цитати НЕМАЄ', src4: 'Всю партію видалено, переробили',
-    slop1: 'Революційний досвід замовлення тортів', slop2: 'Інноваційне рішення для кожного', hookLine: '«Ваше замовлення торта більше не загубиться в чаті.»',
-    act1: 'Акт I', act2: 'Акт II', act3: 'Акт III', checksNote: '6 перевірок приймання, написаних до коду',
-    cap1: 'Один сценарій. Три команди-суперниці.',
-    m1: 'Найменший продукт, що повністю працює.', m2: 'Ніщо не ламається.', m3: 'Найсміливіший досвід.',
-    dev: 'Розробник', des: 'Дизайнер', points: 'балів',
-    cap2a: 'Spark сказав, що тести проходять. Скрипт їх запустив.', cap2b: 'Команду видалено. Брехня — на кладовище.', cap2c: 'Fortress довів справжній дефект у Sprint.', cap2d: 'Fortress перемагає. Його роботу злито.',
-    dead: 'Вибув', win: 'Переможець',
-    phoneTitle: 'Замовити торт', phoneDate: 'Дата: субота, 14:00', phonePhone: 'Телефон: +380 …', phoneBtn: 'Замовити торт', phoneCall: 'Подзвонити Марті',
-    tagline: 'Ідея на вході. Перевірений продукт на виході.', tag2: 'Брехунів видаляють.', free: 'Безкоштовний плагін для Claude Code',
-    term: [
-      ['p', '$ skillsmith arena verify gamma'],
-      ['g', '✔ A1–A4  перевірки приймання'],
-      ['', 'заява C2: "All our unit tests pass"'],
-      ['p', '$ node tests/unit.test.mjs'],
-      ['r', '✘ exit code 1, expected 0'],
-      ['r', 'Outcome: DEAD (false-claim)'],
-      ['y', 'Worktree і гілку видалено.'],
-    ],
-    term2: [
-      ['p', '$ skillsmith arena accuse beta'],
-      ['g', '⚔ upheld  X1 vs alpha:'],
-      ['', '  немає кнопки «подзвонити»'],
-    ],
-  },
-};
+// Terminal lines are condensed from a real run: `npm run demo` (scripts/demo-arena.mjs).
+// The scores (Fortress 92, Sprint 55) are that run's scoreboard.
+const TERM = [
+  ['p', '$ skillsmith arena verify --all'],
+  ['g', '✔ A1–A4  visible checks: 4/4'],
+  ['', 'Spark C2: "All our unit tests pass"'],
+  ['p', '$ node --test tests/trials.test.mjs'],
+  ['r', '✘ exit code 1, expected 0'],
+  ['r', 'Outcome: DEAD (false-claim)'],
+  ['y', 'Worktree and branch deleted.'],
+];
+const TERM2 = [
+  ['y', 'Hidden checks (never shown):'],
+  ['r', 'Sprint    ✘ H1  ✘ H2'],
+  ['g', 'Fortress  ✔ H1  ✔ H2'],
+  ['p', '$ skillsmith arena accuse beta'],
+  ['g', '⚔ upheld  X1 vs alpha'],
+  ['', '  Sprint accepts an ended trial'],
+];
+const CAPTIONS = [
+  [19.6, 'Spark said its tests pass. The engine ran them.', ''],
+  [26.0, 'Team deleted. The lie goes to the graveyard.', '--dead'],
+  [28.4, 'Hidden checks: Sprint built only for the visible tests.', ''],
+  [34.6, 'Fortress wins. Its work is merged.', '--molten'],
+];
 
 const params = new URLSearchParams(location.search);
-const LANG = TEXT[params.get('lang')] ? params.get('lang') : 'en';
-const L = TEXT[LANG];
 const stage = document.getElementById('stage');
 stage.dataset.format = params.get('format') === 'horizontal' ? 'horizontal' : 'vertical';
-document.documentElement.lang = LANG;
-document.querySelectorAll('[data-t]').forEach((el) => { el.textContent = L[el.dataset.t] ?? ''; });
-document.querySelectorAll('#lane1 .stamp, #lane3 .stamp').forEach((el) => { el.textContent = L.dead; });
-document.querySelector('#lane2 .stamp').textContent = L.win;
 document.querySelector('#lane1 .stamp').style.display = 'none';
 
-const DURATION = 39;
+const DURATION = 43;
 const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
 const prog = (t, a, b) => clamp((t - a) / (b - a));
 const outCubic = (x) => 1 - Math.pow(1 - x, 3);
@@ -310,7 +269,7 @@ function typeLines(lines, t0, cps, t) {
 
 function seek(t) {
   // progress dots: stations 1-4 during the line, 5 in the arena, 6 at the end
-  const stationTimes = [4.6, 6.8, 9.0, 11.2, 14.4, 34];
+  const stationTimes = [4.6, 6.8, 9.0, 11.2, 14.4, 38.4];
   $$('.track span').forEach((dot, i) => {
     const on = t >= stationTimes[i];
     dot.style.background = on ? css(temper[i]) : '';
@@ -318,16 +277,14 @@ function seek(t) {
   });
 
   // scene 1: hook
-  const hookOut = 1 - prog(t, 3.1, 3.5);
-  $('#s-hook').style.opacity = hookOut;
+  $('#s-hook').style.opacity = 1 - prog(t, 3.1, 3.5);
   [['.h1', 0.15], ['.h2', 1.15], ['.h3', 2.1]].forEach(([s, a]) => {
     const p = outBack(prog(t, a, a + 0.45));
     show($(s), prog(t, a, a + 0.2), (1 - p) * 40, 0.92 + 0.08 * p);
   });
 
   // scene 2: the line
-  const lineOn = fadeWin(t, 3.4, 14.4, 0.4);
-  $('#s-line').style.opacity = lineOn;
+  $('#s-line').style.opacity = fadeWin(t, 3.4, 14.4, 0.4);
   const ip = outBack(prog(t, 3.5, 4.1));
   show($('.idea'), prog(t, 3.5, 3.7), (1 - ip) * -80);
   const starts = [4.6, 6.8, 9.0, 11.2];
@@ -340,8 +297,7 @@ function seek(t) {
     node.style.background = lit ? css(temper[i]) : '';
     node.style.borderColor = lit ? css(temper[i]) : '';
     const active = t >= a && t < a + 2.2;
-    const pulse = active ? 1 + 0.08 * Math.sin((t - a) * 6) : 1;
-    node.style.transform = `scale(${pulse})`;
+    node.style.transform = `scale(${active ? 1 + 0.08 * Math.sin((t - a) * 6) : 1})`;
     st.style.fontWeight = active ? '700' : '';
   });
   show($('.vig'), prog(t, 4.4, 4.7), (1 - prog(t, 4.4, 4.7)) * 30);
@@ -355,69 +311,79 @@ function seek(t) {
   $('#k2').style.setProperty('--sp', prog(t, 9.7, 10.2));
   show($('#v3 .good-copy'), prog(t, 10.2, 10.5), (1 - prog(t, 10.2, 10.5)) * 16);
   $$('#v4 .act').forEach((a, i) => show(a, prog(t, 11.3 + i * 0.3, 11.5 + i * 0.3)));
-  show($('#v4 .chip'), prog(t, 12.4, 12.7));
+  show($('#v4 .chip'), prog(t, 12.6, 12.9));
 
   // scene 3: arena
-  const arenaOn = fadeWin(t, 14.2, 34.0, 0.4);
-  $('#s-arena').style.opacity = arenaOn;
+  $('#s-arena').style.opacity = fadeWin(t, 14.2, 38.4, 0.4);
   show($('.cap1'), fadeWin(t, 14.5, 19.2, 0.3), 0);
   const finish = [17.6, 18.6, 18.1];
-  const lanes = ['#lane1', '#lane2', '#lane3'];
-  lanes.forEach((id, i) => {
+  ['#lane1', '#lane2', '#lane3'].forEach((id, i) => {
     const lane = $(id);
     const ap = outCubic(prog(t, 14.5 + i * 0.15, 15.0 + i * 0.15));
     show(lane, ap, (1 - ap) * 40);
     const fill = outCubic(prog(t, 15.2, finish[i]));
     lane.querySelector('.bar span').style.width = `${fill * 100}%`;
-    lane.querySelector('.pct').textContent = t > 15.2 ? (fill >= 1 ? '✔ 4/4' : `${Math.round(fill * 4)}/4`) : '';
+    const pct = lane.querySelector('.pct');
+    pct.textContent = t > 15.2 ? (fill >= 1 ? '✔ 4/4 visible' : `${Math.round(fill * 4)}/4`) : '';
+    pct.style.color = '';
   });
-  // terminal: verify gamma, then the cross-examination
-  const termOn = fadeWin(t, 19.0, 31.0, 0.3);
-  $('#term').style.opacity = termOn;
-  $('#term').innerHTML = t < 27.4 ? typeLines(L.term, 19.3, 38, t) : typeLines(L.term2, 27.5, 40, t);
+  // hidden checks reveal
+  if (t >= 29.45) {
+    $('#lane1 .pct').textContent = '4/4 · hidden 0/2';
+    $('#lane1 .pct').style.color = css('--dead');
+    $('#lane1 .bar span').style.background = `linear-gradient(90deg, ${css('--pass')} 67%, ${css('--dead')} 67%)`;
+  } else {
+    $('#lane1 .bar span').style.background = '';
+  }
+  if (t >= 30.3) {
+    $('#lane2 .pct').textContent = '4/4 · hidden 2/2';
+    $('#lane2 .pct').style.color = css('--pass');
+  }
+  // terminal
+  $('#term').style.opacity = fadeWin(t, 19.0, 35.4, 0.3);
+  $('#term').innerHTML = t < 28.4 ? typeLines(TERM, 19.3, 38, t) : typeLines(TERM2, 28.4, 40, t);
   // Spark dies
   const lane3 = $('#lane3');
-  const sp = outBack(prog(t, 24.0, 24.35));
+  const sp = outBack(prog(t, 26.0, 26.35));
   const s3 = lane3.querySelector('.stamp');
-  s3.style.opacity = prog(t, 24.0, 24.1);
+  s3.style.opacity = prog(t, 26.0, 26.1);
   s3.style.transform = `translate(-50%, -50%) rotate(-12deg) scale(${1.8 - 0.8 * sp})`;
-  const grey = prog(t, 24.4, 25.4);
+  const grey = prog(t, 26.4, 27.4);
   lane3.querySelectorAll(':scope > :not(.stamp)').forEach((el) => { el.style.opacity = 1 - 0.6 * grey; el.style.filter = `grayscale(${grey})`; });
   lane3.style.borderColor = grey > 0 ? css('--dead') : '';
-  // scores
-  const sc = outCubic(prog(t, 28.6, 30.2));
-  $('#lane1 .score').innerHTML = t > 28.6 ? `${Math.round(68 * sc)}<small>${L.points}</small>` : '';
-  $('#lane2 .score').innerHTML = t > 28.6 ? `${Math.round(82 * sc)}<small>${L.points}</small>` : '';
-  $('#lane1').style.borderColor = t > 28.2 && t < 30.5 ? css('--dead') : '';
+  // scores, from the demo scoreboard
+  const sc = outCubic(prog(t, 33.8, 35.0));
+  $('#lane1 .score').innerHTML = t > 33.8 ? `${Math.round(55 * sc)}<small>points</small>` : '';
+  $('#lane2 .score').innerHTML = t > 33.8 ? `${Math.round(92 * sc)}<small>points</small>` : '';
+  $('#lane1').style.borderColor = t > 29.45 && t < 34.6 ? css('--dead') : '';
   // Fortress crowned
   const lane2 = $('#lane2');
-  const wp = outBack(prog(t, 30.8, 31.15));
+  const wp = outBack(prog(t, 35.0, 35.35));
   const s2 = lane2.querySelector('.stamp');
-  s2.style.opacity = prog(t, 30.8, 30.9);
+  s2.style.opacity = prog(t, 35.0, 35.1);
   s2.style.transform = `translate(-50%, -50%) rotate(-10deg) scale(${1.8 - 0.8 * wp})`;
-  lane2.style.borderColor = t > 30.8 ? css('--molten') : '';
-  lane2.style.boxShadow = t > 30.8 ? `0 0 0 ${8 * prog(t, 30.8, 31.4)}px color-mix(in srgb, ${css('--molten')} 22%, transparent)` : '';
-  const ph = outCubic(prog(t, 31.3, 32.2));
-  show($('#phone'), prog(t, 31.3, 31.5), (1 - ph) * 400);
+  lane2.style.borderColor = t > 35.0 ? css('--molten') : '';
+  lane2.style.boxShadow = t > 35.0 ? `0 0 0 ${8 * prog(t, 35.0, 35.6)}px color-mix(in srgb, ${css('--molten')} 22%, transparent)` : '';
+  const ph = outCubic(prog(t, 35.6, 36.5));
+  show($('#phone'), prog(t, 35.6, 35.8), (1 - ph) * 400);
   // captions
   const cap2 = $('#cap2');
-  const capText = t < 23.9 ? L.cap2a : t < 27.4 ? L.cap2b : t < 30.7 ? L.cap2c : L.cap2d;
-  cap2.textContent = capText;
-  cap2.style.color = t >= 23.9 && t < 27.4 ? css('--dead') : t >= 30.7 ? css('--molten') : '';
-  const capOn = t < 19.6 ? 0 : t < 23.9 ? prog(t, 19.6, 19.9) : t < 27.4 ? prog(t, 23.9, 24.2) : t < 30.7 ? prog(t, 27.4, 27.7) : prog(t, 30.7, 31.0);
-  cap2.style.opacity = capOn;
+  const current = [...CAPTIONS].reverse().find(([at]) => t >= at);
+  cap2.textContent = current ? current[1] : '';
+  cap2.style.color = current && current[2] ? css(current[2]) : '';
+  cap2.style.opacity = current ? prog(t, current[0], current[0] + 0.3) : 0;
 
   // scene 4: end card
-  $('#s-end').style.opacity = prog(t, 33.8, 34.3);
-  const ep = outBack(prog(t, 34.0, 34.5));
-  show($('.word'), prog(t, 34.0, 34.2), (1 - ep) * 30);
-  show($('.tagline'), prog(t, 34.6, 34.9), (1 - prog(t, 34.6, 34.9)) * 20);
-  const tp = outBack(prog(t, 35.4, 35.75));
+  $('#s-end').style.opacity = prog(t, 38.2, 38.7);
+  const ep = outBack(prog(t, 38.4, 38.9));
+  show($('.word'), prog(t, 38.4, 38.6), (1 - ep) * 30);
+  show($('.tagline'), prog(t, 39.0, 39.3), (1 - prog(t, 39.0, 39.3)) * 20);
+  const tp = outBack(prog(t, 39.8, 40.15));
   const tag2 = $('.tag2');
-  tag2.style.opacity = prog(t, 35.4, 35.5);
+  tag2.style.opacity = prog(t, 39.8, 39.9);
   tag2.style.transform = `rotate(-3deg) scale(${1.6 - 0.6 * tp})`;
-  show($('.inst'), prog(t, 36.2, 36.5));
-  show($('.free'), prog(t, 36.6, 36.9));
+  show($('.inst'), prog(t, 40.6, 40.9));
+  show($('.free'), prog(t, 41.0, 41.3));
 }
 
 window.DURATION = DURATION;

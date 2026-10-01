@@ -62,7 +62,7 @@ that a script can test. Types (`04-acceptance.json`):
 | Type | Use it for | Example |
 |---|---|---|
 | `command` | build, unit tests, linters, a test script you wrote | `{"type":"command","run":"npm run build","expect":{"exit":0}}` |
-| `http` | a page or endpoint answers on a local server | `{"type":"http","start":"npm run start","url":"http://localhost:3000/","expect":{"status":200,"includes":"Never pay for a forgotten trial"},"timeout":90}` |
+| `http` | a page or endpoint answers on a local server | `{"type":"http","start":"npm run start","url":"http://localhost:{{port}}/","expect":{"status":200,"includes":"Never pay for a forgotten trial"},"timeout":90}` |
 | `file_exists` / `file_absent` | a README, a manifest, no debug files | `{"type":"file_exists","path":"README.md"}` |
 | `file_contains` | key content or config | `{"type":"file_contains","path":"README.md","pattern":"npm run start"}` |
 | `not_contains` | no secrets, no lorem ipsum | `{"type":"not_contains","glob":"src/**/*.{js,ts,tsx}","pattern":"sk_live_"}` |
@@ -93,6 +93,11 @@ Rules:
    no lorem ipsum) is a regression guard: mark it `"guard": true`. Guards do
    not count toward the 3 required checks.
 8. Never point a check at the internet; only local URLs are allowed.
+9. Write http check URLs with the `{{port}}` placeholder and make the
+   contract say "the server listens on the port in the PORT environment
+   variable". Every clean room gets its own free port, so all teams can be
+   verified at the same time. A fixed port still works, but then teams are
+   verified one after another.
 
 ## Hidden checks
 

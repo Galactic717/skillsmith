@@ -7,9 +7,9 @@ worked there.
 
 - [ ] Choose the license (MIT for reach, or proprietary if you plan to sell the code).
 - [ ] Turn on GitHub Pages (Settings, Pages, Source: GitHub Actions); the Site workflow deploys `site/`.
-- [ ] Make the repository public and add the topics: claude-code, claude-code-plugin, agent-skills, ai-agents, no-code.
+- [ ] Make the repository public, add a description and the topics: claude-code, claude-code-plugin, agent-skills, ai-agents, no-code.
 - [ ] Run the full line once on a real idea of your own and keep the screen recording. Real runs are the best content you will have.
-- [ ] Prepare answers for: cost of three teams, how deletion works, what "verified" means, privacy.
+- [ ] Prepare answers for: the cost of three teams, how deletion works, what "verified" means, what the hidden checks protect against, privacy.
 
 ## Week 1
 
@@ -17,11 +17,11 @@ worked there.
 |---|---|---|
 | 1 | r/ClaudeAI | Main post from `reddit.md`. Stay in the comments for the first hour. |
 | 1 | X | Thread from `x-thread.md`, video in post 1. |
-| 2 | TikTok, Reels, Shorts | Video 1 (UA and EN accounts). |
+| 2 | TikTok, Reels, Shorts | Video 1. |
 | 3 | r/SideProject | Short post. |
-| 4 | DOU, Ukrainian Telegram channels | Ukrainian post. |
-| 5 | TikTok | Video 2 (screen recording of the death). |
-| 6 | X | A short post with the graveyard screenshot and the real lie text. |
+| 4 | LinkedIn | The square image and three sentences on hidden checks. |
+| 5 | TikTok | Video 2 (the hidden test). |
+| 6 | X | The graveyard screenshot and the real lie text. |
 | 7 | All | Reply round: turn the best comment questions into short videos. |
 
 ## Week 2
@@ -30,15 +30,15 @@ worked there.
 |---|---|---|
 | 8 | YouTube | The 9-minute video. |
 | 9 | Shorts | Vertical cut. |
-| 10 | Anthropic plugin directory | Submit the plugin (clau.de/plugin-directory-submission). |
-| 11 | Hacker News | "Show HN: Skillsmith, AI teams that get deleted for lying about their tests". Link the repo, not the site. |
+| 10 | Anthropic plugin directory | Submit the plugin. |
+| 11 | Hacker News | The Show HN post. Link the repository, not the site. |
 | 12 | TikTok | Video 3 (the interview). |
-| 13 | Product Hunt | Tagline: "Idea in. Verified product out." |
+| 13 | Product Hunt | Tagline: "Your idea in. A verified product out." |
 | 14 | Review | Compare the numbers below; double down on the platform that brought installs. |
 
 ## What to measure
 
-- GitHub stars and clones per day (Insights, Traffic).
-- Install command copies on the site (add an analytics tool you trust first).
+- GitHub stars and clones per day (Insights, Traffic). The brief's success criterion is 100 stars in 30 days.
+- Founders who report a finished product (success criterion: 10 in 60 days).
 - Comment questions: each repeated question is a gap in the README.
-- For videos: share of viewers who watch past second 3; if it is low, the hook changes, not the product.
+- For videos: the share of viewers who watch past second 3; if it is low, the hook changes, not the product.

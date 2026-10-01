@@ -3,12 +3,13 @@
 // site/index.html with the document shell and link-preview tags.
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import {fileURLToPath} from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const BASE = 'https://galactic717.github.io/skillsmith';
 const body = fs.readFileSync(path.join(ROOT, 'site', 'src', 'page.html'), 'utf8');
-const description = 'Free Claude Code plugin: seven AI specialists turn a plain-language idea into a verified product. Three rival teams build it; a script checks every claim; a team that lies is deleted.';
+const description =
+  'Free Claude Code plugin for founders: describe your product in plain words and get a verified product. Three rival AI teams build it; a program checks every claim, hidden checks catch gaming, and a team that lies is deleted.';
 
 const html = `<!doctype html>
 <html lang="en">
@@ -16,7 +17,7 @@ const html = `<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="${description}">
-<meta property="og:title" content="Skillsmith: idea in, verified product out">
+<meta property="og:title" content="Skillsmith: your idea in, a verified product out">
 <meta property="og:description" content="${description}">
 <meta property="og:image" content="${BASE}/media/og.png">
 <meta property="og:url" content="${BASE}/">

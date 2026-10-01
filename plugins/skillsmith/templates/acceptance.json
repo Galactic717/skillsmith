@@ -17,7 +17,7 @@
       "covers": ["R2"],
       "type": "http",
       "start": "npm run start",
-      "url": "http://localhost:3000/",
+      "url": "http://localhost:{{port}}/",
       "expect": {"status": 200, "includes": "Never pay for a forgotten trial"},
       "timeout": 90,
       "weight": 2

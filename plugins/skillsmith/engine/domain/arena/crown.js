@@ -155,15 +155,15 @@ export async function fuse(project, from) {
     const acceptance = loadAcceptance(root);
     const holdout = arena.holdout ? loadSealedHoldout(project, arena.holdout.hash) : undefined;
     const commit = G.revParse(root, 'HEAD');
-    const statuses = await withCleanroom(root, store, `fuse-${from}`, commit, async (dir) => {
-        await runSetup(acceptance.setup, dir);
+    const statuses = await withCleanroom(root, store, `fuse-${from}`, commit, async (dir, port) => {
+        await runSetup(acceptance.setup, dir, port);
         const result = new Map();
         for (const check of acceptance.checks)
-            result.set(check.id, (await runCheck(check, { dir })).status);
+            result.set(check.id, (await runCheck(check, { dir, port })).status);
         if (holdout) {
             writeHoldoutFiles(dir, holdout.files);
             for (const check of holdout.checks)
-                result.set(check.id, (await runCheck(check, { dir })).status);
+                result.set(check.id, (await runCheck(check, { dir, port })).status);
         }
         return result;
     });

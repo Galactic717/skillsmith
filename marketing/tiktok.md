@@ -1,43 +1,36 @@
 # TikTok, Reels, Shorts
 
-Format: 9:16, captions on, the hook spoken and on screen in the first second.
-Files: `site/media/skillsmith-vertical-uk.mp4`, `skillsmith-vertical-en.mp4`,
-covers `tiktok-cover-uk.png`, `tiktok-cover.png`. Add a trending sound in the
-app; keep it under the voice.
+Upload `site/media/skillsmith-vertical.mp4` (43 s) as the first video, with the cover
+`site/media/tiktok-cover.png`. Captions on. Add a trending sound inside the app.
 
-## Video 1: the rendered reel (ready to post)
+## Video 1: "One of them lied" (the rendered reel)
 
-**UA caption:** Я найняв трьох AI-менеджерів. Один збрехав про тести. Скрипт видалив його команду. Безкоштовний плагін для Claude Code, посилання в профілі.
+- Hook on screen and spoken in the first second: "I hired 3 AI managers. One of them lied."
+- Caption: "A program checks every claim. Liars get deleted. #claudecode #buildinpublic #ai"
 
-**EN caption:** I hired 3 AI managers. One lied about its tests. A script deleted its team. Free Claude Code plugin, link in bio.
+## Video 2: "The hidden test" (screen recording, about 30 s)
 
-Hashtags (pick 3 to 5): #claudecode #ai #штучнийінтелект #програмування #nocode #стартап #buildinpublic
-
-## Video 2: screen recording, Ukrainian, 30 to 40 s
-
-| Time | Screen | Voice |
+| Time | Shot | On screen |
 |---|---|---|
-| 0–2 s | Terminal: `Outcome: DEAD (false-claim)` in red | «Цей AI сказав, що тести проходять.» |
-| 2–6 s | `exit code 1, expected 0` highlighted | «Скрипт їх запустив. Код виходу — один.» |
-| 6–12 s | `graveyard.md` scrolling | «Його команду видалено. Брехню записано на кладовище.» |
-| 12–22 s | The dashboard: three teams, one stamp | «Три менеджери будують мій застосунок. У кожного свій розробник і дизайнер. Переможе той, хто зробить краще. Чесно.» |
-| 22–30 s | `/skillsmith:start` and the first interview question | «А починається все з простої розмови. Без жодного технічного питання.» |
-| 30–36 s | Install commands | «Плагін безкоштовний. Посилання в профілі.» |
+| 0-2 s | The scoreboard, Sprint row highlighted | "It passed every test it could see." |
+| 2-8 s | `arena verify --all`, the `Hidden checks 0/2` lines | "It never saw these two." |
+| 8-15 s | The hidden check title: "A trial that already ended is rejected" | "It never checked the date." |
+| 15-24 s | Fortress `Hidden checks 2/2`, then the WINNER stamp | "The team that built it properly won." |
+| 24-30 s | Install command | "Free plugin for Claude Code" |
 
-## Video 3: the interview, English, 25 to 30 s
+## Video 3: "The interview" (screen recording, about 35 s)
 
-Record this one only after you have built something real with Skillsmith; the voice-over is a first-person claim.
-
-| Time | Screen | Voice |
+| Time | Shot | On screen |
 |---|---|---|
-| 0–2 s | Big text: "No frameworks. No databases." | "I can't code. I built an app anyway." |
-| 2–12 s | The interviewer's questions, one by one | "It asks me what a developer would ask a client. Who orders. When an order got lost. What would make me angry." |
-| 12–20 s | Brief read-back, then "Status: confirmed" | "It reads it back and waits for my yes." |
-| 20–28 s | Arena dashboard | "Then three AI teams race to build it, and a script checks every claim they make." |
+| 0-2 s | `/skillsmith:start a site that warns me before a free trial charges` | "I told an AI my app idea." |
+| 2-12 s | Two plain questions and answers | "No tech questions. None." |
+| 12-22 s | The objection: "Your bank already shows charges. Why build this?" | "Then it argued with me." |
+| 22-30 s | The brief with R1, R2, R3 and "Status: confirmed" | "Now it knows what done means." |
+| 30-35 s | The line animation | "Next: three teams build it." |
 
-## Rules for every vertical video
+## Rules for every video
 
-- One idea per video. The arena death is the strongest; lead with it.
-- Text on screen at least 60 px tall at 1080 wide; safe zone 150 px from the edges.
-- The last frame shows the install line for two seconds.
-- Reply to comments with short screen recordings; they are the next videos.
+- The hook is spoken and written on screen in the first second.
+- One idea per video.
+- Numbers only from the facts table in `README.md`.
+- No `game-changer`, no rocket emoji, no `you won't believe`.

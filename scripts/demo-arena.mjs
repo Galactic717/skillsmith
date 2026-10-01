@@ -1,141 +1,282 @@
 #!/usr/bin/env node
-// Runs a real, scripted arena on a demo bakery project and leaves it on disk.
-// The dashboard and terminal output used in marketing come from this run.
-//   node scripts/demo-arena.mjs [--lang en|uk] [--out DIR]
+// Runs the real production line on the TrialGuard example and leaves the
+// project on disk. The dashboard and the terminal lines in the videos come
+// from this run.
+//   node scripts/demo-arena.mjs [--out DIR]
+import {spawnSync} from 'node:child_process';
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
-import { makeProject, cli, write, commitAll, SERVER } from '../tests/helpers.mjs';
+import {fileURLToPath} from 'node:url';
 
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const ENGINE = path.join(ROOT, 'plugins', 'skillsmith', 'engine', 'skillsmith.js');
+const EXAMPLE = path.join(ROOT, 'examples', 'trialguard');
 const args = process.argv.slice(2);
-const lang = args.includes('--lang') ? args[args.indexOf('--lang') + 1] : 'en';
-const out = args.includes('--out') ? path.resolve(args[args.indexOf('--out') + 1]) : null;
+const out = args.includes('--out') ? path.resolve(args[args.indexOf('--out') + 1]) : undefined;
 
-const SUMMARY = {
-  en: 'A page where regular customers of Marta’s bakery order a cake for a date and leave a phone number, so orders stop getting lost in direct messages.',
-  uk: 'Сторінка, де постійні клієнти пекарні Марти замовляють торт на дату і залишають телефон, щоб замовлення більше не губилися в Direct.',
+const dir = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'trialguard-')));
+const env = {
+  ...process.env,
+  SKILLSMITH_HOME: fs.mkdtempSync(path.join(os.tmpdir(), 'skillsmith-home-')),
+  SKILLSMITH_OFFLINE: '1',
+  NO_COLOR: '1',
 };
 
-const page = ({ title, extra = '', style = '' }) => `<!doctype html>
-<html lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${title}</title><style>${style}</style></head>
-<body><main><h1>Order a cake</h1>
-<form><label>Date <input type="date" name="date" required></label>
-<label>Phone <input type="tel" name="phone" required pattern="[+0-9 ]{9,}"></label>${extra}
-<button>Order the cake</button></form></main></body></html>
-`;
-
-function run(argv, cwd) {
-  const r = cli(argv, { cwd });
-  process.stdout.write(`\n$ skillsmith ${argv.join(' ')}\n${r.out}${r.err}`);
-  return r;
+function skillsmith(...argv) {
+  const result = spawnSync(process.execPath, [ENGINE, ...argv], {cwd: dir, env, encoding: 'utf8'});
+  process.stdout.write(`\n$ skillsmith ${argv.join(' ')}\n${result.stdout}${result.stderr}`);
+  return result.status;
 }
 
-const dir = makeProject();
-const statePath = path.join(dir, '.skillsmith', 'state.json');
-const state = JSON.parse(fs.readFileSync(statePath, 'utf8'));
-state.language = lang;
-state.project = lang === 'uk' ? 'Замовлення тортів' : 'Bakery orders';
-fs.writeFileSync(statePath, JSON.stringify(state, null, 2));
-const briefPath = path.join(dir, '.skillsmith', '01-brief.md');
-fs.writeFileSync(briefPath, fs.readFileSync(briefPath, 'utf8').replace(/(<!-- ss:summary -->\n## One sentence\n)[^\n]+/, `$1${SUMMARY[lang] || SUMMARY.en}`));
+function git(cwd, ...argv) {
+  const result = spawnSync('git', ['-c', 'commit.gpgsign=false', ...argv], {cwd, encoding: 'utf8'});
+  if (result.status !== 0) throw new Error(`git ${argv.join(' ')}: ${result.stderr}`);
+}
 
-run(['arena', 'init'], dir);
-const wt = (t) => path.join(dir, '.skillsmith', 'arena', t);
-const dossier = (t) => path.join(dir, '.skillsmith', 'teams', t);
+function write(base, file, content) {
+  const target = path.join(base, file);
+  fs.mkdirSync(path.dirname(target), {recursive: true});
+  fs.writeFileSync(
+    target,
+    typeof content === 'string' ? content : `${JSON.stringify(content, null, 2)}\n`,
+  );
+}
 
-// Sprint: small and complete, no tap-to-call link.
-write(wt('alpha'), 'index.html', page({ title: 'Bakery' }));
-write(wt('alpha'), 'server.mjs', SERVER);
-commitAll(wt('alpha'), 'feat: order page and server');
+function copy(file, to = `.skillsmith/${file}`) {
+  write(dir, to, fs.readFileSync(path.join(EXAMPLE, file), 'utf8'));
+}
+
+function commit(cwd, message) {
+  git(cwd, 'add', '-A');
+  git(cwd, 'commit', '-q', '-m', message);
+}
+
+// Stations 1 to 4, through the real gates.
+skillsmith('init', '--name', 'TrialGuard');
+copy('01-brief.md');
+skillsmith('advance', 'interview');
+skillsmith(
+  'advance',
+  'research',
+  '--skip',
+  'Demo run: research sources must be real and checked, so this example skips them',
+);
+copy('03-hooks.md');
+skillsmith('advance', 'hooks');
+copy('04-screenplay.md');
+copy('04-acceptance.json');
+copy('tests/acceptance/add-trial.mjs', 'tests/acceptance/add-trial.mjs');
+write(dir, 'README.md', '# TrialGuard\n');
+commit(dir, 'Add acceptance checks');
+skillsmith('acceptance', 'vacuity');
+skillsmith('advance', 'screenplay');
+copy('holdout.json');
+skillsmith('holdout', 'seal');
+
+// Station 5: the arena.
+skillsmith('arena', 'init', '--count', '3');
+const worktree = team => path.join(dir, '.skillsmith', 'arena', team);
+const dossier = team => path.join(dir, '.skillsmith', 'teams', team);
+
+const page = style => `<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>TrialGuard</title><style>${style}</style></head>
+<body><main><h1>Never pay for a forgotten trial</h1>
+<form><label>Trial <input name="name" required></label><label>Ends on <input type="date" name="endsOn" required></label><button>Add trial</button></form>
+<p>No trials yet. Add the one you started today.</p></main></body></html>
+`;
+const server = `import http from 'node:http';
+import fs from 'node:fs';
+const html = fs.readFileSync(new URL('./index.html', import.meta.url));
+http.createServer((req, res) => res.writeHead(200, {'content-type': 'text/html'}).end(html))
+  .listen(Number(process.env.PORT ?? 3000), '127.0.0.1');
+`;
+const sortOnly = `export function addTrial(list, trial) {
+  return [...list, trial].sort((a, b) => a.endsOn.localeCompare(b.endsOn));
+}
+`;
+const validated = `/** Adds a trial and returns a new list sorted by end date. */
+export function addTrial(list, {name, endsOn}) {
+  if (!name || !name.trim()) throw new Error('Give the trial a name.');
+  const end = new Date(endsOn);
+  if (Number.isNaN(end.getTime())) throw new Error('Pick a real end date.');
+  if (end < new Date(new Date().toDateString())) throw new Error('That end date has already passed.');
+  return [...list, {name: name.trim(), endsOn}].sort((a, b) => a.endsOn.localeCompare(b.endsOn));
+}
+`;
+const readme = '# TrialGuard\n\nStart it with `node server.mjs`, then open http://127.0.0.1:3000\n';
+
+// Sprint: small and complete, but no input validation.
+write(worktree('alpha'), 'src/trials.mjs', sortOnly);
+write(worktree('alpha'), 'server.mjs', server);
+write(worktree('alpha'), 'index.html', page('body{font-family:system-ui;margin:2rem}'));
+write(worktree('alpha'), 'README.md', readme);
+commit(worktree('alpha'), 'Add the trial list, home page and README');
 write(dossier('alpha'), 'claims.json', {
   team: 'alpha',
-  summary: 'Order page with date and phone, served locally.',
   claims: [
-    { id: 'C1', text: 'Every acceptance check passes', evidence: { type: 'acceptance', ids: ['A1', 'A2', 'A3', 'A4'] } },
-    { id: 'C2', text: 'The phone field is required', evidence: { type: 'file_contains', path: 'index.html', pattern: 'name="phone" required' } },
-    { id: 'C3', text: 'Fits a 375px phone screen', evidence: { type: 'manual', note: 'Checked by eye.' } },
+    {
+      id: 'C1',
+      text: 'Every acceptance check passes',
+      evidence: {type: 'acceptance', ids: ['A1', 'A2', 'A3', 'A4']},
+    },
+    {
+      id: 'C2',
+      text: 'Fits a 375px phone screen',
+      evidence: {type: 'manual', note: 'Checked by eye.'},
+    },
   ],
-  known_issues: ['No tap-to-call link yet.'],
+  known_issues: ['No input validation yet.'],
 });
 
-// Fortress: tested, validated, with a call link.
-write(wt('beta'), 'index.html', page({ title: 'Bakery', extra: '\n<p><a href="tel:+380000000000">Call Marta</a></p>' }));
-write(wt('beta'), 'server.mjs', SERVER);
-write(wt('beta'), 'tests/unit.test.mjs', `import fs from 'node:fs';
-const html = fs.readFileSync('index.html', 'utf8');
-const checks = { 'phone required': /name="phone" required/.test(html), 'date required': /name="date" required/.test(html), 'call link': html.includes('href="tel:') };
-for (const [name, ok] of Object.entries(checks)) { console.log((ok ? 'ok ' : 'FAIL ') + name); if (!ok) process.exitCode = 1; }
-`);
-commitAll(wt('beta'), 'feat: validated order form, call link, tests');
+// Fortress: validated, tested.
+write(worktree('beta'), 'src/trials.mjs', validated);
+write(worktree('beta'), 'server.mjs', server);
+write(
+  worktree('beta'),
+  'index.html',
+  page(
+    'body{font-family:system-ui;margin:2rem;max-width:36rem}label{display:block;margin:.5rem 0}',
+  ),
+);
+write(worktree('beta'), 'README.md', readme);
+write(
+  worktree('beta'),
+  'tests/trials.test.mjs',
+  `import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {addTrial} from '../src/trials.mjs';
+test('sorts by end date', () => assert.deepEqual(addTrial([{name: 'B', endsOn: '2099-02-01'}], {name: 'A', endsOn: '2099-01-01'}).map(t => t.name), ['A', 'B']));
+test('rejects a past end date', () => assert.throws(() => addTrial([], {name: 'Old', endsOn: '2001-01-01'})));
+test('rejects an empty name', () => assert.throws(() => addTrial([], {name: ' ', endsOn: '2099-01-01'})));
+`,
+);
+commit(worktree('beta'), 'Add a validated trial list with tests');
 write(dossier('beta'), 'claims.json', {
   team: 'beta',
-  summary: 'Validated order form, tap-to-call, own tests.',
   claims: [
-    { id: 'C1', text: 'Every acceptance check passes', evidence: { type: 'acceptance', ids: ['A1', 'A2', 'A3', 'A4'] } },
-    { id: 'C2', text: 'Our unit tests pass', evidence: { type: 'command', run: 'node tests/unit.test.mjs' } },
-    { id: 'C3', text: 'Customers can tap to call Marta', evidence: { type: 'file_contains', path: 'index.html', pattern: 'href="tel:' } },
-    { id: 'C4', text: 'Keyboard navigation works', evidence: { type: 'manual', note: 'Tabbed through the form.' } },
+    {
+      id: 'C1',
+      text: 'Every acceptance check passes',
+      evidence: {type: 'acceptance', ids: ['A1', 'A2', 'A3', 'A4']},
+    },
+    {
+      id: 'C2',
+      text: 'Our own tests pass',
+      evidence: {type: 'command', run: 'node --test tests/trials.test.mjs'},
+    },
+    {
+      id: 'C3',
+      text: 'A trial that already ended is rejected',
+      evidence: {type: 'file_contains', path: 'src/trials.mjs', pattern: 'already passed'},
+    },
   ],
   known_issues: [],
 });
 
-// Spark: a flashy page and a claim nobody checked.
-write(wt('gamma'), 'index.html', page({ title: 'Bakery', style: 'body{background:linear-gradient(135deg,#ff6ec4,#7873f5)}' }));
-write(wt('gamma'), 'server.mjs', SERVER);
-commitAll(wt('gamma'), 'feat: bold order page');
+// Spark: a bold page and a claim nobody ran.
+write(worktree('gamma'), 'src/trials.mjs', sortOnly);
+write(worktree('gamma'), 'server.mjs', server);
+write(
+  worktree('gamma'),
+  'index.html',
+  page(
+    'body{background:linear-gradient(135deg,#ff6ec4,#7873f5);color:#fff;font-family:system-ui;margin:2rem}',
+  ),
+);
+write(worktree('gamma'), 'README.md', readme);
+commit(worktree('gamma'), 'Add a bold home page');
 write(dossier('gamma'), 'claims.json', {
   team: 'gamma',
-  summary: 'Bold, memorable order page.',
   claims: [
-    { id: 'C1', text: 'Every acceptance check passes', evidence: { type: 'acceptance', ids: ['A1', 'A2', 'A3', 'A4'] } },
-    { id: 'C2', text: 'All our unit tests pass', evidence: { type: 'command', run: 'node tests/unit.test.mjs' } },
+    {
+      id: 'C1',
+      text: 'Every acceptance check passes',
+      evidence: {type: 'acceptance', ids: ['A1', 'A2', 'A3', 'A4']},
+    },
+    {
+      id: 'C2',
+      text: 'All our unit tests pass',
+      evidence: {type: 'command', run: 'node --test tests/trials.test.mjs'},
+    },
   ],
 });
 
-run(['arena', 'verify', 'alpha'], dir);
-run(['arena', 'verify', 'beta'], dir);
-run(['arena', 'verify', 'gamma'], dir);
+skillsmith('arena', 'verify', '--all');
 
-// Cross-examination: Fortress proves Sprint has no tap-to-call link.
-write(path.join(dossier('beta'), 'probes'), 'no-call-link.mjs', `import fs from 'node:fs';
-if (fs.readFileSync('index.html', 'utf8').includes('href="tel:')) process.exit(1);
-console.log('DEFECT: no tap-to-call link');
-`);
+// Cross-examination: Fortress proves Sprint accepts a trial that already ended.
+write(
+  path.join(dossier('beta'), 'probes'),
+  'past-date.mjs',
+  `const {addTrial} = await import(new URL('src/trials.mjs', 'file://' + process.cwd() + '/').href);
+try { addTrial([], {name: 'Old', endsOn: '2001-01-01'}); console.log('DEFECT: a trial that already ended was accepted'); }
+catch { console.log('rejected'); process.exit(1); }
+`,
+);
 write(dossier('beta'), 'accusations.json', {
   team: 'beta',
   accusations: [
-    { id: 'X1', against: 'alpha', text: 'Customers cannot tap to call Marta', evidence: { type: 'command', run: 'node "$SKILLSMITH_PROBES/no-call-link.mjs"', expect: { exit: 0, includes: 'DEFECT' } } },
+    {
+      id: 'X1',
+      against: 'alpha',
+      text: 'Sprint accepts a trial that already ended',
+      evidence: {
+        type: 'command',
+        run: 'node "$SKILLSMITH_PROBES/past-date.mjs"',
+        expect: {includes: 'DEFECT'},
+      },
+    },
   ],
 });
-run(['arena', 'accuse', 'beta'], dir);
+skillsmith('arena', 'accuse', 'beta');
 
 write(path.join(dir, '.skillsmith'), 'judge.json', {
   judge: 'auditor',
   round: 1,
   scores: {
     alpha: {
-      fit: { score: 7, evidence: 'Order, date and phone work (A1-A4 pass); no way to call the bakery, which the brief implies.' },
-      experience: { score: 7, evidence: 'Ordered as a customer at 375px in 3 taps; plain but clear.' },
-      craft: { score: 6, evidence: 'No own tests; server.mjs is minimal and fine.' },
+      fit: {
+        score: 6,
+        evidence:
+          'R1-R3 work (A1-A4 pass), but a past end date is accepted: hidden check H1 failed and X1 was upheld.',
+      },
+      experience: {
+        score: 7,
+        evidence:
+          'Added Netflix as Sam on a 375px screen in 3 taps; no message when a date is wrong.',
+      },
+      craft: {score: 5, evidence: 'No tests of its own; src/trials.mjs has no validation at all.'},
     },
     beta: {
-      fit: { score: 9, evidence: 'All must-haves plus tap-to-call from the brief (index.html).' },
-      experience: { score: 8, evidence: 'Clear labels; invalid phone is rejected by the pattern attribute.' },
-      craft: { score: 9, evidence: 'tests/unit.test.mjs covers phone, date and call link; all pass.' },
+      fit: {
+        score: 9,
+        evidence: 'R1-R3 work; past dates and empty names are rejected (hidden H1 and H2 pass).',
+      },
+      experience: {
+        score: 8,
+        evidence: 'Clear labels; the error copy from 03-hooks.md appears for a past date.',
+      },
+      craft: {
+        score: 9,
+        evidence: 'tests/trials.test.mjs covers sorting and both validations; node --test passes.',
+      },
     },
   },
 });
-run(['arena', 'judge'], dir);
-run(['arena', 'score'], dir);
-run(['arena', 'crown'], dir);
-write(dir, 'README.md', '# Bakery orders\n\nRun `node server.mjs`, then open http://127.0.0.1:4817\n');
-run(['report'], dir);
-run(['advance', 'ship'], dir);
-run(['dashboard'], dir);
+skillsmith('arena', 'judge');
+skillsmith('arena', 'score');
+skillsmith('arena', 'crown');
+skillsmith('ledger', 'verify');
+skillsmith('report');
+skillsmith('advance', 'ship');
+skillsmith('dashboard');
 
 let final = dir;
 if (out) {
-  fs.rmSync(out, { recursive: true, force: true });
-  fs.cpSync(dir, out, { recursive: true });
+  fs.rmSync(out, {recursive: true, force: true});
+  fs.cpSync(dir, out, {recursive: true});
   final = out;
 }
-process.stdout.write(`\nDemo project: ${final}\nDashboard: ${path.join(final, '.skillsmith', 'dashboard.html')}\n`);
+process.stdout.write(
+  `\nDemo project: ${final}\nDashboard: ${path.join(final, '.skillsmith', 'dashboard.html')}\n`,
+);

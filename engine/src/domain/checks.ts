@@ -6,7 +6,7 @@
 import fs from 'node:fs';
 import http from 'node:http';
 import https from 'node:https';
-import {isBinary, resolveInside, walkFiles} from '../core/fs.js';
+import {isBinary, resolveInside, scrubPath, walkFiles} from '../core/fs.js';
 import {matchGlob} from '../core/glob.js';
 import {isRecord, isText, isTextList} from '../core/json.js';
 import {runShell, startBackground, type Background} from '../core/proc.js';
@@ -69,6 +69,12 @@ export interface CheckContext {
   dir: string;
   /** Extra environment variables for commands. */
   env?: Record<string, string>;
+  /**
+   * A free port reserved for this clean room. Commands get it as $PORT and
+   * http check URLs may use the `{{port}}` placeholder, so several clean rooms
+   * can serve the product at the same time.
+   */
+  port?: number;
   /** Results of acceptance checks already run, for `acceptance` references. */
   acceptance?: Readonly<Record<string, CheckStatus>>;
 }
@@ -99,6 +105,24 @@ const UNSAFE_COMMANDS: ReadonlyArray<readonly [RegExp, string]> = [
 ];
 
 const LOCAL_HOSTS = new Set(['localhost', '127.0.0.1', '[::1]', '::1', '0.0.0.0']);
+
+/** Placeholder in http check URLs for the clean room's port. */
+export const PORT_PLACEHOLDER = '{{port}}';
+
+/** Default port substituted when a check runs outside a clean room. */
+export const DEFAULT_PORT = 3000;
+
+function withPort(url: string, port: number | undefined): string {
+  return url.replaceAll(PORT_PLACEHOLDER, String(port ?? DEFAULT_PORT));
+}
+
+/**
+ * True when an http check needs a fixed port, so clean rooms that run it
+ * must take turns instead of serving at the same time.
+ */
+export function needsFixedPort(check: CheckSpec): boolean {
+  return check.type === 'http' && !(check.url ?? '').includes(PORT_PLACEHOLDER);
+}
 
 /** Returns why a command is refused, or undefined when it may run. */
 export function unsafeReason(command: string): string | undefined {
@@ -232,6 +256,7 @@ function checkEnv(ctx: CheckContext): NodeJS.ProcessEnv {
     NO_COLOR: '1',
     BROWSER: 'none',
     SKILLSMITH_CHECK: '1',
+    ...(ctx.port === undefined ? {} : {PORT: String(ctx.port)}),
     ...ctx.env,
   };
   delete env['SKILLSMITH_HOME'];
@@ -253,12 +278,9 @@ async function runCommandCheck(
     env: checkEnv(ctx),
   });
   if (result.startError) return outcome('error', `Could not start: ${result.startError}`, started);
+  const output = scrubPath(result.output, ctx.dir);
   if (result.timedOut)
-    return outcome(
-      'error',
-      `Timed out after ${seconds}s: ${command}\n${clip(result.output)}`,
-      started,
-    );
+    return outcome('error', `Timed out after ${seconds}s: ${command}\n${clip(output)}`, started);
   const expect = check.expect ?? {};
   const wantExit = expect.exit ?? 0;
   const problems: string[] = [];
@@ -267,14 +289,14 @@ async function runCommandCheck(
   else if (wantExit !== 'any' && result.exitCode !== wantExit) {
     problems.push(`exit code ${result.exitCode}, expected ${wantExit}`);
   }
-  if (expect.includes && !result.output.includes(expect.includes))
+  if (expect.includes && !output.includes(expect.includes))
     problems.push(`output does not include "${expect.includes}"`);
-  if (expect.excludes && result.output.includes(expect.excludes))
+  if (expect.excludes && output.includes(expect.excludes))
     problems.push(`output includes "${expect.excludes}"`);
-  if (expect.matches && !new RegExp(expect.matches, 'm').test(result.output)) {
+  if (expect.matches && !new RegExp(expect.matches, 'm').test(output)) {
     problems.push(`output does not match /${expect.matches}/`);
   }
-  const shown = `$ ${command}\n${clip(result.output)}`;
+  const shown = `$ ${command}\n${clip(output)}`;
   return problems.length
     ? outcome('fail', `${problems.join('; ')}\n${shown}`, started)
     : outcome('pass', shown, started);
@@ -379,7 +401,7 @@ async function runHttpCheck(
 ): Promise<CheckOutcome> {
   let url: URL;
   try {
-    url = new URL(check.url ?? '');
+    url = new URL(withPort(check.url ?? '', ctx.port));
   } catch {
     return outcome('error', `Invalid URL: ${String(check.url)}`, started);
   }
@@ -402,7 +424,7 @@ async function runHttpCheck(
       if (server?.exited()) {
         return outcome(
           'fail',
-          `Server exited with code ${String(server.exitCode())} before answering.\n${clip(server.log())}`,
+          `Server exited with code ${String(server.exitCode())} before answering.\n${clip(scrubPath(server.log(), ctx.dir))}`,
           started,
         );
       }
@@ -430,7 +452,7 @@ async function runHttpCheck(
     }
     return outcome(
       'fail',
-      `No answer from ${url.href} within ${timeoutMs / 1000}s (${last}).\n${clip(server?.log() ?? '')}`,
+      `No answer from ${url.href} within ${timeoutMs / 1000}s (${last}).\n${clip(scrubPath(server?.log() ?? '', ctx.dir))}`,
       started,
     );
   } finally {

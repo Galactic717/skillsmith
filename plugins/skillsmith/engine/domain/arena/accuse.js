@@ -43,12 +43,13 @@ export async function accuse(project, accuser, options = {}) {
             continue;
         }
         const head = G.revParse(root, rival.branch);
-        await withCleanroom(root, store, `${accuser}-vs-${target}`, head, async (dir) => {
+        await withCleanroom(root, store, `${accuser}-vs-${target}`, head, async (dir, port) => {
             if (options.setup !== false)
-                await runSetup(acceptance.setup, dir);
+                await runSetup(acceptance.setup, dir, port);
             for (const item of list) {
                 const outcome = await runCheck(item.evidence, {
                     dir,
+                    port,
                     env: { SKILLSMITH_PROBES: paths.probes },
                 });
                 const status = outcome.status === 'pass' ? 'upheld' : outcome.status === 'fail' ? 'false' : 'dismissed';

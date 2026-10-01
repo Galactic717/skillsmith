@@ -60,15 +60,21 @@ export async function runVacuity(project: Project): Promise<VacuityReport> {
     );
   }
   const commit = revParse(root, 'HEAD');
-  const {setup, results} = await withCleanroom(root, store, 'vacuity', commit, async dir => {
-    const setupRows = await runSetup(file.setup, dir);
-    const rows: VacuityReport['results'] = [];
-    for (const check of file.checks) {
-      const outcome = await runCheck(check, {dir});
-      rows.push({id: check.id, title: check.title, guard: check.guard, status: outcome.status});
-    }
-    return {setup: setupRows, results: rows};
-  });
+  const {setup, results} = await withCleanroom(
+    root,
+    store,
+    'vacuity',
+    commit,
+    async (dir, port) => {
+      const setupRows = await runSetup(file.setup, dir, port);
+      const rows: VacuityReport['results'] = [];
+      for (const check of file.checks) {
+        const outcome = await runCheck(check, {dir, port});
+        rows.push({id: check.id, title: check.title, guard: check.guard, status: outcome.status});
+      }
+      return {setup: setupRows, results: rows};
+    },
+  );
   const vacuous = results.filter(row => !row.guard && row.status === 'pass').map(row => row.id);
   const report: VacuityReport = {
     version: 2,

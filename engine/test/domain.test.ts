@@ -12,7 +12,7 @@ import {
   requirements,
   successCriteria,
 } from '../src/domain/brief.js';
-import {parseCheck, runCheck, unsafeReason} from '../src/domain/checks.js';
+import {needsFixedPort, parseCheck, runCheck, unsafeReason} from '../src/domain/checks.js';
 import {runGate} from '../src/domain/gates.js';
 import {anchorErrors, citedSourceIds, placeholderErrors, section} from '../src/domain/markdown.js';
 import {parseState} from '../src/domain/project.js';
@@ -342,6 +342,19 @@ server.listen(Number(process.argv[2]), '127.0.0.1');`,
       'unsafe',
     );
     assert.equal((await runCheck({type: 'http', url: 'not a url'}, {dir})).status, 'error');
+    const placeholder = await runCheck(
+      {
+        type: 'http',
+        url: 'http://127.0.0.1:{{port}}/',
+        start: 'node server.mjs $PORT',
+        timeout: 20,
+      },
+      {dir, port: port + 2},
+    );
+    assert.equal(placeholder.status, 'pass', placeholder.detail);
+    assert.ok(needsFixedPort({type: 'http', url}));
+    assert.ok(!needsFixedPort({type: 'http', url: 'http://localhost:{{port}}/'}));
+    assert.ok(!needsFixedPort({type: 'command', run: 'x'}));
     assert.equal((await runCheck({type: 'http', url, start: 'sudo x'}, {dir})).status, 'unsafe');
   });
 });

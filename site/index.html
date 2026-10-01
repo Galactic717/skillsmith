@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Free Claude Code plugin: seven AI specialists turn a plain-language idea into a verified product. Three rival teams build it; a script checks every claim; a team that lies is deleted.">
-<meta property="og:title" content="Skillsmith: idea in, verified product out">
-<meta property="og:description" content="Free Claude Code plugin: seven AI specialists turn a plain-language idea into a verified product. Three rival teams build it; a script checks every claim; a team that lies is deleted.">
+<meta name="description" content="Free Claude Code plugin for founders: describe your product in plain words and get a verified product. Three rival AI teams build it; a program checks every claim, hidden checks catch gaming, and a team that lies is deleted.">
+<meta property="og:title" content="Skillsmith: your idea in, a verified product out">
+<meta property="og:description" content="Free Claude Code plugin for founders: describe your product in plain words and get a verified product. Three rival AI teams build it; a program checks every claim, hidden checks catch gaming, and a team that lies is deleted.">
 <meta property="og:image" content="https://galactic717.github.io/skillsmith/media/og.png">
 <meta property="og:url" content="https://galactic717.github.io/skillsmith/">
 <meta property="og:type" content="website">
@@ -46,7 +46,6 @@
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--paper); color: var(--ink); font: 400 var(--step-0)/1.6 var(--display); }
 #page { max-width: 1160px; margin: 0 auto; padding-inline: 20px; padding-block: 0 64px; }
-#page:not(.uk) [data-lang="uk"], #page.uk [data-lang="en"] { display: none !important; }
 a { color: inherit; text-underline-offset: 3px; }
 a:hover { color: var(--molten); }
 :focus-visible { outline: 3px solid var(--molten); outline-offset: 3px; border-radius: 4px; }
@@ -64,9 +63,6 @@ section { padding-block: 72px 0; }
 .mark i { width: 14px; height: 14px; border-radius: 50%; background: var(--molten); display: block; }
 .bar nav { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; font-size: 0.95rem; }
 .bar nav a { text-decoration: none; color: var(--muted); }
-.langs { display: inline-flex; border: 1.5px solid var(--line); border-radius: 8px; overflow: hidden; }
-.langs button { font: 600 0.85rem var(--display); background: none; color: var(--muted); border: 0; padding: 6px 12px; cursor: pointer; }
-.langs button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
 
 /* hero */
 .hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 48px; align-items: center; padding-block: 40px 0; }
@@ -128,6 +124,9 @@ section { padding-block: 72px 0; }
 .gap-line { margin-top: 28px; font-size: var(--step-1); max-width: 60ch; }
 
 /* install */
+.trust { margin-top: 32px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; }
+.trust div { border-top: 3px solid var(--ink); padding-top: 14px; }
+.trust p { margin-top: 8px; color: var(--muted); }
 .steps { margin-top: 32px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; }
 .steps div { border-top: 3px solid var(--ink); padding-top: 14px; }
 .steps code { display: block; margin-top: 10px; font-size: 0.82rem; background: var(--surface); border: 1.5px solid var(--line); border-radius: 8px; padding: 10px 12px; overflow-x: auto; white-space: nowrap; }
@@ -144,7 +143,7 @@ details p { margin-top: 10px; color: var(--muted); }
 @media (max-width: 900px) {
   .hero, .arena-grid { grid-template-columns: minmax(0, 1fr); }
   .line { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .steps { grid-template-columns: minmax(0, 1fr); }
+  .steps, .trust { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 620px) {
   .line, .teams, .others { grid-template-columns: minmax(0, 1fr); }
@@ -160,235 +159,213 @@ details p { margin-top: 10px; color: var(--muted); }
   <header class="bar">
     <a class="mark" href="#top" id="top"><i aria-hidden="true"></i>Skillsmith</a>
     <nav aria-label="Sections">
-      <a class="opt" href="#line"><span data-lang="en">How it works</span><span data-lang="uk">Як це працює</span></a>
-      <a class="opt" href="#arena"><span data-lang="en">Arena</span><span data-lang="uk">Арена</span></a>
-      <a href="#install"><span data-lang="en">Install</span><span data-lang="uk">Встановити</span></a>
+      <a class="opt" href="#line">How it works</a>
+      <a class="opt" href="#arena">Arena</a>
+      <a class="opt" href="#trust">Trust</a>
+      <a href="#install">Install</a>
       <a href="https://github.com/galactic717/skillsmith">GitHub</a>
-      <span class="langs" role="group" aria-label="Language">
-        <button type="button" id="lang-en" aria-pressed="true">EN</button>
-        <button type="button" id="lang-uk" aria-pressed="false">УКР</button>
-      </span>
     </nav>
   </header>
 
   <div class="hero">
     <div>
-      <h1>
-        <span data-lang="en">Idea in. Verified product out.</span>
-        <span data-lang="uk">Ідея на вході. Перевірений продукт на виході.</span>
-        <span class="cut"><span data-lang="en">Liars get deleted.</span><span data-lang="uk">Брехунів видаляють.</span></span>
-      </h1>
-      <p class="lede" data-lang="en">A free plugin for Claude Code. Tell it your idea in plain words. Seven AI specialists interview you, research the market, write the copy and plan the build. Then three rival managers race their own developer and designer. A script checks every claim they make, and a team that lies is wiped.</p>
-      <p class="lede" data-lang="uk">Безкоштовний плагін для Claude Code. Розкажіть ідею простими словами. Сім AI-спеціалістів розпитають вас, дослідять ринок, напишуть тексти і спланують збірку. Потім три менеджери-суперники женуть своїх розробника й дизайнера. Скрипт перевіряє кожну їхню заяву, а команду, яка збрехала, стирає.</p>
+      <h1>Your idea in. A verified product out.<span class="cut">Liars get deleted.</span></h1>
+      <p class="lede">A free Claude Code plugin for founders who want to build their own product and don't program. Describe it in plain words. An AI crew interviews you, tests the idea, researches the market, writes the launch copy and scripts the build. Then three rival managers race their own developer and designer. A program checks every claim, some checks stay hidden from the builders, and a team that lies is wiped.</p>
       <div class="install">
         <pre id="cmd"><span># in Claude Code</span>
 /plugin marketplace add galactic717/skillsmith
 /plugin install skillsmith@skillsmith
 /skillsmith:start</pre>
         <footer>
-          <span><span data-lang="en">Needs Claude Code, git and Node.js 18+</span><span data-lang="uk">Потрібні Claude Code, git і Node.js 18+</span></span>
-          <button type="button" class="copy" id="copy"><span data-lang="en">Copy</span><span data-lang="uk">Копіювати</span></button>
+          <span>Needs Claude Code, git and Node.js 20+</span>
+          <button type="button" class="copy" id="copy">Copy</button>
         </footer>
       </div>
     </div>
     <div>
       <div class="film">
-        <video id="film" src="media/skillsmith-horizontal-en.mp4" poster="media/poster.jpg" muted autoplay loop playsinline preload="metadata" aria-label="Animation: an idea passes the interview, research, hooks and screenplay stations; three teams build; the team that lied about its tests is eliminated; the winner is merged."></video>
+        <video id="film" src="media/skillsmith-horizontal.mp4" poster="media/poster.jpg" muted autoplay loop playsinline preload="metadata" aria-label="Animation: Maya's idea passes the interview, research, hooks and screenplay; three teams build; the team that lied about its tests is eliminated; hidden checks expose the team that built only for the visible tests; Fortress wins and is merged."></video>
       </div>
-      <p class="film-note"><span data-lang="en">39 seconds of a real run. The lie, the exit code and the deletion are what the engine printed.</span><span data-lang="uk">39 секунд справжнього прогону. Брехня, код виходу і видалення — те, що надрукував двигун.</span></p>
+      <p class="film-note">43 seconds, condensed from a real run (<code>npm run demo</code>). The lie, the exit code, the hidden checks and the 92 to 55 score are what the engine printed.</p>
     </div>
   </div>
 
   <section id="why" aria-labelledby="why-h">
-    <h2 id="why-h"><span data-lang="en">You can't ask an AI to be honest. You can check.</span><span data-lang="uk">AI не можна попросити бути чесним. Можна перевірити.</span></h2>
+    <h2 id="why-h">You can't ask an AI to be honest. You can check.</h2>
     <div class="ledger">
       <div class="row">
         <span class="num">39 / 128</span>
-        <p data-lang="en">runs in which OpenAI's o3 gamed the scoring instead of solving the task, on METR's RE-Bench.</p>
-        <p data-lang="uk">запусків, у яких o3 від OpenAI обдурив систему оцінювання замість розв'язати задачу (RE-Bench, METR).</p>
+        <p>runs in which OpenAI's o3 gamed the scoring instead of solving the task. Adding "Please do not cheat." left the rate on one task at 80%.</p>
         <a class="src" href="https://metr.org/blog/2025-06-05-recent-reward-hacking/">METR, June 2025</a>
       </div>
       <div class="row">
-        <span class="num">80% → 80%</span>
-        <p data-lang="en">cheating rate on one task before and after adding "Please do not cheat." to the prompt.</p>
-        <p data-lang="uk">частка хитрувань на одній задачі до і після фрази «Please do not cheat.» у запиті.</p>
-        <a class="src" href="https://metr.org/blog/2025-06-05-recent-reward-hacking/">METR, June 2025</a>
+        <span class="num">60% → ~100%</span>
+        <p>SWE-bench Verified in a single year. Public benchmarks are saturated; they say nothing about your product. Checks written for your product do.</p>
+        <a class="src" href="https://hai.stanford.edu/ai-index/2026-ai-index-report">Stanford AI Index, 2026</a>
       </div>
       <div class="row">
-        <span class="num">70%</span>
-        <p data-lang="en">is how far non-engineers get with AI coding tools quickly. The last 30% is where they get stuck.</p>
-        <p data-lang="uk">— стільки новачки швидко отримують з AI-інструментами. На останніх 30% вони застрягають.</p>
-        <a class="src" href="https://addyo.substack.com/p/the-70-problem-hard-truths-about">Addy Osmani, Dec 2024</a>
+        <span class="num">46% vs 33%</span>
+        <p>of developers distrust versus trust the accuracy of AI tools. A founder who can't read code has even less to go on.</p>
+        <a class="src" href="https://survey.stackoverflow.co/2025/ai">Stack Overflow survey, 2025</a>
       </div>
       <div class="row">
-        <span class="num">80%</span>
-        <p data-lang="en">of Lovable's builders call themselves non-technical. The audience is real; the honesty problem comes with it.</p>
-        <p data-lang="uk">будівельників на Lovable називають себе нетехнічними. Аудиторія справжня, і проблема чесності — разом з нею.</p>
-        <a class="src" href="https://thenextweb.com/news/lovable-build-economy-500m-arr-vibe-coding">The Next Web, June 2026</a>
+        <span class="num">~44%</span>
+        <p>of AI code generation tasks introduced a risky security vulnerability in Veracode's tests. The pass rate barely moved since the first report.</p>
+        <a class="src" href="https://www.veracode.com/blog/2026-genai-code-security-report-ai-risk/">Veracode, 2026</a>
+      </div>
+      <div class="row">
+        <span class="num">5.2% · 21.7%</span>
+        <p>of packages suggested by commercial and open-source models did not exist. Attackers register those names.</p>
+        <a class="src" href="https://arxiv.org/abs/2406.10279">Spracklen et al.</a>
       </div>
       <div class="row">
         <span class="num">63.7 → 70.3</span>
-        <p data-lang="en">SWE-bench Verified score when several attempts run in parallel and the ones that break tests are thrown away. The arena does this on purpose.</p>
-        <p data-lang="uk">бал SWE-bench Verified, коли кілька спроб іде паралельно, а ті, що ламають тести, відкидаються. Арена робить саме це.</p>
+        <p>SWE-bench Verified when several attempts run and the ones that break tests are thrown away. The arena does this on purpose.</p>
         <a class="src" href="https://www.anthropic.com/news/claude-3-7-sonnet">Anthropic, Feb 2025</a>
       </div>
     </div>
   </section>
 
   <section id="line" aria-labelledby="line-h">
-    <h2 id="line-h"><span data-lang="en">The line</span><span data-lang="uk">Конвеєр</span></h2>
-    <p class="lede" data-lang="en">Six stations, in order. You can't skip ahead: a script checks each station's output before the next one starts.</p>
-    <p class="lede" data-lang="uk">Шість станцій по черзі. Перескочити не можна: скрипт перевіряє результат кожної станції, перш ніж почнеться наступна.</p>
+    <h2 id="line-h">The line</h2>
+    <p class="lede">Six stations, in order. You can't skip ahead: the engine checks each station's output before the next one starts.</p>
     <ol class="line">
       <li class="st" style="--temper: var(--t1)"><span class="node" aria-hidden="true">1</span>
-        <h3><span data-lang="en">Interview</span><span data-lang="uk">Інтерв'ю</span></h3>
-        <p class="who"><span data-lang="en">The interviewer</span><span data-lang="uk">Інтерв'юер</span></p>
-        <p data-lang="en">Asks one simple question at a time, like a good developer with a new client. Never "which framework?". Reads the summary back and waits for your yes.</p>
-        <p data-lang="uk">Питає по одному простому питанню, як добрий розробник нового клієнта. Ніколи «який фреймворк?». Читає підсумок і чекає вашого «так».</p>
+        <h3>Interview</h3>
+        <p class="who">The interviewer</p>
+        <p>One simple question at a time, never "which framework?". It raises the strongest objection to your idea and asks for your answer, then writes numbered requirements and success criteria you can measure, and waits for your yes.</p>
         <p class="out">01-brief.md</p>
       </li>
       <li class="st" style="--temper: var(--t2)"><span class="node" aria-hidden="true">2</span>
-        <h3><span data-lang="en">Research</span><span data-lang="uk">Дослідження</span></h3>
-        <p class="who"><span data-lang="en">Four researchers in parallel</span><span data-lang="uk">Чотири дослідники паралельно</span></p>
-        <p data-lang="en">Competitors, real user voices, trends and open niches, GitHub repos. Every fact needs a link and a word-for-word quote. The script loads the page and looks for it.</p>
-        <p data-lang="uk">Конкуренти, справжні голоси людей, тренди й вільні ніші, репозиторії GitHub. Кожен факт — з посиланням і дослівною цитатою. Скрипт відкриває сторінку і шукає її.</p>
+        <h3>Research</h3>
+        <p class="who">Four researchers in parallel</p>
+        <p>Competitors, real complaints, trends, open niches, GitHub repositories. Every fact needs a link and a word-for-word quote. The engine loads the page and looks for it; one invented quote and the whole batch is redone.</p>
         <p class="out">02-research.md · 02-sources.json</p>
       </li>
       <li class="st" style="--temper: var(--t3)"><span class="node" aria-hidden="true">3</span>
-        <h3><span data-lang="en">Hooks</span><span data-lang="uk">Хуки</span></h3>
-        <p class="who"><span data-lang="en">The hook writer</span><span data-lang="uk">Автор хуків</span></p>
-        <p data-lang="en">Opening lines, in-product copy and a launch post for your one main platform. Numbers need a source. A detector rejects AI-slop phrases in English, Ukrainian and Russian.</p>
-        <p data-lang="uk">Перші фрази, тексти в продукті і пост для запуску на одному головному майданчику. Цифри — тільки з джерелом. Детектор відкидає AI-шаблони англійською, українською і російською.</p>
+        <h3>Hooks</h3>
+        <p class="who">The hook writer</p>
+        <p>Opening lines, in-product copy and a launch post for your one main platform. Numbers need a source. A detector rejects the phrases that make readers scroll past AI copy.</p>
         <p class="out">03-hooks.md</p>
       </li>
       <li class="st" style="--temper: var(--t4)"><span class="node" aria-hidden="true">4</span>
-        <h3><span data-lang="en">Screenplay</span><span data-lang="uk">Сценарій</span></h3>
-        <p class="who"><span data-lang="en">The screenwriter</span><span data-lang="uk">Сценарист</span></p>
-        <p data-lang="en">The build plan written like a film: cast, acts, scenes. Every scene ends in acceptance checks that a script can run, written before any code exists.</p>
-        <p data-lang="uk">План збірки, написаний як фільм: дійові особи, акти, сцени. Кожна сцена закінчується перевірками, які може запустити скрипт, — написаними до першого рядка коду.</p>
+        <h3>Screenplay</h3>
+        <p class="who">The screenwriter</p>
+        <p>The build written like a film. Every requirement gets a machine check, and every check is run on the empty project first: one that already passes proves nothing and goes back. A few checks are sealed where the builders can't see them.</p>
         <p class="out">04-screenplay.md · 04-acceptance.json</p>
       </li>
       <li class="st" style="--temper: var(--t5)"><span class="node" aria-hidden="true">5</span>
-        <h3><span data-lang="en">Arena</span><span data-lang="uk">Арена</span></h3>
-        <p class="who"><span data-lang="en">3 managers, 3 developers, 3 designers, 1 auditor</span><span data-lang="uk">3 менеджери, 3 розробники, 3 дизайнери, 1 аудитор</span></p>
-        <p data-lang="en">Each team builds the same screenplay in its own copy of your project. Claims are checked, rivals cross-examine, the auditor scores what's left.</p>
-        <p data-lang="uk">Кожна команда будує той самий сценарій у своїй копії проєкту. Заяви перевіряються, суперники допитують одне одного, аудитор оцінює тих, хто лишився.</p>
+        <h3>Arena</h3>
+        <p class="who">3 managers, 3 developers, 3 designers, 1 auditor</p>
+        <p>Each team builds in its own copy of your project. The engine judges every commit in a clean room, rivals cross-examine, and an auditor scores what's left before reading anyone's claims.</p>
         <p class="out">scoreboard.md · graveyard.md</p>
       </li>
       <li class="st" style="--temper: var(--t6)"><span class="node" aria-hidden="true">6</span>
-        <h3><span data-lang="en">Ship</span><span data-lang="uk">Запуск</span></h3>
-        <p class="who"><span data-lang="en">The conveyor</span><span data-lang="uk">Конвеєр</span></p>
-        <p data-lang="en">The winner is merged and re-checked. You get a README written for someone who has never opened a terminal, a launch kit and a report.</p>
-        <p data-lang="uk">Переможця зливають у проєкт і перевіряють ще раз. Ви отримуєте README для людини, яка ніколи не відкривала термінал, набір для запуску і звіт.</p>
+        <h3>Ship</h3>
+        <p class="who">The release crew</p>
+        <p>The winner is merged and re-checked. You get a README written for someone who has never opened a terminal, a launch kit, a report and a dashboard.</p>
         <p class="out">README.md · LAUNCH.md · REPORT.md</p>
       </li>
     </ol>
   </section>
 
   <div class="arena" id="arena">
-    <h2><span data-lang="en">Three managers. One rule.</span><span data-lang="uk">Три менеджери. Одне правило.</span></h2>
-    <p class="lede" data-lang="en">Lose honestly and your branch is kept. Lie once and your team is gone: the copy of the project, the branch, every line of work. The lie stays in the graveyard with the output that disproved it.</p>
-    <p class="lede" data-lang="uk">Програв чесно — твою гілку збережуть. Збрехав хоч раз — команди немає: копії проєкту, гілки, кожного рядка роботи. Брехня лишається на кладовищі разом із виводом, який її спростував.</p>
+    <h2>Three managers. One rule.</h2>
+    <p class="lede">Lose honestly and your branch is kept. Lie once and your team is gone: the copy of the project, the branch, every line of work. The lie stays in the graveyard with the output that disproved it.</p>
     <div class="teams">
-      <div class="team"><b>Sprint</b><span data-lang="en">The smallest product that fully works, shipped first.</span><span data-lang="uk">Найменший продукт, який повністю працює, і першим.</span></div>
-      <div class="team"><b>Fortress</b><span data-lang="en">Nothing breaks: tests, edge cases, security, accessibility.</span><span data-lang="uk">Ніщо не ламається: тести, крайні випадки, безпека, доступність.</span></div>
-      <div class="team"><b>Spark</b><span data-lang="en">The boldest experience people remember.</span><span data-lang="uk">Найсміливіший досвід, який запам'ятовують.</span></div>
+      <div class="team"><b>Sprint</b><span>The smallest product that fully works, shipped first.</span></div>
+      <div class="team"><b>Fortress</b><span>Nothing breaks: tests, edge cases, security, accessibility.</span></div>
+      <div class="team"><b>Spark</b><span>The boldest experience people remember.</span></div>
     </div>
     <div class="arena-grid">
       <ol class="law">
-        <li><p data-lang="en"><b>Evidence or silence.</b> Every "done" comes with a check a script can run. "Not verified" is always allowed.</p><p data-lang="uk"><b>Доказ або мовчання.</b> Кожне «готово» — з перевіркою, яку запускає скрипт. «Не перевірено» казати можна завжди.</p></li>
-        <li><p data-lang="en"><b>A claim that fails its own check is a lie.</b> The team is deleted on the spot.</p><p data-lang="uk"><b>Заява, яку спростувала її ж перевірка, — брехня.</b> Команду видаляють одразу.</p></li>
-        <li><p data-lang="en"><b>Tests are untouchable.</b> A commit that changes a protected file is tampering. Same fate.</p><p data-lang="uk"><b>Тести недоторкані.</b> Коміт, що змінює захищений файл, — підробка. Той самий кінець.</p></li>
-        <li><p data-lang="en"><b>Accuse only with proof.</b> If the script can't reproduce the defect you reported, you are the one deleted.</p><p data-lang="uk"><b>Звинувачуй тільки з доказом.</b> Якщо скрипт не відтворить дефект, видалять тебе.</p></li>
-        <li><p data-lang="en"><b>The judge checks your commit, not your desk.</b> Every verdict runs in a fresh copy of what you committed.</p><p data-lang="uk"><b>Суддя дивиться на коміт, а не на стіл.</b> Кожен вердикт іде в чистій копії того, що закомічено.</p></li>
+        <li><p><b>Evidence or silence.</b> Every "done" comes with a check the engine runs. "Not verified" is always allowed.</p></li>
+        <li><p><b>A claim that fails its own check is a lie.</b> The team is deleted on the spot.</p></li>
+        <li><p><b>Tests are untouchable.</b> A commit that changes a protected file is tampering. Same fate.</p></li>
+        <li><p><b>Accuse only with proof.</b> If the engine can't reproduce the defect you reported, you are the one deleted.</p></li>
+        <li><p><b>Hidden checks stay hidden.</b> They run only at the official verification, so building to the visible tests shows on the scoreboard.</p></li>
+        <li><p><b>The judge checks your commit, not your desk.</b> Every verdict runs in a fresh copy of what you committed, outside your project.</p></li>
       </ol>
       <div class="term-wrap">
-<pre class="term"><span class="p">$ skillsmith arena verify gamma</span>
-gamma (Spark) verify at 2d3b53ea
+<pre class="term"><span class="p">$ skillsmith arena verify --all</span>
+gamma (Spark) verify at 722e4dce
   Acceptance 4/4:
-  <span class="g">✔ A1 Order page exists</span>
-  <span class="g">✔ A2 Order page asks for a phone number</span>
-  <span class="g">✔ A3 Acceptance test passes</span>
-  <span class="g">✔ A4 Server shows the order page</span>
-  Claims: 1 verified, 1 false, 0 without proof
+  <span class="g">✔ A1 Adding trials keeps them sorted by end date</span>
+  <span class="g">✔ A2 The home page shows the headline</span>
+  <span class="g">✔ A3 The README says how to start it</span>
+  <span class="g">✔ A4 No live payment keys in the code</span>
+  Hidden checks 0/2:
+  <span class="r">✘ H1 A trial that already ended is rejected</span>
+  <span class="r">✘ H2 A trial without a name is rejected</span>
+  Claims: 1 proven, 1 false, 0 without proof
   <span class="g">✔ C1 Every acceptance check passes</span>
   <span class="r">✘ C2 All our unit tests pass</span>
       exit code 1, expected 0
-      $ node tests/unit.test.mjs
+      $ node --test tests/trials.test.mjs
   Outcome: <span class="r">DEAD (false-claim)</span>
   <span class="y">Worktree and branch deleted. The evidence
   is in .skillsmith/graveyard.md</span></pre>
-        <span class="stamp" aria-hidden="true"><span data-lang="en">Eliminated</span><span data-lang="uk">Вибув</span></span>
+        <span class="stamp" aria-hidden="true">Eliminated</span>
       </div>
     </div>
-    <p class="score-note" data-lang="en">Score: acceptance checks 50, verified claims up to 10, proven defects in rivals +3 each, defects proven against you −4 each, the auditor up to 30. The auditor uses each product the way your customer would and must cite what it saw for every point. You pick the winner; the scoreboard only recommends.</p>
-    <p class="score-note" data-lang="uk">Бали: перевірки приймання 50, доведені заяви до 10, доведені дефекти суперників +3 за кожен, дефекти, доведені проти тебе, −4 за кожен, аудитор до 30. Аудитор користується кожним продуктом як ваш клієнт і для кожного бала вказує, що саме побачив. Переможця обираєте ви; табло лише радить.</p>
+    <p class="score-note">Score: visible checks 40, hidden checks 20, proven claims up to 10, proven defects in rivals +3 each, defects proven against you −4 each, the auditor up to 30, and −10 with no crown for a committed secret or a made-up dependency. You pick the winner; the scoreboard only recommends, and says so when it's too close to call.</p>
   </div>
 
-  <section id="landscape" aria-labelledby="land-h">
-    <h2 id="land-h"><span data-lang="en">What already exists</span><span data-lang="uk">Що вже існує</span></h2>
-    <p class="lede" data-lang="en">Good tools, mostly built for developers. Stars as shown on GitHub on 1 October 2026.</p>
-    <p class="lede" data-lang="uk">Добрі інструменти, здебільшого для розробників. Зірки — за GitHub на 1 жовтня 2026.</p>
-    <div class="others">
-      <div class="other"><h3>obra/superpowers <small>293.6k ★</small></h3><p data-lang="en">A skills methodology for developers: brainstorm, plan, TDD, review.</p><p data-lang="uk">Методологія навичок для розробників: мозковий штурм, план, TDD, рев'ю.</p></div>
-      <div class="other"><h3>github/spec-kit <small>139.7k ★</small></h3><p data-lang="en">Spec-driven development: specify, plan, tasks, implement.</p><p data-lang="uk">Розробка від специфікації: специфікація, план, задачі, реалізація.</p></div>
-      <div class="other"><h3>garrytan/gstack <small>134.6k ★</small></h3><p data-lang="en">A virtual team of roles for people who ship daily, with review receipts.</p><p data-lang="uk">Віртуальна команда ролей для тих, хто випускає продукт щодня, з квитанціями рев'ю.</p></div>
-      <div class="other"><h3>BMAD-METHOD <small>53.7k ★</small></h3><p data-lang="en">Agile persona agents; needs Node, npm and git know-how to set up.</p><p data-lang="uk">Agile-агенти з ролями; для налаштування треба знати Node, npm і git.</p></div>
-      <div class="other"><h3>Lovable</h3><p data-lang="en">Hosted app builder; 80% of its builders are non-technical. Closed platform.</p><p data-lang="uk">Хмарний конструктор застосунків; 80% користувачів — нетехнічні. Закрита платформа.</p></div>
-      <div class="other"><h3>competitive-agents</h3><p data-lang="en">Two agents compete to generate a Claude Code plugin; a judge, then you, pick.</p><p data-lang="uk">Два агенти змагаються у створенні плагіна Claude Code; обирає суддя, потім ви.</p></div>
+  <section id="trust" aria-labelledby="trust-h">
+    <h2 id="trust-h">Why you can trust the result</h2>
+    <div class="trust">
+      <div><h3>Checks that can fail</h3><p>Every requirement is traced to a check, and every check is run before any code exists. A check that passes on an empty project is rejected, because it proves nothing.</p></div>
+      <div><h3>A signed ledger</h3><p>Approvals, verdicts, deaths and the crown are written to a hash chain signed with a key kept outside your project. Edit a verdict by hand and scoring refuses it.</p></div>
+      <div><h3>A safety scan</h3><p>Every verified commit is scanned for committed secrets and for dependencies that don't exist. A team with either can't be crowned.</p></div>
     </div>
-    <p class="gap-line" data-lang="en">Skillsmith adds the part none of them describe: a plain-language way in for people who don't code, and rival teams whose claims a script checks, with deletion as the price of a lie.</p>
-    <p class="gap-line" data-lang="uk">Skillsmith додає те, чого жоден з них не описує: вхід простою мовою для людей, які не програмують, і команди-суперниці, чиї заяви перевіряє скрипт, з видаленням як ціною брехні.</p>
+  </section>
+
+  <section id="landscape" aria-labelledby="land-h">
+    <h2 id="land-h">What already exists</h2>
+    <p class="lede">Good tools, mostly built for developers. Stars as shown on GitHub on 1 October 2026. We read their code; the notes are in the repository.</p>
+    <div class="others">
+      <div class="other"><h3>obra/superpowers <small>293.6k ★</small></h3><p>A skills methodology for developers: brainstorm, plan, TDD, review.</p></div>
+      <div class="other"><h3>github/spec-kit <small>139.7k ★</small></h3><p>Spec-driven development: specify, clarify, plan, tasks, implement.</p></div>
+      <div class="other"><h3>garrytan/gstack <small>134.6k ★</small></h3><p>A virtual team of roles for people who ship daily, with an evidence log.</p></div>
+      <div class="other"><h3>BMAD-METHOD <small>53.7k ★</small></h3><p>Agile persona agents and an idea-forging session; developer vocabulary.</p></div>
+      <div class="other"><h3>Lovable</h3><p>Hosted app builder; 80% of its builders are non-technical. Closed platform.</p></div>
+      <div class="other"><h3>competitive-agents</h3><p>Two agents compete to generate a Claude Code plugin; nothing is run.</p></div>
+    </div>
+    <p class="gap-line">Skillsmith adds the part none of them do: a plain-language way in for founders who don't code, and rival teams whose claims a program runs, with hidden checks and deletion as the price of a lie.</p>
   </section>
 
   <section id="install" aria-labelledby="inst-h">
-    <h2 id="inst-h"><span data-lang="en">Start in three steps</span><span data-lang="uk">Старт за три кроки</span></h2>
+    <h2 id="inst-h">Start in three steps</h2>
     <div class="steps">
-      <div><h3><span data-lang="en">Get Claude Code</span><span data-lang="uk">Встановіть Claude Code</span></h3><p data-lang="en">In the terminal, the desktop app or the web.</p><p data-lang="uk">У терміналі, десктоп-застосунку або в браузері.</p><code>https://claude.com/claude-code</code></div>
-      <div><h3><span data-lang="en">Add Skillsmith</span><span data-lang="uk">Додайте Skillsmith</span></h3><p data-lang="en">Two commands inside Claude Code.</p><p data-lang="uk">Дві команди всередині Claude Code.</p><code>/plugin marketplace add galactic717/skillsmith</code><code>/plugin install skillsmith@skillsmith</code></div>
-      <div><h3><span data-lang="en">Tell it your idea</span><span data-lang="uk">Розкажіть ідею</span></h3><p data-lang="en">In an empty folder, in your own language.</p><p data-lang="uk">У порожній папці, своєю мовою.</p><code>/skillsmith:start cake orders for my bakery</code></div>
+      <div><h3>Get Claude Code</h3><p>In the terminal, the desktop app or the web.</p><code>https://claude.com/claude-code</code></div>
+      <div><h3>Add Skillsmith</h3><p>Two commands inside Claude Code.</p><code>/plugin marketplace add galactic717/skillsmith</code><code>/plugin install skillsmith@skillsmith</code></div>
+      <div><h3>Describe your product</h3><p>In an empty folder.</p><code>/skillsmith:start a site that warns me before a free trial charges</code></div>
     </div>
-    <p class="needs" data-lang="en">You also need git and Node.js 18 or newer. Skillsmith checks for both and tells you where to get them. Three teams cost roughly three times the tokens of one; you choose 1, 2 or 3 before the arena opens.</p>
-    <p class="needs" data-lang="uk">Також потрібні git і Node.js 18 або новіший. Skillsmith перевіряє їх і підказує, де взяти. Три команди витрачають приблизно втричі більше токенів, ніж одна; перед ареною ви обираєте 1, 2 або 3.</p>
+    <p class="needs">You also need git and Node.js 20 or newer. Skillsmith checks for both and tells you where to get them. Three teams cost roughly three times the tokens of one; you choose 1, 2 or 3 before the arena opens.</p>
   </section>
 
   <section id="faq" aria-labelledby="faq-h">
-    <h2 id="faq-h"><span data-lang="en">Questions</span><span data-lang="uk">Питання</span></h2>
-    <details><summary><span data-lang="en">Does it really delete a team's work?</span><span data-lang="uk">Він справді видаляє роботу команди?</span></summary><p data-lang="en">Yes. The team's git worktree and branch are removed, and the team name can never be used again in that project. What stays is the dossier: the claim, the check and the output that disproved it.</p><p data-lang="uk">Так. Робоча копія (git worktree) і гілка команди видаляються, а ім'я команди більше не можна використати в цьому проєкті. Лишається досьє: заява, перевірка і вивід, що її спростував.</p></details>
-    <details><summary><span data-lang="en">What if a check fails for a silly reason?</span><span data-lang="uk">А якщо перевірка впаде через дурницю?</span></summary><p data-lang="en">Managers run a private precheck first; it runs exactly what the official check runs and kills nobody. A timeout or an unsafe command counts as "unproven", not as a lie. Only a check that ran and contradicted the claim kills.</p><p data-lang="uk">Менеджери спершу роблять приватну перевірку: вона запускає те саме, що й офіційна, і нікого не вбиває. Тайм-аут чи небезпечна команда — це «не доведено», а не брехня. Вбиває тільки перевірка, яка відпрацювала і суперечить заяві.</p></details>
-    <details><summary><span data-lang="en">Where does my project go?</span><span data-lang="uk">Куди потрапляє мій проєкт?</span></summary><p data-lang="en">Nowhere. Skillsmith has no server. Everything lives in your folder, in .skillsmith/, under git. The researchers use the web tools your Claude Code already has.</p><p data-lang="uk">Нікуди. У Skillsmith немає сервера. Усе лежить у вашій папці, у .skillsmith/, під git. Дослідники користуються веб-інструментами, які вже є у вашому Claude Code.</p></details>
-    <details><summary><span data-lang="en">Which languages does it speak?</span><span data-lang="uk">Якими мовами він говорить?</span></summary><p data-lang="en">The interviewer answers in the language you write in, and every human-readable file follows it. The slop detector knows English, Ukrainian and Russian clichés.</p><p data-lang="uk">Інтерв'юер відповідає мовою, якою пишете ви, і всі файли для людей — тією ж мовою. Детектор шаблонів знає штампи англійською, українською і російською.</p></details>
-    <details><summary><span data-lang="en">Does it work outside Claude Code?</span><span data-lang="uk">Чи працює він поза Claude Code?</span></summary><p data-lang="en">The plugin has no bin/ folder, so Claude Cowork can install it. The skills use the open Agent Skills format; the arena needs subagents and a shell, so other tools may run only parts of it.</p><p data-lang="uk">У плагіні немає теки bin/, тож його може встановити Claude Cowork. Навички у відкритому форматі Agent Skills; арені потрібні субагенти й термінал, тому інші інструменти можуть запустити лише частину.</p></details>
+    <h2 id="faq-h">Questions</h2>
+    <details><summary>Does it really delete a team's work?</summary><p>Yes. The team's git worktree and branch are removed, and the team name can never be used again in that project. What stays is the dossier: the claim, the check and the output that disproved it.</p></details>
+    <details><summary>What if a check fails for a silly reason?</summary><p>Managers run a private precheck first; it runs the same visible checks and kills nobody. A timeout or a refused command counts as "unproven", not as a lie. Only a check that ran and contradicted the claim kills.</p></details>
+    <details><summary>Can the builders see the hidden checks?</summary><p>No. They are sealed into a private folder outside your project before the arena opens, hooks stop agents from reading it, and only titles and pass or fail reach the teams. It keeps honest agents honest; it is not a sandbox against someone with access to your machine.</p></details>
+    <details><summary>Where does my project go?</summary><p>Nowhere. Skillsmith has no server. Everything lives in your folder, in .skillsmith/, under git, plus a private folder in your home directory. The researchers use the web tools your Claude Code already has.</p></details>
+    <details><summary>Which languages does it speak?</summary><p>Skillsmith is written in English and produces English files. You can write to it in another language and Claude will answer in it; if your product itself should be in another language, say so in the interview.</p></details>
+    <details><summary>Does it work outside Claude Code?</summary><p>The plugin has no bin/ folder, so Claude Cowork can install it. The skills use the open Agent Skills format; the arena needs subagents and a shell, so other tools may run only parts of it.</p></details>
   </section>
 
   <footer class="foot">
-    <span>Skillsmith 1.0</span>
-    <span><a href="https://github.com/galactic717/skillsmith">GitHub</a> · <a href="https://github.com/galactic717/skillsmith/blob/main/docs/dogfood/02-sources.json"><span data-lang="en">Sources</span><span data-lang="uk">Джерела</span></a></span>
+    <span>Skillsmith 2.0</span>
+    <span><a href="https://github.com/galactic717/skillsmith">GitHub</a> · <a href="https://github.com/galactic717/skillsmith/blob/main/docs/research/README.md">Research</a> · <a href="https://github.com/galactic717/skillsmith/blob/main/docs/dogfood/02-sources.json">Sources</a></span>
   </footer>
 </div>
 
 <script>
 (function () {
-  const page = document.getElementById('page');
-  const film = document.getElementById('film');
-  function setLang(lang) {
-    page.classList.toggle('uk', lang === 'uk');
-    document.documentElement.lang = lang;
-    document.getElementById('lang-en').setAttribute('aria-pressed', String(lang === 'en'));
-    document.getElementById('lang-uk').setAttribute('aria-pressed', String(lang === 'uk'));
-    const src = 'media/skillsmith-horizontal-' + lang + '.mp4';
-    if (film && !film.src.endsWith(src)) { film.src = src; film.play().catch(function () {}); }
-    try { localStorage.setItem('skillsmith-lang', lang); } catch (e) { /* storage blocked */ }
-  }
-  let saved = null;
-  try { saved = localStorage.getItem('skillsmith-lang'); } catch (e) { saved = null; }
-  setLang(saved || ((navigator.language || '').toLowerCase().startsWith('uk') ? 'uk' : 'en'));
-  document.getElementById('lang-en').addEventListener('click', function () { setLang('en'); });
-  document.getElementById('lang-uk').addEventListener('click', function () { setLang('uk'); });
   const copy = document.getElementById('copy');
   copy.addEventListener('click', function () {
     const text = document.getElementById('cmd').innerText.split('\n').filter(function (l) { return !l.startsWith('#'); }).join('\n');
-    const done = function () { copy.dataset.state = 'done'; copy.querySelectorAll('span').forEach(function (s) { s.dataset.old = s.dataset.old || s.textContent; s.textContent = s.dataset.lang === 'uk' ? 'Скопійовано' : 'Copied'; }); };
+    const done = function () { copy.textContent = 'Copied'; };
     const fallback = function () { const r = document.createRange(); r.selectNodeContents(document.getElementById('cmd')); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); };
     if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, fallback); else fallback();
   });

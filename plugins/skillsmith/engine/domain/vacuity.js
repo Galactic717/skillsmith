@@ -36,11 +36,11 @@ export async function runVacuity(project) {
         });
     }
     const commit = revParse(root, 'HEAD');
-    const { setup, results } = await withCleanroom(root, store, 'vacuity', commit, async (dir) => {
-        const setupRows = await runSetup(file.setup, dir);
+    const { setup, results } = await withCleanroom(root, store, 'vacuity', commit, async (dir, port) => {
+        const setupRows = await runSetup(file.setup, dir, port);
         const rows = [];
         for (const check of file.checks) {
-            const outcome = await runCheck(check, { dir });
+            const outcome = await runCheck(check, { dir, port });
             rows.push({ id: check.id, title: check.title, guard: check.guard, status: outcome.status });
         }
         return { setup: setupRows, results: rows };

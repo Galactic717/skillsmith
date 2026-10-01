@@ -15,6 +15,14 @@ export function toPosix(filePath: string): string {
   return filePath.split(path.sep).join('/');
 }
 
+/**
+ * Replaces a temporary folder's path in command output with "./", so output
+ * shown to builders never reveals where clean rooms live.
+ */
+export function scrubPath(text: string, dir: string): string {
+  return text.split(`${dir}${path.sep}`).join('./').split(dir).join('.');
+}
+
 /** True when the path exists (file, directory or link). */
 export function pathExists(filePath: string): boolean {
   try {
