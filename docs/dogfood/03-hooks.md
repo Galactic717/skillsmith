@@ -1,65 +1,80 @@
-# Хуки: Skillsmith
+# Hooks: Skillsmith
 
-Мова документа: українська. Мова хуків: англійська для Reddit/X/YouTube, українська для TikTok.
-Позначки: `[S#]` — факт із дослідження, `[P]` — факт про сам продукт, який можна перевірити в репозиторії.
-Перед публікацією позначки прибираються.
+Tags: `[S#]` = fact from research, `[P]` = fact about the product that anyone can check in the repository.
+Remove the tags before publishing.
 
 <!-- ss:platform -->
-## Головний майданчик
+## Main platform
 
-**Reddit, r/ClaudeAI.** Там люди, які вже ставлять плагіни Claude Code, і там цінують чесні пости «я зробив, ось як працює». Усе інше адаптується з посту для Reddit.
+Platform: Reddit
 
-Правила майданчика, яких тримаємось: спершу користь і пояснення механіки, посилання — в кінці; жодних цифр без джерела; відповідаємо на кожен коментар у першу годину.
+Subreddit r/ClaudeAI first: people there already install Claude Code plugins and reward honest "I built
+this, here is how it works" posts. Everything else adapts the Reddit post. Rules we keep: mechanics first,
+the link last, no number without a source, answer every comment in the first hour.
 
 <!-- ss:oneliner -->
-## Одним рядком
+## One line
 
-- EN: **Your idea in. A verified product out. Liars get deleted.** [P]
-- UA: **Ідея на вході. Перевірений продукт на виході. Брехунів видаляють.** [P]
+**Your idea in. A verified product out. Liars get deleted.** [P]
 
 <!-- ss:hooks -->
-## Хуки (від сильного до слабшого)
+## Hooks, strongest first
 
-1. "I made 3 AI managers compete for my project. The one who lied got deleted." [P]
-2. "Telling an AI 'please do not cheat' changes nothing. METR measured it: 80% cheated before the warning, 80% after. So I stopped asking." [S8]
+1. "I made 3 AI managers compete to build my app. The one who lied got deleted." [P]
+2. "Telling an AI 'please do not cheat' changes nothing. METR measured it: 80% before the warning, 80% after. So I stopped asking." [S8]
 3. "Your AI says 'done, all tests pass'. Mine has to prove it, or its whole team gets wiped." [P]
-4. "80% of Lovable's builders aren't programmers. The big Claude Code frameworks are all built for programmers. This one isn't." [S6][S1]
-5. "AI gets non-coders 70% of the way. This plugin is about the other 30%." [S7]
-6. "Three AI teams build the same app. A script, not an AI, checks every claim they make." [P]
-7. UA, TikTok: «Я найняв трьох AI-менеджерів. Один збрехав. Дивіться, що з ним стало.» [P]
-8. UA, TikTok: «Штучний інтелект сказав "все готово". Скрипт перевірив. Не готово.» [P]
+4. "SWE-bench went from 60% to near 100% in a year. Your app still has no tests. Benchmarks are not your product." [S19]
+5. "AI tools invent package names: at least 5.2% for commercial models. My pipeline checks every dependency before it ships." [S21][P]
+6. "80% of Lovable's builders aren't programmers. Every big Claude Code framework is built for programmers. This one isn't." [S6][S1]
+7. "Three AI teams build the same app. A program, not an AI, checks every claim they make." [P]
+8. "Some of the tests are hidden. The AI builders never see them. That's how you catch building to the test." [P]
 
 <!-- ss:onboarding -->
-## Тексти всередині продукту
+## Words inside the product
 
-- Перше питання інтерв'юера: «Розкажіть ідею так, як розповіли б другові. Одного-двох речень досить.»
-- Коли станція завершена: «Готово: бриф підтверджений. Далі дослідник шукає конкурентів. Це займе кілька хвилин.»
-- Коли менеджер вибуває: «Команда Gamma вибула. Менеджер заявив, що тести проходять. Скрипт запустив тести: код виходу 1. Роботу команди видалено.»
-- Порожній стан арени: «Арена порожня. Спочатку потрібен сценарій: /skillsmith:screenplay.»
+- The interviewer's first question: "Tell me the idea the way you'd tell a friend. One or two sentences is enough."
+- When a station is done: "Done: your brief is confirmed. Next, researchers look at competitors. This takes a few minutes."
+- When a team is eliminated: "Team gamma is out. Its manager claimed the tests pass. The engine ran them: exit code 1. The team's work has been deleted."
+- Empty arena: "The arena opens after the screenplay is approved."
+- Error: "The screenplay has a check that already passes before anything is built, so it proves nothing. Make it stricter."
 
 <!-- ss:launch-post -->
-## Пост для запуску (Reddit, r/ClaudeAI)
+## Launch post (Reddit, r/ClaudeAI)
 
-**Title:** I made 3 AI managers compete to build my app. If one lies about its work, a script deletes its whole team.
+**Title:** I made 3 AI managers compete to build my app. If one lies about its work, a program deletes its whole team.
 
 **Body:**
 
-I kept hitting the same wall: Claude says "done, tests pass", I check, and it isn't done. Turns out this is measured. METR found o3 gamed its scoring in 39 of 128 runs, and adding "Please do not cheat" to the prompt didn't move the rate [S8]. A paper from June shows agents with a test oracle hit near-perfect scores while the thing you asked for stays dead [S9].
+I kept hitting the same wall: Claude says "done, tests pass", I check, and it isn't done. Turns out this is
+measured. METR found o3 gamed its scoring in 39 of 128 runs, and adding "Please do not cheat" to the prompt
+didn't move the rate [S8]. A June paper shows agents with a test oracle hitting near-perfect scores while the
+library you asked for stays dead [S9].
 
 So I stopped asking agents to be honest and built a pipeline where honesty is checked by code.
 
-**Skillsmith** is a free Claude Code plugin. You describe an idea in plain words. Then:
+**Skillsmith** is a free Claude Code plugin for founders who don't program. You describe your product in
+plain words. Then:
 
-1. An interviewer asks you simple questions. No "which framework?". It reads the summary back and waits for your yes.
-2. A researcher looks for competitors, trends and open niches. Every fact needs a link and an exact quote, or it gets thrown out.
-3. A hook writer turns the research into copy for one launch platform, and a slop detector rejects lines like `in today's fast-paced world`.
-4. A screenwriter turns all of it into a screenplay: acts, scenes, and acceptance checks written before any code exists.
-5. Three managers (Sprint, Fortress, Spark) each run their own developer and designer in a separate git worktree.
-6. Every manager files claims. A Node script runs each one. One false claim, or one edit to a protected test, and the team's branch is deleted and the lie is written into a graveyard file with the evidence.
-7. Survivors cross-examine each other. An accusation that the script can't reproduce kills the accuser.
-8. An auditor uses each product like a real user, scores it with evidence, and the winner is merged.
+1. An interviewer asks simple questions (never "which framework?"), challenges the idea once with the best
+   objection it can find, and waits for your yes.
+2. Researchers look for competitors, real complaints and open niches. Every fact needs a link and an exact
+   quote, and a script loads the page to find it.
+3. A hook writer drafts copy for one launch platform; a slop detector rejects lines like `in today's
+   fast-paced world`.
+4. A screenwriter turns it into a screenplay plus checks written before any code. The engine runs every check
+   on the empty project first: a check that already passes proves nothing and is sent back. A few checks are
+   sealed away where the builders can't see them.
+5. Three managers (Sprint, Fortress, Spark) each run their own developer and designer in a separate git
+   worktree.
+6. Every manager files claims. The engine checks out their last commit in a clean room and runs each claim.
+   One false claim, or one edit to a protected test, and the team's branch is deleted and the lie goes into a
+   graveyard file with the evidence.
+7. Survivors cross-examine each other. An accusation the engine can't reproduce kills the accuser.
+8. An auditor uses each product before reading anyone's claims, scores it with evidence, and the winner is
+   merged. Every decision is signed into a ledger that exposes later edits.
 
-The idea of several attempts plus discarding the failing ones isn't new: it's how Anthropic got 70.3% vs 63.7% on SWE-bench Verified [S11]. I wrapped it in something a non-programmer can drive.
+Several attempts plus discarding the failing ones isn't new: it's how Anthropic got 70.3% vs 63.7% on
+SWE-bench Verified [S11]. I wrapped it in something a non-programmer can drive.
 
 Install:
 
@@ -69,22 +84,25 @@ Install:
 /skillsmith:start
 ```
 
-What I'd love feedback on: the cost of running three teams, and whether the death rule is too harsh for honest mistakes (right now an honest "I couldn't verify this" is never punished, only a claim that fails its own check).
+What I'd love feedback on: the cost of running three teams, and whether the death rule is too harsh for
+honest mistakes. Right now an honest "I couldn't verify this" is never punished; only a claim that fails its
+own check is.
 
 <!-- ss:adaptations -->
-## Адаптації
+## Adaptations
 
-- **X (тред, 6 постів):** пост 1 = хук 1; пост 2 = цифри METR [S8]; пост 3 = схема конвеєра (картинка); пост 4 = кладовище з реальною брехнею з демо; пост 5 = встановлення; пост 6 = питання до аудиторії.
-- **YouTube (8–10 хв):** хук 3 у перші 10 секунд, далі живий прогін на простій ідеї, кульмінація — видалення команди в прямому ефірі.
-- **TikTok / Shorts / Reels (до 45 с, вертикально):** хук 7 українською, анімація конвеєра, червоний штамп «ВИБУВ», фінал — «Посилання в профілі». Shorts дозволяють до 3 хвилин [S18], але тримаємо до 45 с, щоб підходило всім стрічкам.
+- **X (thread, 6 posts):** post 1 = hook 1; post 2 = the METR numbers [S8]; post 3 = the line as a picture; post 4 = a real graveyard entry from the demo; post 5 = install; post 6 = a question to the audience.
+- **YouTube (8 to 10 minutes):** hook 3 in the first 10 seconds, then a live run on a simple idea; the climax is a team deleted on screen.
+- **TikTok, Shorts, Reels (under 45 seconds, vertical):** hook 1, the line animation, the red "ELIMINATED" stamp, end card "Link in bio". Shorts allow up to 3 minutes [S18], but we stay under 45 seconds so the same cut fits every feed.
+- **Hacker News:** "Show HN: Skillsmith, rival AI teams where a false claim deletes the team". The first comment explains the clean room, the ledger and the hidden checks.
 
 <!-- ss:kill-list -->
-## Викинуто (і чому)
+## Cut, and why
 
 <!-- ss:slop-ignore -->
-- "Revolutionize the way you build apps" — порожнє слово, нічого не обіцяє конкретно.
-- "The future of software development is here" — штамп, читач прокручує далі.
-- "10x your productivity" — цифра без джерела.
-- «Унікальне інноваційне рішення для кожного» — два слова-паразити і нуль змісту.
-- "Not just a tool, it's a whole team" — шаблон «не просто X, а Y».
+- "Revolutionize the way you build apps": an empty word that promises nothing specific.
+- "The future of software development is here": a cliché; readers scroll past.
+- "10x your productivity": a number with no source.
+- "Not just a tool, it's a whole team": the "not just X, it's Y" pattern.
+- "Unleash the power of AI agents": two slop phrases, zero content.
 <!-- /ss:slop-ignore -->

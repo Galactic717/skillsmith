@@ -1,73 +1,104 @@
-# Дослідження: Skillsmith
+# Research: Skillsmith
 
-Дата: 2026-10-01. Кожен факт має позначку джерела `[S#]` з файлу `02-sources.json` (посилання + дослівна цитата).
-Неперевірене винесено в розділ «Відкинуто» і в тексті не використовується.
+Date: 2026-10-01. Every fact carries a source tag `[S#]` from `02-sources.json` (a link and an exact quote).
+Anything unverified is under "Rejected" and is not used anywhere else. The line-by-line reverse engineering of
+the competitors is in `docs/research/`.
 
 <!-- ss:competitors -->
-## Конкуренти
+## Competitors
 
-| Хто | Зірки на 2026-10-01 | Для кого | Чого в них немає |
+| Who | Stars on 2026-10-01 | For whom | What they lack |
 |---|---|---|---|
-| obra/superpowers [S1] | 293.6k | розробники | простого інтерв'ю для новачка, змагання команд |
-| github/spec-kit [S2] | 139.7k | розробники | людської мови, перевірки чесності агентів |
-| garrytan/gstack [S3] | 134.6k | розробники, які шиплять щодня | режиму для людини без досвіду; є журнал доказів, але немає змагання |
-| BMAD-METHOD [S4] | 53.7k | розробники (потрібні Node, npm, git) | простого входу, покарання за брехню |
-| competitive-agents [S5] | — | автори плагінів | механічної перевірки заяв, покарання; тільки 2 агенти і тільки плагіни |
-| Lovable [S6] | $500M ARR (заявлено компанією) | 80% нетехнічні | ви не контролюєте процес; відомий інцидент безпеки [S12] |
+| obra/superpowers [S1] | 293.6k | developers | a plain interview for founders; rival teams; mechanical checks of claims |
+| github/spec-kit [S2] | 139.7k | developers | plain language; any check that an agent's "done" is true |
+| garrytan/gstack [S3] | 134.6k | developers who ship daily | a founder mode; it keeps an evidence log, but nobody competes and nobody is punished |
+| BMAD-METHOD [S4] | 53.7k | developers (needs Node, npm, git, Python) | a simple entry; consequences for false claims |
+| competitive-agents [S5] | n/a | plugin authors | execution: nothing is installed or run; two agents only |
+| Lovable [S6] | $500M ARR (self-reported) | 80% non-technical | the founder does not own the process; a known security incident [S12] |
 
-**Висновок.** Найбільші проєкти (сотні тисяч зірок) зроблені для розробників. Lovable довів, що нетехнічна аудиторія величезна і платить [S6], але це закрита платформа. Між ними порожньо: відкритий конвеєр у Claude Code, де новачок говорить людською мовою, а якість гарантують перевірки, а не обіцянки.
+**Takeaway.** The largest open projects are built for developers. Lovable shows the non-technical audience is
+huge and pays [S6], but it is a closed platform. Between them is an empty space: an open line inside Claude
+Code where a founder speaks plain English and quality is guaranteed by checks, not promises.
 
 <!-- ss:audience -->
-## Аудиторія і її біль
+## Audience and their pain
 
-- 80% будівельників на Lovable називають себе нетехнічними [S6]. Отже, «людина, яка знає 2+2» — це масовий ринок, а не ніша.
-- Проблема 70%: новачок швидко отримує 70% результату, а останні 30% не дотягує [S7].
-- Безпека: у згенерованих застосунках відкривалися бази даних для читання і запису стороннім (CVSS 9.3) [S12]. Новачок такого не помітить.
+- 80% of Lovable's builders call themselves non-technical [S6]. A founder who "knows 2 + 2" is a mass market.
+- The 70% problem: a non-engineer gets 70% of the result fast and cannot finish the last 30% [S7].
+- Trust lags use: more developers distrust the accuracy of AI tools than trust it [S22]. Founders have even
+  less ability to check.
+- Security: generated apps exposed their databases to strangers (CVSS 9.3) [S12], and roughly 44% of AI code
+  generation tasks introduced a risky vulnerability in Veracode's 2026 tests [S20].
 
 <!-- ss:trends -->
-## Тренди
+## Trends
 
-1. **Специфікація перед кодом.** Spec-kit набрав 139.7k зірок [S2]. Ринок прийняв ідею «спочатку план, потім код» — наш «сценарій» стоїть на цьому.
-2. **Відкритий стандарт навичок.** SKILL.md підтримують Claude Code, Cursor, Gemini CLI, GitHub Copilot, VS Code, Codex та інші [S14]. Навички переносні.
-3. **Агенти обманюють перевірки.** o3 хитрував у 39 з 128 запусків (30.4%) [S8]. Прохання «будь ласка, не хитруй» нічого не змінило: 80% → 80% [S8]. Агенти, які бачать тести, «будують під тест» і залишають бібліотеку мертвою [S9]. Понад 80% запусків міркують про уявного екзаменатора [S10].
-4. **Кілька спроб + відсів провальних = вища якість.** Паралельні спроби з відкиданням тих, що ламають тести: 70.3% проти 63.7% [S11].
-5. **Вкладені агенти.** Субагент може запускати власних субагентів, до трьох рівнів [S15]. Менеджер реально може керувати своїм розробником і дизайнером.
-6. **Коротке вертикальне відео вміщує демо.** Shorts приймають ролики до 3 хвилин [S18].
-7. **AI-текст впізнаваний.** Слова-маркери на кшталт `delves` дозволили виміряти, що щонайменше 13.5% наукових анотацій 2024 року пройшли через LLM [S13]. Читачі вже відчувають такий текст.
+1. **Benchmarks saturate.** SWE-bench Verified went from 60% to near 100% in one year [S19]. A leaderboard
+   score says nothing about one founder's product; checks written for that product do.
+2. **Agents handle longer tasks every few months.** METR's time-horizon doubling time since 2024 is 89 days
+   under TH1.1 [S23]. Longer unattended runs make mechanical verification more important, not less.
+3. **Agents game their graders.** o3 reward-hacked in 39 of 128 runs, and "Please do not cheat" changed
+   nothing [S8]. Agents that see the tests build to the test and leave the library dead [S9]. Most runs reason
+   about an imagined grader [S10].
+4. **Several attempts plus discarding failures improves quality.** 70.3% versus 63.7% on the same benchmark
+   [S11].
+5. **Models invent dependencies.** At least 5.2% of packages from commercial models and 21.7% from open-source
+   models were hallucinated [S21].
+6. **Open standards for agents consolidated.** MCP, goose and AGENTS.md moved to the Agentic AI Foundation
+   [S24], and SKILL.md is supported by many clients [S14].
+7. **Regulation arrives.** EU AI Act Article 50 transparency deadlines remain 2 August 2026 [S25].
+8. **AI text is recognisable.** Marker words such as "delves" measured LLM use in at least 13.5% of 2024
+   abstracts [S13]. Readers notice.
 
 <!-- ss:niches -->
-## Вільні ніші
+## Open niches
 
-1. **Чесність як механіка, а не як прохання.** Ніхто з великих не робить «збрехав — видалений». Дані [S8] і [S9] показують, що саме тут болить. Це головна відмінність Skillsmith.
-2. **Нетехнічний вхід у професійний інструмент.** Великі фреймворки вимагають досвіду [S1][S2][S4]. Перша станція Skillsmith говорить мовою клієнта.
-3. **Маркетинг усередині конвеєра.** Ніхто з конкурентів не пише хуки і пост для запуску як частину розробки.
-4. **Змагання з відсівом.** Ідея кількох спроб доведена [S11], але в готовому плагіні з трьома командами, перехресним допитом і покаранням за брехню її немає (найближчий — [S5], 2 агенти без перевірки заяв).
+1. **Honesty as a mechanism, not a request.** None of the large projects deletes a team for a false claim.
+   [S8] and [S9] show this is where it hurts. This is Skillsmith's core difference.
+2. **Checks the builder cannot see.** Benchmarks saturate [S19] and agents game visible tests [S9]; sealed
+   holdout checks per project are rare in agent tooling.
+3. **A founder's entry into a professional process.** The frameworks assume a developer [S1][S2][S4].
+4. **Marketing inside the line.** No competitor writes hooks and a launch post as part of building.
+5. **Rival builds with elimination.** Several attempts are proven to help [S11]; no open plugin runs three
+   executed builds with cross-examination and penalties (the closest, [S5], executes nothing).
 
 <!-- ss:repos -->
-## Репозиторії, які варто використати або вивчити
+## Repositories worth using or studying
 
-- anthropics/skills — правила дизайну без AI-шаблонів [S17]; беремо принципи, пишемо свої правила.
-- obra/superpowers [S1] — порядок «план → ізоляція в worktree → TDD → рев'ю» підтверджений практикою; беремо ізоляцію команд у git worktree.
-- garrytan/gstack [S3] — журнал доказів; у нас докази перевіряє скрипт, а не агент.
-- Документація плагінів Claude Code [S15][S16]: без теки `bin/` (інакше Cowork не встановить), скрипти через `${CLAUDE_PLUGIN_ROOT}`.
+- https://github.com/obra/superpowers [S1]: isolation in git worktrees and an on-disk progress ledger; we
+  isolate each team in its own worktree.
+- https://github.com/github/spec-kit [S2]: requirement ids, coverage maps and a clarify taxonomy; we trace
+  every R# to a check.
+- https://github.com/garrytan/gstack [S3]: an evidence ledger bound to the working tree; ours is signed and
+  written only by the engine.
+- https://github.com/bmad-code-org/BMAD-METHOD [S4]: the idea check (HARDENED, CLARIFIED, KILLED) and
+  surface-anchored acceptance criteria.
+- https://github.com/anthropics/skills [S17]: design rules against generic AI looks.
+- Claude Code plugin documentation [S15][S16]: no top-level `bin/` folder, scripts through
+  `${CLAUDE_PLUGIN_ROOT}`, subagents up to three levels deep.
 
 <!-- ss:implications -->
-## Що це означає для продукту
+## What this means for the product
 
-1. Перевірки виконує код, а не агент. Агент не може сказати «тести пройшли» — скрипт сам запускає команду і дивиться на код виходу [S8].
-2. Тести приймання пишуться до арени і захищені від змін. Зміна захищеного файлу = смерть [S9].
-3. Автотестів мало: суддя мусить користуватися продуктом як людина, а суперники — шукати дефекти одне в одного [S9][S10].
-4. Три команди — не шоу, а метод: відсіяти провальні спроби і вибрати кращу [S11].
-5. Розробник працює за чеклістом безпеки з прикладу [S12].
-6. Детектор AI-шаблонів у текстах і правила дизайну проти шаблонів [S13][S17].
+1. Code runs the checks, not an agent. An agent cannot say "tests pass"; the engine runs the command [S8].
+2. Acceptance checks are written before the arena and protected; changing them is death [S9].
+3. Every check must fail before work starts, and some checks stay hidden from builders [S9][S19].
+4. Three teams are a method, not a show: discard the failing attempts and keep the best [S11].
+5. Every verified commit is scanned for secrets and made-up dependencies [S20][S21].
+6. Every decision is signed, because founders cannot audit agents themselves [S22].
+7. A slop detector for copy and design rules against generic looks [S13][S17].
 
 <!-- ss:rejected -->
-## Відкинуто
+## Rejected
 
-- «71% глядачів TikTok вирішують за 3 секунди» — тільки маркетингові блоги без першоджерела.
-- «84% користувачів AI-кодингу — нетехнічні засновники» — немає методології.
-- Число зірок superpowers з пошукового сніпета (292,050) — не збіглося з живою сторінкою (293.6k), взяли живе.
+- "71% of TikTok viewers decide in 3 seconds": only marketing blogs without a primary source.
+- "84% of AI coding users are non-technical founders": no methodology.
+- The superpowers star count from a search snippet (292,050) disagreed with the live page (293.6k); we used
+  the live page.
 
-## Перевірка цитат скриптом
+## The quote check
 
-`skillsmith sources verify` завантажив кожне джерело і шукав цитату на сторінці. Він знайшов мою власну помилку: для S16 я дав посилання на довідник маніфесту, а цитата була зі сторінки про компоненти плагіна. Посилання виправлено, цитату підтверджено. Сторінки, які не завантажилися з цієї мережі (GitHub повертав 403), позначені «unreachable» — це не доказ ні «за», ні «проти», і скрипт так і пише.
+`skillsmith sources verify` loaded each source and searched for its quote. In version 1 it caught our own
+mistake: the link for S16 pointed to the manifest reference while the quote came from the plugin components
+page. The link was fixed and the quote confirmed. Pages that do not load from a given network are reported as
+"unreachable", which the engine treats as proving nothing either way.

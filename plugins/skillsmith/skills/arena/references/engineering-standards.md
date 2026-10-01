@@ -10,16 +10,24 @@ ones that broke.
   paths and texts there are fixed; acceptance checks depend on them.
 - Pick the version of each dependency that is current and stable. Pin it in
   the lockfile. Fewer dependencies beat clever ones.
+- Never add a package you have not seen on its registry page. Models invent
+  plausible names; attackers register them. The engine checks every
+  dependency in `package.json` and `requirements.txt` against the registry,
+  and a made-up one disqualifies the team.
 - Run every acceptance check once against the empty project to see them fail.
 
 ## While coding
 
 - **Walking skeleton first.** Make the thing install, start and show one real
   screen end to end before adding features.
-- **Small commits with real messages.** `feat: order form saves to the list`,
-  not `update`. Commit after each working step.
-- **Tests that test behaviour.** For every must-have, at least one test that
-  would fail if the feature broke. Run them before every commit.
+- **Small commits with real messages.** The first line is a short
+  imperative summary ("Save trials to local storage"), the body says why.
+  Keep each change small enough to review. Commit after each working step.
+- **Tests that test behaviour.** For every requirement, at least one test
+  that would fail if the feature broke. Run them before every commit.
+- **Code health over perfection.** A change is good when it leaves the code
+  better than it was (Google's review standard). Over-engineering is a
+  defect too.
 - **Validate at the edges.** Everything that comes from a user, a URL or a
   file is checked: type, length, format. Errors become clear messages, not
   stack traces.
@@ -46,7 +54,7 @@ ones that broke.
 - Never touch another team's worktree.
 - Never run destructive commands outside your worktree, and never push.
 
-## The README is for the client
+## The README is for the founder
 
 Write `README.md` for someone who has never opened a terminal:
 

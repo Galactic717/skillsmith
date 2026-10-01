@@ -1,32 +1,31 @@
 {
-  "version": 1,
-  "setup": ["npm install"],
+  "version": 2,
+  "setup": ["npm install --no-audit --no-fund"],
   "protected": ["tests/acceptance/**"],
   "checks": [
     {
       "id": "A1",
-      "scene": "1.1",
-      "title": "The project installs and builds without errors",
+      "title": "Adding a trial with an end date shows it in the list",
+      "covers": ["R1"],
       "type": "command",
-      "run": "npm run build",
-      "expect": { "exit": 0 },
-      "weight": 2
-    },
-    {
-      "id": "A2",
-      "scene": "2.1",
-      "title": "The home page opens and shows the main headline",
-      "type": "http",
-      "start": "npm run start",
-      "url": "http://localhost:3000/",
-      "expect": { "status": 200, "includes": "Your headline here" },
-      "timeout": 90,
+      "run": "node --test tests/acceptance/add-trial.test.mjs",
       "weight": 3
     },
     {
+      "id": "A2",
+      "title": "The home page opens and shows the main headline",
+      "covers": ["R2"],
+      "type": "http",
+      "start": "npm run start",
+      "url": "http://localhost:3000/",
+      "expect": {"status": 200, "includes": "Never pay for a forgotten trial"},
+      "timeout": 90,
+      "weight": 2
+    },
+    {
       "id": "A3",
-      "scene": "3.1",
       "title": "README explains how to run the product",
+      "covers": ["R3"],
       "type": "file_contains",
       "path": "README.md",
       "pattern": "npm run start",
@@ -34,12 +33,13 @@
     },
     {
       "id": "A4",
-      "scene": "3.1",
-      "title": "No secret keys in the code",
+      "title": "No live payment keys in the code",
+      "covers": ["R3"],
       "type": "not_contains",
-      "glob": "**/*.{js,ts,jsx,tsx,html,json}",
+      "glob": "**/*.{js,mjs,ts,tsx,html,json}",
       "pattern": "sk_live_",
-      "weight": 2
+      "guard": true,
+      "weight": 1
     }
   ]
 }

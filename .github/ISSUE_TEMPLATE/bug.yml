@@ -1,0 +1,24 @@
+name: Bug report
+description: Something in Skillsmith did not work as described.
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: The command or station, what you expected, what you saw.
+    validations:
+      required: true
+  - type: textarea
+    id: output
+    attributes:
+      label: Output
+      description: Paste the output of `skillsmith status` and `skillsmith doctor`. Remove anything private.
+      render: text
+  - type: input
+    id: versions
+    attributes:
+      label: Versions
+      description: Skillsmith version (`skillsmith version`), Node.js version, OS.
+    validations:
+      required: true

@@ -1,20 +1,34 @@
 # Skillsmith
 
-**Idea in. Verified product out. Liars get deleted.**
+**Your idea in. A verified product out. Liars get deleted.**
 
-[Українською](README.uk.md) · [Site](https://galactic717.github.io/skillsmith/) · [How it works](docs/architecture.md) · [Marketing kit](marketing/README.md)
+[Site](https://galactic717.github.io/skillsmith/) · [How it works](docs/architecture.md) · [Research](docs/research/README.md) · [Marketing kit](marketing/README.md)
 
-Skillsmith is a free plugin for Claude Code that turns a plain-language idea
-into a working product. Seven AI specialists interview you, research the
-market, write the copy and script the build. Then three rival managers race
-their own developer and designer to build it. A script checks every claim they
-make. A team that lies is deleted.
+Skillsmith is a free Claude Code plugin for founders who want to build their
+own product and do not program. You describe the product in plain words. A
+crew of AI specialists interviews you, tests the idea, researches the market,
+writes the launch copy and scripts the build. Then three rival managers race
+their own developer and designer to build it. A program, not an AI, checks
+every claim they make, some checks are hidden from them, and a team that lies
+is deleted.
 
 ![Three teams in the arena: one is eliminated for a false claim, the winner is merged](site/media/arena.gif)
 
-It is built for people who have an idea and no programming background, and
-for developers who are tired of hearing "done, all tests pass" from an AI that
-did not run the tests.
+## Why
+
+- **Agents game their graders.** METR found o3 gamed its scoring in 39 of 128
+  runs, and adding "Please do not cheat." to the prompt left the rate at 80%
+  on the task they measured ([METR](https://metr.org/blog/2025-06-05-recent-reward-hacking/)).
+- **Trust lags use.** More developers distrust the accuracy of AI tools (46%)
+  than trust it (33%) ([Stack Overflow 2025](https://survey.stackoverflow.co/2025/ai)).
+  A founder who cannot read code has even less to go on.
+- **Security did not catch up.** Roughly 44% of AI code generation tasks
+  introduced a risky vulnerability in Veracode's 2026 tests
+  ([Veracode](https://www.veracode.com/blog/2026-genai-code-security-report-ai-risk/)),
+  and models invent package names: at least 5.2% for commercial models and
+  21.7% for open-source models ([Spracklen et al.](https://arxiv.org/abs/2406.10279)).
+
+So Skillsmith stops asking agents to be honest and checks them instead.
 
 ## Install
 
@@ -28,26 +42,27 @@ Inside Claude Code:
 Then, in an empty folder:
 
 ```
-/skillsmith:start cake orders for my bakery
+/skillsmith:start a site that warns me before a free trial charges my card
 ```
 
-You also need **git** and **Node.js 18+**. Skillsmith checks for both and tells
-you where to get them. Write in any language; the line answers in yours.
+You also need **git** and **Node.js 20+**. Skillsmith checks for both and
+tells you where to get them.
 
 ## The line
 
 | # | Station | Who works | What you experience | Output in `.skillsmith/` |
 |---|---|---|---|---|
-| 1 | Interview | Interviewer | Simple questions, one at a time, like a developer with a new client. No technical questions. A read-back you confirm. | `01-brief.md` |
-| 2 | Research | 4 researchers in parallel | Competitors, real user voices, trends, open niches, GitHub repos. Every fact has a link and a word-for-word quote; a script loads the page and looks for it. | `02-research.md`, `02-sources.json` |
-| 3 | Hooks | Hook writer | Opening lines, in-product copy and a launch post for one main platform. Numbers need a source. A detector rejects AI-slop phrases in English, Ukrainian and Russian. | `03-hooks.md` |
-| 4 | Screenplay | Screenwriter | The build written like a film: cast, acts, scenes, contracts. Every scene ends in acceptance checks written before any code. | `04-screenplay.md`, `04-acceptance.json` |
-| 5 | Arena | 3 managers, each with a developer and a designer; 1 auditor | Three teams build the same screenplay in separate git worktrees. Claims are verified, rivals cross-examine, the auditor scores, you crown the winner. | the product, `scoreboard.md`, `graveyard.md` |
-| 6 | Ship | Conveyor | The winner is merged and re-verified; a README for non-programmers, a launch kit, a report and a dashboard. | `REPORT.md`, `dashboard.html` |
+| 1 | Interview | Interviewer | Plain questions, one at a time. The strongest objection to your idea, and your answer. A brief with numbered requirements (R1, R2 ...) and measurable success criteria that you confirm. | `01-brief.md` |
+| 2 | Research | 4 researchers in parallel | Competitors, real complaints, trends, open niches, GitHub repositories. Every fact has a link and a word-for-word quote; the engine loads the page and looks for it. | `02-research.md`, `02-sources.json` |
+| 3 | Hooks | Hook writer | Opening lines, in-product copy and a launch post for one platform. Numbers need a source; a detector rejects AI-slop phrases. | `03-hooks.md` |
+| 4 | Screenplay | Screenwriter | The build written like a film. Every requirement gets a machine check; every check is run on the empty project first and must fail. Some checks are sealed where the builders cannot see them. | `04-screenplay.md`, `04-acceptance.json`, `04-vacuity.json` |
+| 5 | Arena | 3 managers, each with a developer and a designer; 1 auditor | Three teams build in separate git worktrees. The engine verifies each commit in a clean room, rivals cross-examine, a blind auditor scores, you crown the winner. | the product, `scoreboard.md`, `graveyard.md` |
+| 6 | Ship | Release crew | The winner is merged and re-verified; a README for non-programmers, a launch kit, a report and a dashboard. | `REPORT.md`, `dashboard.html` |
 
-A script guards every gate. A station is done only when its output passes the
-checks: sections present, no placeholders, the client's confirmation recorded,
-sources verified, copy free of slop, acceptance checks valid.
+The engine guards every gate. A station is done only when its output passes:
+sections present, no placeholders, your confirmation recorded, every
+requirement traced to a check, sources verified, copy free of slop, every
+check proven able to fail.
 
 ## The arena
 
@@ -59,29 +74,31 @@ sources verified, copy free of slop, acceptance checks valid.
 
 The rules (full text: [the Law](plugins/skillsmith/skills/start/references/law.md)):
 
-1. **Evidence or silence.** Every claim carries a check a script can run. "Not verified" is always allowed and never punished.
+1. **Evidence or silence.** Every claim carries a check the engine runs. "Not verified" is always allowed and never punished.
 2. **A claim that fails its own check is a lie.** The team's worktree and branch are deleted on the spot; the lie and the output that disproved it go to `graveyard.md`.
 3. **Protected files are untouchable.** A commit that changes `.skillsmith/` or a protected test is tampering. Same fate.
-4. **Accuse only with proof.** An accusation the script cannot reproduce deletes the accuser.
-5. **The judge checks your commit, not your desk.** Every verdict runs in a fresh, detached worktree of the team's last commit.
+4. **Accuse only with proof.** An accusation the engine cannot reproduce deletes the accuser.
+5. **Hidden checks stay hidden.** They run only at official verification, never in the private precheck, so building to the visible tests shows up on the scoreboard.
+6. **The judge checks your commit, not your desk.** Every verdict runs in a fresh worktree of the team's last commit, outside the project.
 
-Losing honestly is fine: the branch is kept as `skillsmith/retired/<team>`.
+Losing honestly is fine: the branch is kept as `skillsmith/retired/<team>`,
+and the winner can borrow its best parts through **fusion**, which re-runs
+every check and rejects the merge if anything breaks.
 
-**Score:** acceptance checks 50 · verified claims up to 10 · proven defects in rivals +3 each (up to 9) · defects proven against you −4 each · auditor up to 30. The auditor must cite what it saw for every point. You pick the winner; the scoreboard only recommends.
+**Score:** visible checks 40 · hidden checks 20 · proven claims up to 10 ·
+proven defects in rivals +3 each (up to 9) · defects proven against you −4
+each · auditor up to 30 · a committed secret or a made-up dependency −10 and
+no crown. You pick the winner; the scoreboard only recommends, and it says so
+when the top two are too close to call.
 
-Why a script instead of a stricter prompt: METR found o3 gamed its scoring in
-39 of 128 runs, and adding "Please do not cheat." to the prompt left the rate at
-80% on the task they measured ([source](https://metr.org/blog/2025-06-05-recent-reward-hacking/)).
-Why three teams: several attempts with the failing ones thrown away scored
-70.3% against 63.7% on SWE-bench Verified in Anthropic's report
-([source](https://www.anthropic.com/news/claude-3-7-sonnet)).
+## Records you can trust
 
-## Cost and modes
-
-Three teams use roughly three times the tokens of one. Before the arena opens
-you choose 3 teams (best result), 2, or 1 (still fully verified, no rival).
-Research and hooks can be skipped at the client's request; the interview and
-the screenplay cannot, because the arena is built on them.
+Every official decision (approvals, sealed checks, verdicts, deaths, the
+crown) is appended to `.skillsmith/ledger.jsonl`: a SHA-256 hash chain signed
+with an HMAC key that lives outside the project. `skillsmith ledger verify`
+detects any edited or deleted entry, and scoring refuses a verdict whose file
+no longer matches its signed hash. It is tamper-evident, not tamper-proof;
+[SECURITY.md](SECURITY.md) explains exactly what it does and does not stop.
 
 ## Commands
 
@@ -91,63 +108,60 @@ the screenplay cannot, because the arena is built on them.
 | `/skillsmith:status` | Where the project is, who is alive, the dashboard |
 | `/skillsmith:interview` … `/skillsmith:ship` | Run one station directly |
 
-The engine behind them is one Node.js script with no dependencies:
-`node plugins/skillsmith/scripts/skillsmith.mjs --help`. Highlights:
+The engine behind them (`node plugins/skillsmith/engine/skillsmith.js help`):
 
 ```
 skillsmith status                      the line and the arena at a glance
 skillsmith advance <station>           pass the gate, move on
-skillsmith slop <file>                 find AI-slop phrases
+skillsmith brief                       requirements, success criteria, idea check
+skillsmith acceptance trace            every requirement mapped to its checks
+skillsmith acceptance vacuity          prove every check fails before work starts
+skillsmith holdout seal                hide extra checks from the builders
 skillsmith sources verify              load every source, look for its quote
-skillsmith verify --acceptance FILE    run acceptance checks in a folder
-skillsmith arena precheck <team>       private dry run: nobody dies
-skillsmith arena verify <team>         the official check
+skillsmith slop <file>                 find AI-slop phrases
+skillsmith safety                      committed secrets and made-up dependencies
+skillsmith arena verify --all          official check of every team, in parallel
 skillsmith arena accuse <team>         run a team's accusations
 skillsmith arena crown [team]          merge the winner
+skillsmith arena fuse --from <team>    borrow a loser's strength, re-verify
+skillsmith ledger verify               check the signed record of every decision
 skillsmith dashboard                   one HTML page with the whole story
 ```
 
+## Engineering
+
+- The engine is strict TypeScript (`engine/src`), compiled to dependency-free
+  JavaScript that is committed in `plugins/skillsmith/engine`. CI fails if the
+  two drift apart.
+- Style and tooling follow Google's public standards: the TypeScript style
+  guide (named exports, `unknown` at every boundary, JSDoc on exports), gts
+  compiler and formatter settings, and the eng-practices review rules.
+- CI: lint, typecheck, format, tests on Node 20, 22 and 24 on Linux and
+  macOS, an 85% coverage floor, CodeQL and OpenSSF Scorecard (when public),
+  dependency review, read-only tokens and actions pinned to commit hashes.
+- `npm test` runs 46 tests, including a whole arena in real git repositories:
+  a liar deleted, a tamperer deleted, a false accuser deleted, hidden checks
+  scored, a forged verdict refused, the winner merged and a fusion re-verified.
+
 ## Proof it works
 
-- `npm test` runs 28 tests, including full arenas in real git repositories: a liar deleted, a tamperer deleted, a false accuser deleted, an honest loser retired, the winner merged.
-- `npm run demo` plays a scripted arena on a demo bakery project and leaves the dashboard on disk. The terminal lines in the videos come from this run.
-- Skillsmith went through its own line: [brief](docs/dogfood/01-brief.md), [research with 18 checked sources](docs/dogfood/02-research.md), [hooks](docs/dogfood/03-hooks.md), [screenplay](docs/dogfood/04-screenplay.md). The quote checker caught a wrong link in that research; the fix is recorded there.
-- `npm run verify:self` runs this repository's own acceptance checks ([04-acceptance.json](docs/dogfood/04-acceptance.json)), including `claude plugin validate`.
+- Skillsmith went through its own line: [brief](docs/dogfood/01-brief.md),
+  [research with 25 checked sources](docs/dogfood/02-research.md),
+  [hooks](docs/dogfood/03-hooks.md), [screenplay](docs/dogfood/04-screenplay.md).
+  `npm run verify:self` runs this repository's own 19 acceptance checks.
+- [docs/research](docs/research/README.md) holds the reverse engineering of
+  superpowers, spec-kit, gstack, BMAD, Anthropic's official plugins and
+  competitive-agents, the study of Google's engineering standards, and the
+  state of AI development in October 2026, with sources.
+- `npm run demo` plays a scripted arena on the TrialGuard example and leaves
+  the dashboard on disk. The terminal lines in the videos come from that run.
 
 ## Known limits
 
-- The quality of the product depends on the model your Claude Code runs; the line makes it honest, not omniscient.
-- The pre-edit hook blocks edits to protected files through Claude's edit tools; a shell command can still change them, which is why tampering is detected from the commits.
-- Design and taste cannot be checked by a script. They are scored by the auditor, with evidence, and you have the final word.
-- Online quote verification needs network access to the cited pages; a page that does not load is reported as unreachable, never as proof either way.
-- On Windows, checks run in Git Bash (which Claude Code needs there anyway).
-
-## Repository
-
-```
-.claude-plugin/marketplace.json   the marketplace (this repo)
-plugins/skillsmith/               the plugin: skills, agents, hooks, engine, templates
-tests/                            node:test suites, incl. end-to-end arenas
-docs/                             architecture and the dogfood run
-site/                             landing page and rendered media (GitHub Pages)
-media-src/                        sources of the videos and social cards
-marketing/                        launch copy for Reddit, X, YouTube, TikTok
-scripts/                          demo, media renderer, site builder
-```
-
-## Development
-
-```
-npm test                  # all tests
-npm run validate          # claude plugin validate .
-npm run verify:self       # this repo's own acceptance checks
-npm run demo              # scripted arena on a demo project
-npm run media             # re-render videos and cards (Playwright + ffmpeg)
-node scripts/build-site.mjs
-```
-
-## License
-
-No license has been chosen yet, so all rights are reserved by the author. Pick
-one before publishing: MIT for the widest reach, or a proprietary license if
-the code itself will be sold.
+- The quality of the product depends on the model your Claude Code runs; the
+  line makes it honest, not omniscient.
+- Check commands run with your user's permissions. Skillsmith refuses obvious
+  dangerous commands, but it is a build tool, not a sandbox.
+- Windows is supported through Git Bash, but CI runs on Linux and macOS only.
+- The repository has no license yet, which means all rights reserved until
+  the owner chooses one.

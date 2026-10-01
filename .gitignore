@@ -1,5 +1,9 @@
 node_modules/
+.build/
+coverage/
 .DS_Store
 *.log
 .skillsmith/arena/
+.skillsmith/holdout.json
 /tmp/
+evals/results/

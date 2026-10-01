@@ -1,6 +1,6 @@
 {
   "name": "skillsmith",
-  "description": "Skillsmith: an AI production line that turns a plain-language idea into a verified product.",
+  "description": "Skillsmith: an AI production line that turns a founder's idea into a verified product.",
   "owner": {
     "name": "Galactic717",
     "url": "https://github.com/galactic717"
@@ -9,8 +9,9 @@
     {
       "name": "skillsmith",
       "source": "./plugins/skillsmith",
-      "description": "Idea in, verified product out. Plain-language interview, research with checked quotes, anti-slop hooks, a screenplay with acceptance checks, and an arena where three rival teams build and liars get deleted.",
-      "category": "development"
+      "description": "Your idea in, a verified product out. A plain-language interview with an idea check, research with checked quotes, anti-slop launch copy, a screenplay with checks proven able to fail, and an arena where three rival teams build, hidden checks catch gaming and liars get deleted.",
+      "category": "development",
+      "version": "2.0.0"
     }
   ]
 }

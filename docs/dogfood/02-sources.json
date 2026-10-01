@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "accessed": "2026-10-01",
   "sources": [
     {
@@ -206,6 +206,83 @@
       "accessed": "2026-10-01",
       "quote": "Starting on October 15, you can upload Shorts up to 3 minutes long.",
       "claim": "Vertical videos can run up to 3 minutes on Shorts; our vertical cut stays under 60 s to also fit every other short-video feed.",
+      "status": "verified"
+    },
+    {
+      "id": "S19",
+      "title": "The 2026 AI Index Report",
+      "url": "https://hai.stanford.edu/ai-index/2026-ai-index-report",
+      "publisher": "Stanford HAI",
+      "kind": "research",
+      "accessed": "2026-10-01",
+      "quote": "On a key coding benchmark—SWE-bench Verified—performance rose from 60% to near 100% in a single year.",
+      "claim": "Public coding benchmarks are saturated, so a founder needs per-project checks, not leaderboard scores.",
+      "status": "verified"
+    },
+    {
+      "id": "S20",
+      "title": "2026 GenAI Code Security Report: AI Is Writing More of Your Code but Security Hasn't Caught Up",
+      "url": "https://www.veracode.com/blog/2026-genai-code-security-report-ai-risk/",
+      "publisher": "Veracode",
+      "kind": "research",
+      "accessed": "2026-10-01",
+      "quote": "roughly 44% of AI code generation tasks introduced a risky security vulnerability in tests",
+      "claim": "Security did not improve with model capability, so the engine scans every verified commit and the developer works from a checklist.",
+      "status": "verified"
+    },
+    {
+      "id": "S21",
+      "title": "We Have a Package for You! A Comprehensive Analysis of Package Hallucinations by Code Generating LLMs",
+      "url": "https://arxiv.org/abs/2406.10279",
+      "publisher": "Spracklen et al.",
+      "kind": "research",
+      "accessed": "2026-10-01",
+      "quote": "the average percentage of hallucinated packages is at least 5.2% for commercial models and 21.7% for open-source models",
+      "claim": "Models invent package names; the engine checks every dependency against its registry.",
+      "status": "verified"
+    },
+    {
+      "id": "S22",
+      "title": "AI | 2025 Stack Overflow Developer Survey",
+      "url": "https://survey.stackoverflow.co/2025/ai",
+      "publisher": "Stack Overflow",
+      "kind": "research",
+      "accessed": "2026-10-01",
+      "quote": "More developers actively distrust the accuracy of AI tools (46%) than trust it (33%)",
+      "claim": "Trust lags use; a product that replaces 'trust me' with a verdict on a commit meets the real gap.",
+      "status": "verified"
+    },
+    {
+      "id": "S23",
+      "title": "Time Horizon 1.1",
+      "url": "https://metr.org/blog/2026-1-29-time-horizon-1-1/",
+      "publisher": "METR",
+      "kind": "research",
+      "accessed": "2026-10-01",
+      "quote": "We also report below the doubling time since 2024: this was at 109 days under TH1, and falls to 89 days under TH1.1.",
+      "claim": "Agents take on longer tasks every few months, so unattended runs need mechanical verification.",
+      "status": "verified"
+    },
+    {
+      "id": "S24",
+      "title": "Linux Foundation Announces the Formation of the Agentic AI Foundation (AAIF)",
+      "url": "https://www.linuxfoundation.org/press/linux-foundation-announces-the-formation-of-the-agentic-ai-foundation",
+      "publisher": "Linux Foundation",
+      "kind": "official",
+      "accessed": "2026-10-01",
+      "quote": "founding contributions of leading technical projects including Anthropic’s Model Context Protocol (MCP), Block’s goose, and OpenAI’s AGENTS.md",
+      "claim": "Open agent standards consolidated; the repository ships AGENTS.md so any agent can follow its rules.",
+      "status": "verified"
+    },
+    {
+      "id": "S25",
+      "title": "Yes, August 2 Still Matters: The EU Approved a High-Risk AI Delay, but Most Transparency Obligations Remain",
+      "url": "https://www.joneswalker.com/en/insights/blogs/ai-law-blog/yes-august-2-still-matters-the-eu-approved-a-high-risk-ai-delay-but-most-trans.html",
+      "publisher": "Jones Walker LLP",
+      "kind": "article",
+      "accessed": "2026-10-01",
+      "quote": "most relevant Article 50 deadlines remain August 2",
+      "claim": "Products that talk to people through AI must disclose it in the EU; the security checklist covers it.",
       "status": "verified"
     }
   ],

@@ -1,101 +1,101 @@
 # Question bank
 
-Plain phrasings for each area of the brief. Use them as starting points, not a
-script. Adapt to what the client already said. English first, Ukrainian below.
+Plain phrasings for each area of the brief. Use them as starting points, not
+a script, and adapt to what the founder already said.
 
 ## Opening
 
 - "Tell me the idea the way you'd tell a friend. One or two sentences is enough."
-- «Розкажіть ідею так, як розповіли б другові. Одного-двох речень досить.»
 
-## The idea (summary)
+## The idea
 
 - "If it already existed, what would someone do with it on a normal Tuesday?"
-- «Якби це вже існувало, що б людина з цим робила в звичайний вівторок?»
 
-## People (audience)
+## The founder
 
-- "Who is the first person you picture using it? What do they do for a living?"
-- "Roughly how many of them: ten, a hundred, thousands?"
-- «Кого ви першим уявляєте за цим? Чим ця людина займається?»
-- «Приблизно скільки таких людей: десять, сотня, тисячі?»
+- "Why this idea, and why you?"
+- "Picture it six months from now. What would make you call it a success: some
+  extra income, a startup, something to show clients?"
+- "How many hours a week can you give it?"
 
-## Pain
+## People
 
-- "When did this problem last happen? What did you or they do about it?"
-- "What does it cost today: time, money, nerves, lost customers?"
-- «Коли ця проблема траплялася востаннє? Що ви тоді зробили?»
-- «Скільки це коштує зараз: часу, грошей, нервів, втрачених клієнтів?»
+- "Who is the first person you picture using it? What's their day like?"
+- "Roughly how many people like that are there: ten, thousands, millions?"
 
-## Success (done)
+## Problem
 
-- "Imagine it's been running for a month. What has changed in your day?"
-- "What would make you say 'wow, that's exactly it'?"
-- "What would make you angry if it went wrong?"
-- «Уявіть, що воно працює вже місяць. Що змінилося у вашому дні?»
-- «Що змусить вас сказати "так, саме це"? А що розлютить, якщо піде не так?»
+- "When did this last happen to you or someone you know? What did they do?"
+- "What does it cost them today: time, money, nerves?"
+- "What do they use now instead, even if it's a notebook?"
 
-## Must / later / never (scope)
+## Must-haves
 
-- "If we could only build three things first, which three?"
+- "If it could only do three things on day one, which three?"
+- "Walk me through the first minute: they open it, then what?"
+- "You said it should be fast. What would feel fast: a second? Ten seconds?"
+
+## Success
+
+- "A month after launch, what number would make you happy? Sign-ups, sales,
+  people coming back?"
+- "What would make you stop working on it?"
+
+## Not now
+
 - "What can wait until people are already using it?"
-- "Is there anything it should definitely NOT do?"
-- «Якби можна було зробити спочатку лише три речі, які саме?»
-- «Що може почекати, поки люди вже користуються?»
-- «Чого воно точно НЕ повинно робити?»
+- "Is there anything it should definitely never do?"
 
-## Where (platform)
+## Where
 
 - "Will people use it mostly on a phone or on a computer?"
-- "Should it be a website, an app from the store, a chat bot, or something inside a tool you already use (Telegram, Google Sheets, Instagram)?"
-- «Люди користуватимуться здебільшого з телефона чи з комп'ютера?»
-- «Це має бути сайт, застосунок з магазину, чат-бот чи щось усередині інструмента, яким ви вже користуєтесь (Telegram, Google Таблиці, Instagram)?»
+- "Should it be a website, an app from the store, a browser extension, a chat
+  bot, or something inside a tool they already use?"
 
-## Taste (look)
+## Taste
 
 - "Give me three words for how it should feel."
-- "Name a site or app whose look you like. And one you can't stand."
-- «Три слова: яке враження воно має справляти?»
-- «Назвіть сайт чи застосунок, вигляд якого вам подобається. І той, що дратує.»
+- "Name an app whose look you like, and one you can't stand."
 
-## Limits
+## Sensitive things
 
-- "Is there a monthly budget for running it? Zero is a fine answer."
-- "Is there a date it must be ready by?"
-- "After launch, who will change texts or prices: you, someone else, nobody?"
-- «Чи є щомісячний бюджет на роботу сервісу? Нуль — теж нормальна відповідь.»
-- «Чи є дата, до якої воно має бути готове?»
-- «Хто після запуску змінюватиме тексти чи ціни: ви, хтось інший, ніхто?»
-
-## Sensitive things (data)
-
-Ask these only if the idea touches them. Never use the words "authentication",
-"database" or "GDPR" with the client.
+Ask only if the idea touches them. Never say "authentication", "database" or
+"GDPR" to the founder.
 
 | You need to know | Ask instead |
 |---|---|
-| Do we need accounts / auth? | "Will people need their own login, like email and password, or can anyone use it without signing in?" / «Людям потрібен свій вхід (пошта і пароль), чи можна користуватися без реєстрації?» |
-| Do we store personal data? | "Will people type in anything private: phone, address, health, money?" / «Чи вводитимуть люди щось особисте: телефон, адресу, здоров'я, гроші?» |
-| Payments? | "Will people pay inside it? Card, invoice, cash on delivery?" / «Чи платитимуть люди всередині? Карткою, рахунком, готівкою при отриманні?» |
-| Roles / admin panel? | "Besides customers, does anyone else need their own view, like you seeing all orders?" / «Окрім клієнтів, комусь потрібен свій окремий вигляд, наприклад вам — бачити всі замовлення?» |
-| Real-time / notifications? | "Should anyone get a message the moment something happens? By SMS, email, Telegram?" / «Чи має хтось отримати повідомлення одразу, як щось сталося? СМС, пошта, Telegram?» |
-| Integrations? | "Does it need to talk to something you already use: your shop, calendar, accounting?" / «Чи має воно працювати разом із тим, чим ви вже користуєтесь: магазин, календар, бухгалтерія?» |
-| Scale / performance? | "On the busiest day, how many people at once? A handful, hundreds, thousands?" / «У найзавантаженіший день скільки людей одночасно? Кілька, сотні, тисячі?» |
-| Offline? | "Will people sometimes use it without internet, like in a basement or on a train?" / «Чи користуватимуться без інтернету, наприклад у підвалі чи в потязі?» |
-| Languages? | "Which languages should it speak?" / «Якими мовами воно має говорити?» |
-| Content management? | "Who adds new products or texts, and how often?" / «Хто додає нові товари чи тексти і як часто?» |
+| Accounts? | "Do people need their own login, or can anyone use it without signing up?" |
+| Personal data? | "Will people type in anything private: phone, address, health, money?" |
+| Payments? | "Will people pay inside it? Once, or every month?" |
+| Admin view? | "Besides users, do you need your own view, like seeing everyone's sign-ups?" |
+| Notifications? | "Should anyone get a message when something happens? Email, phone, in the app?" |
+| Integrations? | "Does it need to work with something they already use: a calendar, a bank, a shop?" |
+| Scale? | "On the busiest day, how many people at once? A handful, hundreds, thousands?" |
+| Offline? | "Will people use it without internet, like on a plane?" |
+| Languages? | "Which languages should it speak?" |
+| AI inside? | "Will it talk to people using AI? Then we'll tell them they're talking to an AI." |
 
-## First users (launch)
+## Money
 
-- "Where will the first ten users come from? Your Instagram, a community, existing customers?"
-- «Звідки прийдуть перші десять користувачів? Ваш Instagram, спільнота, теперішні клієнти?»
+- "Will people pay for it? How much feels fair?"
+- "How much can it cost you to run each month? Zero is a fine answer."
 
-## Worries (risks)
+## First users
+
+- "Where will the first ten users come from? A community, your followers,
+  people you already know?"
+
+## Risks
 
 - "What worries you most about this?"
-- «Що вас найбільше турбує в цій ідеї?»
+
+## The idea check
+
+- Objection, as a skeptical buyer: "I already get bank alerts. Why would I add
+  another app?"
+- Objection, as a competitor: "We could add this as one button next week."
+- Then: "How would you answer that?"
 
 ## Read-back
 
 - "Here's what I understood. Tell me what's wrong or missing."
-- «Ось що я зрозумів. Скажіть, що не так або чого бракує.»

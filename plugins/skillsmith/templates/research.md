@@ -1,4 +1,4 @@
-# Research: <fill: project name>
+# Research: <fill: product name>
 
 Date: <fill: YYYY-MM-DD>. Every fact carries a source tag [S#] from 02-sources.json.
 Anything unverified is in "Rejected" and is not used anywhere else.
@@ -30,7 +30,7 @@ Anything unverified is in "Rejected" and is not used anywhere else.
 <!-- ss:repos -->
 ## Repositories worth using or studying
 
-- <fill: owner/repo, what to take from it, license>
+- <fill: https://github.com/owner/repo, what to take from it, its license, last commit date>
 
 <!-- ss:implications -->
 ## What this means for the product
