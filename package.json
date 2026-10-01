@@ -1,0 +1,17 @@
+{
+  "name": "skillsmith",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Skillsmith: an AI production line for Claude Code. Idea in, verified product out.",
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "validate": "claude plugin validate .",
+    "verify:self": "node plugins/skillsmith/scripts/skillsmith.mjs verify --acceptance docs/dogfood/04-acceptance.json",
+    "demo": "node scripts/demo-arena.mjs",
+    "media": "node scripts/render-media.mjs"
+  }
+}

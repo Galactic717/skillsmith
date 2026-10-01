@@ -1,0 +1,15 @@
+{
+  "team": "beta",
+  "accusations": [
+    {
+      "id": "X1",
+      "against": "alpha",
+      "text": "Alpha's order form accepts an empty phone number",
+      "evidence": {
+        "type": "command",
+        "run": "node \"$SKILLSMITH_PROBES/empty-phone.mjs\"",
+        "expect": { "exit": 0, "includes": "DEFECT: empty phone accepted" }
+      }
+    }
+  ]
+}

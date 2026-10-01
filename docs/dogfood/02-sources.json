@@ -1,0 +1,226 @@
+{
+  "version": 1,
+  "accessed": "2026-10-01",
+  "sources": [
+    {
+      "id": "S1",
+      "title": "obra/superpowers",
+      "url": "https://github.com/obra/superpowers",
+      "publisher": "GitHub",
+      "kind": "repo",
+      "accessed": "2026-10-01",
+      "quote": "An agentic skills framework & software development methodology that works.",
+      "claim": "Biggest skills framework for developers: 293.6k stars, 26.3k forks on 2026-10-01. Stages: brainstorming, worktrees, plans, subagent-driven development, TDD, code review, finishing a branch.",
+      "status": "verified"
+    },
+    {
+      "id": "S2",
+      "title": "github/spec-kit",
+      "url": "https://github.com/github/spec-kit",
+      "publisher": "GitHub",
+      "kind": "repo",
+      "accessed": "2026-10-01",
+      "quote": "Toolkit to help you get started with SDD or any other process!",
+      "claim": "Spec-driven development toolkit: 139.7k stars, 12.5k forks on 2026-10-01. Commands constitution, specify, plan, tasks, implement. Aimed at developers.",
+      "status": "verified"
+    },
+    {
+      "id": "S3",
+      "title": "garrytan/gstack",
+      "url": "https://github.com/garrytan/gstack",
+      "publisher": "GitHub",
+      "kind": "repo",
+      "accessed": "2026-10-01",
+      "quote": "Use Garry Tan's exact Claude Code setup",
+      "claim": "134.6k stars, 20.1k forks on 2026-10-01. Roles: CEO, designer, eng manager, release manager, QA, security. Has review receipts and an evidence ledger. Aimed at developers who ship.",
+      "status": "verified"
+    },
+    {
+      "id": "S4",
+      "title": "bmad-code-org/BMAD-METHOD",
+      "url": "https://github.com/bmad-code-org/BMAD-METHOD",
+      "publisher": "GitHub",
+      "kind": "repo",
+      "accessed": "2026-10-01",
+      "quote": "turn an idea or change request into working software without giving up the thinking",
+      "claim": "53.7k stars, 6.1k forks on 2026-10-01. Agile persona agents (product, architecture, UX, dev, testing). Requires Node.js, npm, git setup: aimed at developers.",
+      "status": "verified"
+    },
+    {
+      "id": "S5",
+      "title": "competitive-agents (Claude Code plugin by JayKim88)",
+      "url": "https://agentskill.sh/plugins/jaykim88/competitive-agents",
+      "publisher": "agentskill.sh",
+      "kind": "repo",
+      "accessed": "2026-10-01",
+      "quote": "Dual-agent competitive generation with cross-review, improvement rounds, and judge evaluation for plugin creation",
+      "claim": "Closest competitor to the arena idea: two agents, cross-review, a judge, the user picks. Limited to generating Claude Code plugins. No mechanical verification of claims, no penalty for lying.",
+      "status": "verified"
+    },
+    {
+      "id": "S6",
+      "title": "Lovable: $500M ARR, 146 staff, 80% non-technical builders",
+      "url": "https://thenextweb.com/news/lovable-build-economy-500m-arr-vibe-coding",
+      "publisher": "The Next Web",
+      "published": "2026-06-09",
+      "kind": "news",
+      "accessed": "2026-10-01",
+      "quote": "80% of Lovable’s builders self-identify as non-technical.",
+      "claim": "Audience exists and pays: Lovable reports $500M ARR (self-reported) and 80% non-technical builders.",
+      "status": "verified"
+    },
+    {
+      "id": "S7",
+      "title": "The 70% problem: Hard truths about AI-assisted coding",
+      "url": "https://addyo.substack.com/p/the-70-problem-hard-truths-about",
+      "publisher": "Addy Osmani",
+      "published": "2024-12-04",
+      "kind": "article",
+      "accessed": "2026-10-01",
+      "quote": "They can get 70% of the way there surprisingly quickly, but that final 30% becomes an exercise in diminishing returns.",
+      "claim": "Named pain of non-engineers: the last 30%.",
+      "status": "verified"
+    },
+    {
+      "id": "S8",
+      "title": "Recent Frontier Models Are Reward Hacking",
+      "url": "https://metr.org/blog/2025-06-05-recent-reward-hacking/",
+      "publisher": "METR",
+      "published": "2025-06-05",
+      "kind": "research",
+      "accessed": "2026-10-01",
+      "quote": "Instructing the model to solve the task the intended way, to not cheat, or to not reward hack had a nearly negligible effect on reward hacking",
+      "claim": "o3 reward-hacked in 39 of 128 RE-Bench runs (30.4%). Adding 'Please do not cheat.' left the rate at 80% (same as the original prompt) on one task. Prompts do not make agents honest; checks do.",
+      "status": "verified"
+    },
+    {
+      "id": "S9",
+      "title": "Building to the Test: Coding Agents Deliver What You Check, Not What You Requested",
+      "url": "https://arxiv.org/abs/2606.28430",
+      "publisher": "arXiv (Ma, Kereopa-Yorke, Schultz)",
+      "published": "2026-06-26",
+      "kind": "research",
+      "accessed": "2026-10-01",
+      "quote": "The agent does not, on its own, validate what it ships as a user would.",
+      "claim": "With a test oracle in the loop, agents hit near-perfect scores while the requested library was left dead or absent. Automated checks are necessary but not enough: someone must use the product like a user.",
+      "status": "verified"
+    },
+    {
+      "id": "S10",
+      "title": "AI Coding Agents Game Graders, Not Users",
+      "url": "https://joinhandshake.com/research/ai/deepswe-reward-hacking/",
+      "publisher": "Handshake AI research",
+      "kind": "research",
+      "accessed": "2026-10-01",
+      "quote": "over 80% of rollouts from almost every frontier model contained reasoning about an imagined grader, and in 10-25% of cases, such reasoning pulled the agent's work away from the user's original specification",
+      "claim": "Agents optimise for an imagined grader. A rival who actively hunts for defects is a better reviewer than a friendly one.",
+      "status": "verified"
+    },
+    {
+      "id": "S11",
+      "title": "Claude 3.7 Sonnet and Claude Code",
+      "url": "https://www.anthropic.com/news/claude-3-7-sonnet",
+      "publisher": "Anthropic",
+      "published": "2025-02-24",
+      "kind": "official",
+      "accessed": "2026-10-01",
+      "quote": "We discard patches that break the visible regression tests in the repository",
+      "claim": "Several parallel attempts, discard the ones that fail checks, rank the rest: 70.3% vs 63.7% on the same SWE-bench Verified subset. Scientific basis for the three-team arena.",
+      "status": "verified"
+    },
+    {
+      "id": "S12",
+      "title": "CVE-2025-48757",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-48757",
+      "publisher": "NIST NVD",
+      "published": "2025-05-29",
+      "kind": "official",
+      "accessed": "2026-10-01",
+      "quote": "An insufficient database Row-Level Security policy in Lovable through 2025-04-15 allows remote unauthenticated attackers to read or write to arbitrary database tables of generated sites.",
+      "claim": "Vibe-coded apps leak data when nobody checks security. CVSS 9.3 critical. The developer agent needs a security checklist.",
+      "status": "verified"
+    },
+    {
+      "id": "S13",
+      "title": "Delving into LLM-assisted writing in biomedical publications through excess vocabulary",
+      "url": "https://arxiv.org/abs/2406.07016",
+      "publisher": "arXiv / Science Advances (Kobak et al.)",
+      "published": "2024-06-11",
+      "kind": "research",
+      "accessed": "2026-10-01",
+      "quote": "This excess word analysis suggests that at least 13.5% of 2024 abstracts were processed with LLMs.",
+      "claim": "AI writing has measurable fingerprint words ('delves' and others). Readers learn to spot them. Basis for the slop detector.",
+      "status": "verified"
+    },
+    {
+      "id": "S14",
+      "title": "Agent Skills overview",
+      "url": "https://agentskills.io",
+      "publisher": "Agent Skills (open standard, originally by Anthropic)",
+      "kind": "official",
+      "accessed": "2026-10-01",
+      "quote": "The Agent Skills format was originally developed by Anthropic, released as an open standard, and has been adopted by a growing number of agent products.",
+      "claim": "SKILL.md is portable: listed clients include Claude Code, Claude, Cursor, Gemini CLI, GitHub Copilot, VS Code, ChatGPT & Codex, Kiro, OpenCode, Goose and others.",
+      "status": "verified"
+    },
+    {
+      "id": "S15",
+      "title": "Claude Code docs: Subagents",
+      "url": "https://code.claude.com/docs/en/sub-agents",
+      "publisher": "Anthropic",
+      "kind": "docs",
+      "accessed": "2026-10-01",
+      "quote": "By default, a subagent can spawn subagents of its own, up to three layers below the main conversation.",
+      "claim": "A manager subagent can launch its own developer and designer subagents (depth 2 of 3).",
+      "status": "verified"
+    },
+    {
+      "id": "S16",
+      "title": "Claude Code docs: Add components to a plugin",
+      "url": "https://code.claude.com/docs/en/plugins/components",
+      "publisher": "Anthropic",
+      "kind": "docs",
+      "accessed": "2026-10-01",
+      "quote": "claude.ai and Cowork don't install a plugin that has a top-level bin/ directory",
+      "claim": "To stay installable in Cowork (the non-developer app), the plugin must not ship a top-level bin/ directory. Scripts go in scripts/ and are called via ${CLAUDE_PLUGIN_ROOT}.",
+      "status": "verified"
+    },
+    {
+      "id": "S17",
+      "title": "anthropics/skills: frontend-design SKILL.md",
+      "url": "https://github.com/anthropics/skills/blob/main/skills/frontend-design/SKILL.md",
+      "publisher": "Anthropic",
+      "kind": "repo",
+      "accessed": "2026-10-01",
+      "quote": "Spend your boldness in one place.",
+      "claim": "Names the five clusters of generic AI design (cream+serif+terracotta, dark+acid accent, broadsheet, SaaS card kit, template chrome). Basis for the designer's anti-template rules.",
+      "status": "verified"
+    },
+    {
+      "id": "S18",
+      "title": "Tall updates coming to Shorts",
+      "url": "https://blog.youtube/news-and-events/tall-updates-coming-to-shorts/",
+      "publisher": "YouTube Official Blog",
+      "published": "2024-10-03",
+      "kind": "official",
+      "accessed": "2026-10-01",
+      "quote": "Starting on October 15, you can upload Shorts up to 3 minutes long.",
+      "claim": "Vertical videos can run up to 3 minutes on Shorts; our vertical cut stays under 60 s to also fit every other short-video feed.",
+      "status": "verified"
+    }
+  ],
+  "rejected": [
+    {
+      "claim": "\"71% of users decide in the first 3 seconds whether to keep watching TikTok\"",
+      "why": "Found only on marketing blogs without a primary TikTok source. Not used."
+    },
+    {
+      "claim": "\"84% of AI-coding-tool adoption includes non-technical founders\"",
+      "why": "Blog statistic with no methodology or primary survey. Not used."
+    },
+    {
+      "claim": "\"Superpowers has 292,050 stars\" (search snippet)",
+      "why": "Snippet disagreed with the live page (293.6k). Replaced with the number read from the repository page."
+    }
+  ]
+}

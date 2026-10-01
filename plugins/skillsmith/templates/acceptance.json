@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "setup": ["npm install"],
+  "protected": ["tests/acceptance/**"],
+  "checks": [
+    {
+      "id": "A1",
+      "scene": "1.1",
+      "title": "The project installs and builds without errors",
+      "type": "command",
+      "run": "npm run build",
+      "expect": { "exit": 0 },
+      "weight": 2
+    },
+    {
+      "id": "A2",
+      "scene": "2.1",
+      "title": "The home page opens and shows the main headline",
+      "type": "http",
+      "start": "npm run start",
+      "url": "http://localhost:3000/",
+      "expect": { "status": 200, "includes": "Your headline here" },
+      "timeout": 90,
+      "weight": 3
+    },
+    {
+      "id": "A3",
+      "scene": "3.1",
+      "title": "README explains how to run the product",
+      "type": "file_contains",
+      "path": "README.md",
+      "pattern": "npm run start",
+      "weight": 1
+    },
+    {
+      "id": "A4",
+      "scene": "3.1",
+      "title": "No secret keys in the code",
+      "type": "not_contains",
+      "glob": "**/*.{js,ts,jsx,tsx,html,json}",
+      "pattern": "sk_live_",
+      "weight": 2
+    }
+  ]
+}
