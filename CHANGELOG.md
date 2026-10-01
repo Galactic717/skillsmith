@@ -50,7 +50,7 @@ Projects from 1.x are migrated automatically on first use.
 - 46 tests, including a full in-process arena with real git repositories;
   coverage floor of 85% lines and functions.
 - CI with read-only permissions, pinned actions, a Node 20/22/24 matrix,
-  CodeQL, Scorecard, dependency review and Dependabot. SECURITY.md,
+  CodeQL, Scorecard, dependency review and Dependabot. ESLint 10. SECURITY.md,
   CONTRIBUTING.md, CODE_OF_CONDUCT.md, AGENTS.md, issue and PR templates.
 - Research published in `docs/research/`.
 

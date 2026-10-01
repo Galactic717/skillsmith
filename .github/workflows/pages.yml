@@ -15,8 +15,13 @@ concurrency:
 
 jobs:
   deploy:
+    # Pages on a private repository needs a paid plan, so a private repository
+    # deploys only after the owner sets the repository variable DEPLOY_SITE=true.
+    if: ${{ !github.event.repository.private || vars.DEPLOY_SITE == 'true' }}
     runs-on: ubuntu-latest
+    # Job permissions replace the workflow's, so contents: read is repeated here.
     permissions:
+      contents: read
       pages: write
       id-token: write
     environment:

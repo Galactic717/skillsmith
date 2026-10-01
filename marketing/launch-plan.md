@@ -6,7 +6,7 @@ worked there.
 ## Before day 1
 
 - [ ] Choose the license (MIT for reach, or proprietary if you plan to sell the code).
-- [ ] Turn on GitHub Pages (Settings, Pages, Source: GitHub Actions); the Site workflow deploys `site/`.
+- [ ] Turn on GitHub Pages (Settings, Pages, Source: GitHub Actions); the Site workflow deploys `site/`. While the repository is private, Pages needs a paid plan and the repository variable `DEPLOY_SITE=true` (Settings, Secrets and variables, Actions, Variables); a public repository deploys without it.
 - [ ] Make the repository public, add a description and the topics: claude-code, claude-code-plugin, agent-skills, ai-agents, no-code.
 - [ ] Run the full line once on a real idea of your own and keep the screen recording. Real runs are the best content you will have.
 - [ ] Prepare answers for: the cost of three teams, how deletion works, what "verified" means, what the hidden checks protect against, privacy.
