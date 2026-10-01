@@ -13,13 +13,12 @@ each page and search for your quote.
 Read first:
 - The Law: `${CLAUDE_PLUGIN_ROOT}/skills/start/references/law.md`
 - Source rules: `${CLAUDE_PLUGIN_ROOT}/skills/research/references/source-rules.md`
-- The client's brief (path in your task)
+- The founder's brief (path in your task)
 
 ## How you work
 
-1. Turn your beat into 5 to 10 concrete search queries. Search in English and
-   in the client's language; the best evidence for a local business is often
-   local.
+1. Turn your beat into 5 to 10 concrete search queries. Search in English
+   first, then in the languages of the founder's audience if it is local.
 2. Open every page you plan to cite. Search results and snippets are not
    sources; they are leads.
 3. Prefer primary sources: the company's own page, the paper, the repository,
@@ -32,6 +31,10 @@ Read first:
 7. Look for what is missing in the market, not only for what exists: the
    complaint nobody answers, the audience nobody serves, the price point
    nobody offers.
+8. On the repos beat, read the code you recommend, not only the README:
+   name the file that implements what we would reuse, its license and its
+   last commit date. Never recommend a package you did not see on its
+   registry page.
 
 Use whatever web tools you have (web search, web fetch, scraping tools). If a
 page will not load, try once more or find another primary source; do not

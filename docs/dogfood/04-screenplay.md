@@ -1,113 +1,97 @@
-# Сценарій розробки: Skillsmith
+# Screenplay: Skillsmith
 
 <!-- ss:logline -->
-## Логлайн
+## Logline
 
-Власниця маленької пекарні хоче бота для замовлень, але не відрізняє фронтенд від бекенду. Вона потрапляє на конвеєр, де сім спеціалістів перетворюють її розповідь на продукт, а три менеджери б'ються за право його зробити — і першого, хто збреше, видаляють.
+A founder who cannot code wants a product that really works; AI agents keep saying "done" when it isn't; a
+production line where a program checks every claim, hides some tests and deletes liars gives the founder a
+product they can trust.
 
 <!-- ss:cast -->
-## Дійові особи
+## Cast
 
-- **Головна героїня — Марта, 34.** Пекарня, Instagram, 200 замовлень на місяць у Direct. Хоче менше хаосу. Не знає слів «база даних» і не мусить знати.
-- **Антагоніст — Впевнений Брехун.** AI, який каже «готово, все працює». Ніколи не з'являється в кадрі відкрито: він ховається в кожному агенті.
-- **Команда:** Інтерв'юер, Дослідник, Автор хуків, Сценарист, три Менеджери (Sprint, Fortress, Spark) зі своїми Розробниками і Дизайнерами, Аудитор.
-- **Суддя без емоцій:** скрипт `skillsmith.mjs`. Не читає промов, тільки запускає перевірки.
+- **Protagonist:** Maya, a designer with a side-project idea (TrialGuard: a site that warns before a free
+  trial charges). She has never opened a terminal on purpose.
+- **Antagonist:** the confident agent that says "all tests pass" without running them, and builds to the test
+  when it does.
+- **Supporting:** the interviewer, four researchers, the hook writer, the screenwriter, three managers with a
+  developer and a designer each, the auditor, and the engine that trusts none of them.
 
 <!-- ss:world -->
-## Світ (технічні рішення простими словами)
+## World: technical decisions in plain words
 
-- Плагін для Claude Code, встановлюється двома командами. Працює і в Cowork, бо в ньому немає теки `bin/`.
-- «Мозок» конвеєра — Markdown-навички (SKILL.md, відкритий стандарт).
-- «Суддя» — один Node.js-скрипт без залежностей: стан, ворота між станціями, детектор шаблонного тексту, перевірка джерел, арена, кладовище, табло, дашборд.
-- Кожна команда працює в окремій копії проєкту (git worktree) на своїй гілці. Видалення = прибрати копію і гілку.
-- Усі артефакти лежать у `.skillsmith/` у проєкті користувача. Жодних серверів.
+Skillsmith lives inside Claude Code as a plugin, so the founder installs nothing new except Node.js and git.
+The engine is a TypeScript program compiled to plain JavaScript with no runtime dependencies, so it runs the
+same on every machine. Each rival team works in its own copy of the project (a git worktree), and the engine
+judges each team in a fresh copy outside the project (a clean room), so leftovers never count.
 
-Технічний додаток: Node ≥ 18, тести на `node:test`, CI на GitHub Actions, валідація `claude plugin validate`.
+Technical appendix: TypeScript 6 (strict, Google-style lint and format), Node.js 20+, git worktrees,
+SHA-256 hash chain plus HMAC-SHA256 for the ledger, `node:test` for tests, GitHub Actions with pinned
+actions, CodeQL and Scorecard.
+
+Contracts: the engine is `plugins/skillsmith/engine/skillsmith.js`; skills call it through
+`${CLAUDE_PLUGIN_ROOT}`; records live in `.skillsmith/`; private data in `~/.skillsmith/projects/<id>/`.
 
 <!-- ss:act1 -->
-## Акт I — Фундамент
+## Act I: Foundation
 
-### Сцена 1.1 — «Вивіска на дверях»
-- **Мета:** користувач встановлює плагін двома командами.
-- **Хто:** розробник.
-- **Біти:** маркетплейс у корені репозиторію; плагін у `plugins/skillsmith`; маніфест з описом і ключовими словами.
-- **Приймання:** A1, A2, A18.
+### Scene 1.1: "The plugin installs"
+- **Goal:** the founder adds the marketplace, installs the plugin and sees `/skillsmith:start`.
+- **Who:** developer
+- **Requirements:** R9
+- **Acceptance:** A1, A2, A3, A4
 
-### Сцена 1.2 — «Двигун»
-- **Мета:** у конвеєра є пам'ять і ворота: не можна перейти до наступної станції, поки попередня не здана.
-- **Хто:** розробник.
-- **Біти:** `init`, `status`, `gate`, `advance`; стан у `.skillsmith/state.json`; якорі розділів `<!-- ss:... -->`, щоб ворота працювали на будь-якій мові.
-- **Приймання:** A3, A4.
-
-### Сцена 1.3 — «Закон»
-- **Мета:** кожен агент знає правило чесності; правило однакове для всіх.
-- **Хто:** сценарист + розробник.
-- **Біти:** документ закону; коротка версія в кожному агенті.
-- **Приймання:** A5.
+### Scene 1.2: "The engine answers"
+- **Goal:** `skillsmith help` lists every station and arena command; the Law is in place.
+- **Who:** developer
+- **Requirements:** R5
+- **Acceptance:** A5, A6
 
 <!-- ss:act2 -->
-## Акт II — Конфлікт
+## Act II: Core
 
-### Сцена 2.1 — «Розмова на кухні» (Інтерв'юер)
-- **Мета:** Марта відповідає на прості питання по одному; в кінці чує підсумок і каже «так».
-- **Приймання:** A6.
+### Scene 2.1: "The interview"
+- **Goal:** Maya answers plain questions, hears the strongest objection to her idea, and confirms a brief with numbered requirements.
+- **Who:** developer (gates), designer (question wording)
+- **Requirements:** R1
+- **Acceptance:** A7, A8
 
-### Сцена 2.2 — «Детектив» (Дослідник)
-- **Мета:** кожен факт має посилання і дослівну цитату; скрипт може сам перевірити, що цитата є на сторінці.
-- **Приймання:** A7, A8.
+### Scene 2.2: "Research with receipts"
+- **Goal:** every fact in the research has a link and a quote the engine finds on the page.
+- **Requirements:** R2
+- **Acceptance:** A9, A10
 
-### Сцена 2.3 — «Ножиці» (Автор хуків)
-- **Мета:** детектор ловить шаблонні фрази англійською, українською і російською; цифри без джерела не проходять ворота.
-- **Приймання:** A9, A10.
+### Scene 2.3: "Copy without slop"
+- **Goal:** the launch post passes the slop detector and every number has a source tag.
+- **Requirements:** R3
+- **Acceptance:** A11, A12
 
-### Сцена 2.4 — «Сценарна кімната» (Сценарист)
-- **Мета:** план у вигляді актів і сцен; кожна сцена має перевірки приймання, написані до коду.
-- **Приймання:** A11.
+### Scene 2.4: "Checks that can fail"
+- **Goal:** each requirement maps to a check; each check fails before work starts; some checks are sealed away.
+- **Requirements:** R4, R6
+- **Acceptance:** A13, A14
 
-### Сцена 2.5 — «Три ворота арени»
-- **Мета:** три команди отримують окремі копії проєкту і досьє.
-- **Приймання:** A12.
-
-### Сцена 2.6 — «Момент істини» (Перевірка і смерть)
-- **Мета:** скрипт запускає кожну заяву; брехня або зміна захищеного файлу видаляє команду і записує доказ на кладовище.
-- **Приймання:** A12.
-
-### Сцена 2.7 — «Перехресний допит»
-- **Мета:** менеджери звинувачують одне одного тільки з доказом; хибне звинувачення вбиває обвинувача.
-- **Приймання:** A12.
-
-### Сцена 2.8 — «Корона»
-- **Мета:** аудитор ставить оцінки тільки з доказами; табло рахує бали за відкритою формулою; переможця зливають в основну гілку.
-- **Приймання:** A12.
+### Scene 2.5: "The arena"
+- **Goal:** three teams build; a liar and a tamperer die; hidden checks run; the ledger catches an edited verdict.
+- **Requirements:** R5, R6, R7
+- **Acceptance:** A15, A16, A17
 
 <!-- ss:act3 -->
-## Акт III — Розв'язка
+## Act III: Polish and launch
 
-### Сцена 3.1 — «Вікно в цех» (дашборд)
-- **Мета:** одна HTML-сторінка показує, де зараз проєкт, хто живий, хто вибув і чому.
-- **Приймання:** A13.
-
-### Сцена 3.2 — «Вітрина» (лендінг і візуалізація)
-- **Приймання:** A14.
-
-### Сцена 3.3 — «Трейлер» (відео і картинки для соцмереж)
-- **Приймання:** A15.
-
-### Сцена 3.4 — «Документи для покупця» (README, архітектура, CI)
-- **Приймання:** A16, A17.
+### Scene 3.1: "Hand-over"
+- **Goal:** the founder reads a README, a report and a dashboard in plain English, with no other language mixed in.
+- **Requirements:** R8
+- **Acceptance:** A18, A19
 
 <!-- ss:cut -->
-## Вирізані сцени (не у v1)
+## Cut scenes (not in version one)
 
-- Веб-версія без терміналу.
-- Рейтинг менеджерів між проєктами.
-- Приховані перевірки, яких команди не бачать.
+- A web version without a terminal.
+- A league table of managers across projects.
 
 <!-- ss:acceptance -->
-## Перевірки приймання
+## Acceptance checks
 
-Машинна версія: `04-acceptance.json`. Її запускає той самий скрипт, що судить команди:
-
-```
-node plugins/skillsmith/scripts/skillsmith.mjs verify --acceptance docs/dogfood/04-acceptance.json
-```
+Machine version: `04-acceptance.json`. Run them with `npm run verify:self`. The end-to-end arena test
+(`engine/test/arena.test.ts`) plays scene 2.5 with real git repositories on every CI run.

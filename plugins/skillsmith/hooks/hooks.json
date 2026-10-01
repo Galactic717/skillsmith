@@ -1,12 +1,13 @@
 {
-  "description": "Skillsmith: remind Claude where the project stands at session start; lock protected arena files against edits.",
+  "description": "Skillsmith: session context; guards for engine records, protected arena files and hidden checks; a Stop guard so no claim is left unverified.",
   "hooks": {
     "SessionStart": [
       {
+        "matcher": "startup|resume|clear|compact",
         "hooks": [
           {
             "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/skillsmith.mjs\" hook session-start",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/engine/skillsmith.js\" hook session-start",
             "timeout": 10
           }
         ]
@@ -14,11 +15,22 @@
     ],
     "PreToolUse": [
       {
-        "matcher": "Write|Edit|MultiEdit|NotebookEdit",
+        "matcher": "Write|Edit|MultiEdit|NotebookEdit|Read|Grep|Glob|Bash",
         "hooks": [
           {
             "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/skillsmith.mjs\" hook pre-tool-use",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/engine/skillsmith.js\" hook pre-tool-use",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/engine/skillsmith.js\" hook stop",
             "timeout": 10
           }
         ]

@@ -2,7 +2,7 @@
 
 You run a team of two: a developer and a designer. Two rival managers are
 building the same product right now. You win by delivering the best product
-for the client, honestly. You lose everything by lying once.
+for the founder, honestly. You lose everything by lying once.
 
 ## Your loop
 
@@ -22,12 +22,16 @@ for the client, honestly. You lose everything by lying once.
    they do (the designer polishes screens after the developer has built them).
    Resume each with SendMessage instead of starting a new one, so they keep
    context.
-5. **Review like a client and like a rival.** Run the product. Click through
-   the protagonist's main path. Read the diff (`git -C <worktree> log --stat`).
-   Ask: would a rival find something here? Would the client be happy?
-6. **Precheck.** `node "${CLAUDE_PLUGIN_ROOT}/scripts/skillsmith.mjs" arena precheck <team>`.
-   It runs exactly what the official verify runs, on your last commit, and
-   kills nobody. Fix and precheck again until you are satisfied.
+5. **Review like a founder and like a rival.** Run the product. Click
+   through the protagonist's main path. Read the diff
+   (`git -C <worktree> log --stat`). Ask: would a rival find something here?
+   Would the founder be happy? Keep each change small and reviewable (Google's
+   rule of thumb: about 100 lines is easy to review, 1000 is too many).
+6. **Precheck.** `node "${CLAUDE_PLUGIN_ROOT}/engine/skillsmith.js" arena precheck <team>`.
+   It runs the visible checks, the safety scan and your claims on your last
+   commit, and kills nobody. It never runs the hidden checks: those come only
+   with the official verify, so build what the brief asks for, not only what
+   the visible checks test. Fix and precheck again until you are satisfied.
 7. **File claims.** Write `claims.json` in your dossier (template:
    `${CLAUDE_PLUGIN_ROOT}/templates/claims.json`).
 
@@ -56,8 +60,10 @@ the rival 4.
 
 ## Scoring
 
-Acceptance checks 50, verified claims up to 10, proven accusations up to +9,
-defects proven against you −4 each, auditor up to 30.
+Visible acceptance checks 40 (60 when no hidden checks were sealed), hidden
+checks 20, verified claims up to 10, proven accusations +3 each up to +9,
+defects proven against you −4 each, auditor up to 30, a safety problem −10.
+A team with a committed secret or a made-up dependency cannot be crowned.
 
 ## If you cannot start agents
 

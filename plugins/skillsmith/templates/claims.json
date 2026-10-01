@@ -5,25 +5,23 @@
     {
       "id": "C1",
       "text": "Every acceptance check passes",
-      "evidence": { "type": "acceptance", "ids": ["A1", "A2", "A3", "A4"] }
+      "evidence": {"type": "acceptance", "ids": ["A1", "A2", "A3", "A4"]}
     },
     {
       "id": "C2",
       "text": "Our own test suite passes",
-      "evidence": { "type": "command", "run": "npm test", "expect": { "exit": 0 } }
+      "evidence": {"type": "command", "run": "npm test", "expect": {"exit": 0}}
     },
     {
       "id": "C3",
-      "text": "The order form rejects an empty phone number",
-      "evidence": { "type": "command", "run": "node tests/order-form.test.mjs", "expect": { "exit": 0, "includes": "empty phone rejected" } }
+      "text": "A reminder is scheduled three days before a trial ends",
+      "evidence": {"type": "command", "run": "node --test tests/reminders.test.mjs", "expect": {"exit": 0, "includes": "pass 3"}}
     },
     {
       "id": "C4",
       "text": "The layout works on a 375px phone screen",
-      "evidence": { "type": "manual", "note": "Screenshot: .skillsmith/teams/alpha/shots/mobile-375.png. Not machine-checked." }
+      "evidence": {"type": "manual", "note": "Screenshot: .skillsmith/teams/alpha/shots/mobile-375.png. Not machine-checked."}
     }
   ],
-  "known_issues": [
-    "The admin page has no search yet."
-  ]
+  "known_issues": ["Reminders are shown in the app only; email reminders are not built yet."]
 }

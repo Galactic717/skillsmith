@@ -3,9 +3,9 @@
   "round": 1,
   "scores": {
     "alpha": {
-      "fit": { "score": 7, "evidence": "Covers 5 of 6 must-haves from 01-brief.md; the reminder SMS is missing (no code under src/sms)." },
-      "experience": { "score": 8, "evidence": "Ordered a cake as Marta in 4 taps on a 375px screen; screenshot .skillsmith/teams/alpha/shots/order.png." },
-      "craft": { "score": 6, "evidence": "npm test: 14 tests; no input validation on /api/order (src/api/order.js line 12)." }
+      "fit": {"score": 7, "evidence": "Covers R1-R3 from 01-brief.md; R4 (export) is missing: no code under src/export."},
+      "experience": {"score": 8, "evidence": "Added a trial as Maya in 3 taps on a 375px screen; screenshot .skillsmith/teams/alpha/shots/add.png."},
+      "craft": {"score": 6, "evidence": "npm test: 14 tests; no input validation on POST /api/trials (src/api/trials.js line 12)."}
     }
   }
 }

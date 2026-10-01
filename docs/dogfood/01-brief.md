@@ -1,101 +1,124 @@
-# Бриф: Skillsmith
+# Product brief: Skillsmith
 
 Status: confirmed
-Мова клієнта: українська
-Джерело: письмове ТЗ клієнта від 2026-10-01. Припущення A1–A6 нижче — мої, клієнт їх ще не підтвердив.
+Founder: the repository owner (galactic717)
+Source: the founder's written request of 2026-10-01 and the review of version 1 on the same day.
 
-> Це перший артефакт конвеєра, зроблений на самому Skillsmith. Інтерв'юер не ставив технічних питань:
-> він переклав побажання клієнта на просту мову і позначив усе, що додумав сам.
+> This is the first artifact of the line, made with Skillsmith itself: the founder is building their own
+> product, and the interviewer asked no technical questions. It translated the request into plain words and
+> marked everything it inferred.
 
 <!-- ss:summary -->
-## Що будуємо одним реченням
+## In one sentence
 
-Набір навичок для Claude, який веде людину без технічних знань від «маю ідею» до готового продукту:
-сім спеціалістів по черзі розпитують, досліджують, пишуть, планують і будують, а три менеджери змагаються, чия команда зробить краще.
+Skillsmith is a Claude Code plugin that takes a founder from "I have an idea" to a working product, with a crew of AI specialists whose every claim is checked by a program, and with three rival teams where a team that lies is deleted.
+
+<!-- ss:forge -->
+## Idea check
+
+Verdict: CLARIFIED
+
+- Strongest objection: big open-source frameworks already structure AI coding (superpowers, spec-kit, gstack, BMAD), and closed builders like Lovable already serve non-programmers. Why another one?
+- How it was answered: none of them checks an agent's claims mechanically or punishes a false one, and the frameworks all assume a developer. The idea narrowed to that gap: verification and honesty as mechanics, for founders who cannot read code. Version 1 framed the user as someone ordering software from others; the founder corrected it: the user is building their own product.
+- What would kill it later: if founders cannot get through one full run without a developer's help.
+
+<!-- ss:founder -->
+## The founder and the goal
+
+The founder wants a sellable product for a global audience: something they use themselves, that thousands of people can use, and that an IT company would want to buy. Everything is in English. Quality bar: code a reviewer from a big engineering organisation would accept.
 
 <!-- ss:audience -->
-## Для кого
+## Who it is for
 
-- **Головний користувач:** людина, яка «знає, що 2+2=4», але не програмує. Має ідею (сайт, бот, застосунок, сервіс) і хоче отримати робочий результат, а не урок програмування.
-- **Другий користувач:** сам клієнт — для власних проєктів.
-- **Покупець у майбутньому:** IT-компанія, якій потрібен готовий процес «від ідеї до продукту» для своїх клієнтів.
+- **Main user:** a founder who knows that 2 + 2 = 4 but does not program. They have an idea for a website, app, bot or tool and want a working product, not a programming lesson.
+- **Second user:** the founder of Skillsmith, for their own projects.
+- **Future buyer:** an IT company that wants a ready process from idea to verified product.
 
-<!-- ss:pain -->
-## Що болить зараз
+<!-- ss:problem -->
+## The problem today
 
-1. AI-інструменти швидко роблять 70% роботи, а останні 30% людина без досвіду довести не може.
-2. AI питає технічні речі («який фреймворк?», «яка база даних?»), на які новачок не знає відповіді.
-3. AI каже «готово, все працює», а воно не працює. Перевірити це новачок не здатен.
-4. Тексти, які пише AI, звучать однаково і нудно (`у сучасному світі…`), тому продукт ніхто не помічає.
-5. Дизайн виглядає дешево і шаблонно.
+1. AI tools get a founder about 70% of the way; the last 30% needs experience they do not have.
+2. AI asks technical questions ("which framework?") a founder cannot answer.
+3. AI says "done, all tests pass" when it is not done, and the founder cannot check.
+4. AI-written copy sounds the same everywhere, so nobody notices the product.
+5. The design looks cheap and generic.
 
-<!-- ss:done -->
-## Як виглядає «готово»
+<!-- ss:requirements -->
+## What version one must do
 
-- Людина пише ідею простими словами, відповідає на зрозумілі питання — і в кінці має робочий продукт у своїй папці, з інструкцією «як запустити» людською мовою.
-- Кожне «працює» підтверджене перевіркою, яку можна повторити. Хто збрехав — вибуває назавжди.
-- Є візуалізація процесу для користувачів і для маркетингу в Reddit, X, YouTube, TikTok.
-- Продукт можна показати або продати IT-компанії: документація, тести, чиста структура.
+- R1: A founder with no programming background turns an idea into a confirmed brief by answering plain-language questions, with an honest idea check and no technical questions.
+- R2: Research keeps only facts that have a link and an exact quote a script finds on the page.
+- R3: Launch copy for one platform passes an automatic slop check, and every number in it carries a source tag.
+- R4: Before any code exists, every requirement has at least one machine check, and every check is proven able to fail.
+- R5: Up to three rival teams build the product in separate git worktrees; the engine runs every claim in a clean room, and a false claim or an edit to a protected test deletes the team.
+- R6: Hidden checks that builders never see run at every official verification.
+- R7: Every official decision is written to a signed ledger that exposes later edits.
+- R8: The founder gets a dashboard, a report, a README and a launch kit in plain English.
+- R9: It installs as a Claude Code plugin and needs only Node.js 20 or newer and git.
+
+<!-- ss:success -->
+## How we will know it works
+
+- SC1: 100 GitHub stars within 30 days of the public launch.
+- SC2: 10 founders without a programming background report a product built with Skillsmith within 60 days of launch.
 
 <!-- ss:scope -->
-## Обсяг
+## Not in version one
 
-**Обов'язково (v1):**
-1. Інтерв'юер: розпитує простими словами, витягує все, читає підсумок назад і просить підтвердження.
-2. Дослідник: конкуренти, тренди, вільні ніші, репозиторії GitHub; зберігає тільки перевірене, з посиланням і цитатою.
-3. Автор хуків: перші фрази, цифри з фактами, без AI-шаблонів, під один головний майданчик.
-4. Промт-інженер (сценарист): план розробки як сценарій фільму — акти, сцени, критерії приймання.
-5. Розробник рівня senior.
-6. Дизайнер, з яким продукт виглядає дорого.
-7. Три менеджери, кожен зі своїм розробником і дизайнером; змагаються; брехня = видалення назавжди.
-8. Візуалізації: лендінг з анімацією конвеєра, відео для коротких і довгих форматів, картинки для соцмереж.
-
-**Пізніше:**
-- Веб-версія без терміналу, ліга рейтингів менеджерів між проєктами, шаблони під типові ідеї.
-
-**Не робимо зараз:**
-- Власну модель AI, платіжну систему, мобільний застосунок Skillsmith.
+- Later: a web version without a terminal, a manager league across projects, templates for common ideas.
+- Not doing: our own AI model, a payment system, a mobile app for Skillsmith itself.
 
 <!-- ss:platform -->
-## Де цим користуються
+## Where it runs
 
-Всередині Claude Code (термінал, десктоп, веб) і Claude Cowork. Формат навичок — відкритий стандарт Agent Skills, тому основа переноситься в інші інструменти.
+Inside Claude Code (terminal, desktop, web) and Claude Cowork. Skills follow the open Agent Skills format, so the core travels to other agents.
 
 <!-- ss:look -->
-## Вигляд і відчуття
+## Look and feel
 
-Три слова клієнта: **ідеально, дорого, чесно.** Не схоже на типовий AI-продукт. Метафора: кузня і конвеєр — ідея заходить сировиною, виходить викуваним продуктом.
-
-<!-- ss:limits -->
-## Гроші, строки, обмеження
-
-- Бюджет на інфраструктуру: нуль. Працює на підписці Claude користувача.
-- Три команди паралельно витрачають приблизно втричі більше токенів. Потрібен економний режим (одна або дві команди).
-- Без сторонніх залежностей: користувач не має нічого встановлювати, крім Claude Code, git і Node.js.
+Three words from the founder: **perfect, premium, honest.** It must not look like a typical AI product. Metaphor: a forge and a production line; an idea goes in as raw material and comes out as a forged product.
 
 <!-- ss:data -->
-## Дані, акаунти, гроші
+## Data and privacy
 
-Skillsmith не збирає даних і не має серверів. Усе лежить у папці проєкту користувача (`.skillsmith/`). Якщо продукт користувача працює з логінами, оплатою чи особистими даними, розробник зобов'язаний закрити це за чеклістом безпеки.
+Skillsmith collects nothing and runs no servers. Everything lives in the founder's project folder (`.skillsmith/`) and a private folder in their home directory. If the founder's product has logins, payments or personal data, the developer must cover them with the security checklist.
+
+<!-- ss:money -->
+## Money
+
+Free plugin; it runs on the founder's own Claude subscription. Three teams cost about three times the tokens of one, so the founder chooses one, two or three teams. Infrastructure budget: zero.
 
 <!-- ss:launch -->
-## Звідки прийдуть перші користувачі
+## Launch
 
-Головний майданчик для запуску — Reddit (r/ClaudeAI, r/SideProject): там аудиторія, яка вже встановлює плагіни. Далі X, YouTube, TikTok — короткі відео з анімацією «три менеджери, один бреше, його видаляють».
+Reddit (r/ClaudeAI, r/SideProject), where people already install Claude Code plugins and value honest "I built this, here is how it works" posts. Then X, YouTube and TikTok with short videos of the arena.
 
 <!-- ss:risks -->
-## Ризики і невідоме
+## Risks
 
-- Вартість токенів при трьох командах.
-- Агенти «будують під тест» замість того, що просили. Потрібна перевірка очима користувача, а не тільки автотести.
-- Новачок може не мати git/Node.js — потрібна дружня перевірка середовища.
+- Token cost with three teams.
+- Agents building to the test instead of what was asked; visible tests alone are not enough.
+- A founder may not have git or Node.js installed; the environment check must be friendly.
+- Hidden checks protect against honest gaming, not a determined attacker on the same machine.
+
+<!-- ss:coverage -->
+## Coverage map
+
+- Problem: Clear
+- Audience: Clear
+- Core flow: Clear
+- Data: Clear
+- Platform: Clear
+- Look: Clear
+- Money: Clear
+- Limits: Partial
+- Launch: Clear
+- Risks: Clear
 
 <!-- ss:assumptions -->
-## Припущення (чекають підтвердження клієнта)
+## Assumptions waiting for the founder's yes
 
-- A1. Назва продукту — Skillsmith (як репозиторій).
-- A2. Основна платформа — Claude Code-плагін; Cowork — бонус.
-- A3. «Смерть» менеджера = видалення його гілки, робочої копії і всієї роботи команди + запис у «кладовище» з доказом брехні. Чесний переможений не помирає: його гілка йде в архів.
-- A4. Ліцензію (відкрита MIT чи закрита для продажу) обирає клієнт. Поки що в репозиторії ліцензії немає — це означає «всі права захищені».
-- A5. Мова інтерфейсу — мова користувача; внутрішні файли перевірок — англійською.
-- A6. Головний майданчик запуску — Reddit.
+- The product name is Skillsmith, like the repository.
+- A manager's "death" means deleting its branch, worktree and all its team's work, plus a graveyard entry with the evidence. An honest loser does not die: its branch is archived.
+- The license (open, such as MIT, or closed for sale) is the founder's decision. Until then the repository has no license, which means all rights reserved.
+- Limits are Partial: there is no hard deadline; we assume one release per week while the line matures.

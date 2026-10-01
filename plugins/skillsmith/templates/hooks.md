@@ -1,11 +1,13 @@
-# Hooks: <fill: project name>
+# Hooks: <fill: product name>
 
 Tags: [S#] = fact from research, [P] = fact about the product itself. Remove tags before publishing.
 
 <!-- ss:platform -->
 ## Main platform
 
-<fill: ONE platform and why the first users are there; its rules and format limits>
+Platform: <fill: exactly ONE of X, Reddit, YouTube, TikTok, LinkedIn, Product Hunt, Hacker News, Instagram, Threads, Email>
+
+<fill: why the first users are there; the platform's rules and format limits>
 
 <!-- ss:oneliner -->
 ## One line

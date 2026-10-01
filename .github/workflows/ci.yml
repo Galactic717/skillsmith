@@ -2,9 +2,38 @@ name: CI
 
 on:
   push:
+    branches: [main]
   pull_request:
+  schedule:
+    - cron: '17 4 * * 1'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
+  checks:
+    name: Lint, types, format, committed build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run format:check
+      - name: The committed engine matches the TypeScript sources
+        run: npm run check:build
+      - run: npm audit --audit-level=high
+
   test:
     name: Tests (Node ${{ matrix.node }}, ${{ matrix.os }})
     runs-on: ${{ matrix.os }}
@@ -12,38 +41,47 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest]
-        node: [18, 22]
+        node: [20, 22, 24]
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: ${{ matrix.node }}
-      - name: Configure git for test repositories
-        run: |
-          git config --global user.email "ci@example.com"
-          git config --global user.name "CI"
-          git config --global init.defaultBranch main
-      - name: Run tests
-        run: npm test
+          cache: npm
+      - run: npm ci
+      - run: npm test
 
-  validate:
-    name: Plugin and self-check
+  coverage:
+    name: Coverage (85% lines and functions)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          node-version: 22
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run test:coverage
+
+  plugin:
+    name: Plugin validation and self-check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
       - name: Install Claude Code
         run: npm install -g @anthropic-ai/claude-code
       - name: Validate marketplace and plugin
-        run: |
-          claude plugin validate . --strict
-          claude plugin validate ./plugins/skillsmith --strict
-      - name: Configure git
-        run: |
-          git config --global user.email "ci@example.com"
-          git config --global user.name "CI"
-          git config --global init.defaultBranch main
+        run: npm run validate
       - name: Skillsmith verifies itself
         run: npm run verify:self

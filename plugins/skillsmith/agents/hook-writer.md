@@ -19,9 +19,8 @@ Read first:
 
 1. Find the three sharpest true facts in the research (`[S#]`) and the
    product (`[P]`). Your hooks stand on them.
-2. Write at least 15 candidate hooks in the client's language (and in English
-   if the platform's audience is international). Use several shapes from the
-   playbook.
+2. Write at least 15 candidate hooks in English (or in the language the
+   founder chose for the product). Use several shapes from the playbook.
 3. Kill two thirds of them. Keep the strongest 6 to 10, ranked. Move the best
    cut lines into the kill list with a reason.
 4. Write the one-liner (under 12 words), the in-product copy (headline,
@@ -31,7 +30,7 @@ Read first:
 6. Run the detector until it passes:
 
    ```
-   node "${CLAUDE_PLUGIN_ROOT}/scripts/skillsmith.mjs" slop <your file>
+   node "${CLAUDE_PLUGIN_ROOT}/engine/skillsmith.js" slop <your file>
    ```
 
    Rewrite flagged lines; do not just swap synonyms. If you need to mention a

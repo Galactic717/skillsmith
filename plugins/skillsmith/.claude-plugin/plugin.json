@@ -1,8 +1,8 @@
 {
   "name": "skillsmith",
   "displayName": "Skillsmith",
-  "version": "1.0.0",
-  "description": "Idea in, verified product out. Seven AI specialists interview you in plain words, research the market, write hooks, script the build, and three rival managers race their own developer and designer teams. Every claim is checked by code; a team that lies is deleted.",
+  "version": "2.0.0",
+  "description": "Your idea in, a verified product out. An interviewer pressure-tests your idea, researchers bring sourced facts, a hook writer drafts launch copy, a screenwriter writes checks before any code, and three rival managers race their own developer and designer teams. Every claim is run by the engine in a clean room, hidden checks catch gaming, and a team that lies is deleted.",
   "author": {
     "name": "Galactic717",
     "url": "https://github.com/galactic717"
@@ -10,15 +10,15 @@
   "homepage": "https://github.com/galactic717/skillsmith",
   "repository": "https://github.com/galactic717/skillsmith",
   "keywords": [
-    "pipeline",
+    "founders",
     "no-code",
     "non-technical",
     "multi-agent",
     "verification",
+    "acceptance-tests",
     "research",
     "copywriting",
     "design",
-    "product",
     "arena"
   ]
 }

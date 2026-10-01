@@ -29,7 +29,15 @@ When you keep a post as evidence of pain or of what works:
 For each repository write down: stars and forks with the date, date of the
 last commit, license (MIT, Apache-2.0, GPL-3.0, none), and what exactly we
 would reuse. A repository with no license cannot be copied into the product;
-it can only be studied.
+it can only be studied. Read the code you recommend, not only the README:
+name the file that does the thing we would reuse.
+
+## Package names
+
+When you recommend a library, give its exact registry name and link its
+registry page (npmjs.com, pypi.org). Models invent plausible package names,
+and attackers register them. The engine checks every dependency a team adds
+against the registry and disqualifies made-up ones.
 
 ## The record
 

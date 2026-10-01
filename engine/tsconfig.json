@@ -1,0 +1,11 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "../plugins/skillsmith/engine",
+    "declaration": false,
+    "sourceMap": false,
+    "removeComments": false
+  },
+  "include": ["src/**/*.ts"]
+}

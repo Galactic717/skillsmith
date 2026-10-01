@@ -1,17 +1,36 @@
 {
   "name": "skillsmith",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
-  "description": "Skillsmith: an AI production line for Claude Code. Idea in, verified product out.",
+  "description": "Skillsmith: an AI production line for founders. Idea in, verified product out.",
   "type": "module",
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   },
   "scripts": {
-    "test": "node --test tests/*.test.mjs",
-    "validate": "claude plugin validate .",
-    "verify:self": "node plugins/skillsmith/scripts/skillsmith.mjs verify --acceptance docs/dogfood/04-acceptance.json",
+    "build": "tsc -p engine/tsconfig.json",
+    "build:test": "tsc -p engine/tsconfig.test.json",
+    "check:build": "npm run build && git diff --exit-code -- plugins/skillsmith/engine",
+    "typecheck": "tsc -p engine/tsconfig.test.json --noEmit",
+    "lint": "eslint engine scripts",
+    "format": "prettier --write engine scripts",
+    "format:check": "prettier --check engine scripts",
+    "test": "npm run build && npm run build:test && node --test .build/test/*.test.js",
+    "test:coverage": "npm run build && npm run build:test && node --test --experimental-test-coverage --test-coverage-include='.build/src/**' --test-coverage-lines=85 --test-coverage-functions=85 .build/test/*.test.js",
+    "validate": "claude plugin validate . --strict && claude plugin validate ./plugins/skillsmith --strict",
+    "verify:self": "node plugins/skillsmith/engine/skillsmith.js verify --acceptance docs/dogfood/04-acceptance.json",
+    "evals:triggers": "node evals/run-trigger-evals.mjs",
     "demo": "node scripts/demo-arena.mjs",
-    "media": "node scripts/render-media.mjs"
+    "media": "node scripts/render-media.mjs",
+    "site": "node scripts/build-site.mjs"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.5",
+    "@types/node": "^22.20.4",
+    "eslint": "^9.39.5",
+    "globals": "^17.13.0",
+    "prettier": "^3.9.9",
+    "typescript": "~6.0.2",
+    "typescript-eslint": "^8.71.0"
   }
 }

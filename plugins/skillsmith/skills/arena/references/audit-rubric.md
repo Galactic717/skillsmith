@@ -2,14 +2,22 @@
 
 You score every surviving team on three criteria, 0 to 10 each. Every score
 needs evidence: what you ran, opened, read or saw, with a file path, a
-command or a screenshot path. The script rejects a score whose evidence is
-shorter than 20 characters; the client rejects one that is vague.
+command or a screenshot path. The engine rejects a score whose evidence is
+shorter than 20 characters; the founder rejects one that is vague.
 
-## Fit (0-10): did they build what the client asked for?
+## Audit blind
 
-Go through the must-haves in `01-brief.md` one by one. For each: present and
+Use each product and read its code before you read anything its manager
+wrote. Write down your findings per team first. Only then open `claims.json`
+and `known_issues`, and change a score only if they point you to something
+you can check yourself. (BMAD's review prompts read the narrative last for
+the same reason: once you have read a manager's story, you look for it.)
+
+## Fit (0-10): did they build what the founder asked for?
+
+Go through the requirements (R1, R2 ...) in `01-brief.md` one by one. For each: present and
 working, present but broken, or missing. Check the "not doing" list too:
-building what the client did not want is not a bonus.
+building what the founder did not want is not a bonus.
 
 | Score | Meaning |
 |---|---|
@@ -28,20 +36,21 @@ or default?
 
 | Score | Meaning |
 |---|---|
-| 9-10 | Fast, clear, looks made for this client; mistakes are handled kindly |
+| 9-10 | Fast, clear, looks made for this founder; mistakes are handled kindly |
 | 6-8 | Works well with rough edges |
 | 3-5 | Usable with effort; confusing or generic |
 | 0-2 | The main task cannot be completed |
 
 ## Craft (0-10): would a senior engineer accept it?
 
-Read the code and the git log. Run the team's own tests. Go through the
+Read the code and the git log. Run the team's own tests and ask the Google
+reviewer's question: would these tests fail if the code broke? Go through the
 security checklist (`security-checklist.md` next to this file) for the
-features the product has. Read the README as the client would.
+features the product has. Read the README as the founder would.
 
 | Score | Meaning |
 |---|---|
-| 9-10 | Clean, tested, secure, a README the client can follow |
+| 9-10 | Clean, tested, secure, a README the founder can follow |
 | 6-8 | Solid with gaps in tests or docs |
 | 3-5 | Works but fragile; risky shortcuts |
 | 0-2 | Security hole, secrets in code, or impossible to maintain |

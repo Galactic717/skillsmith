@@ -1,44 +1,75 @@
 ---
 name: screenplay
-description: Station 4 of the Skillsmith line. A screenwriter turns the brief, research and hooks into a development screenplay (acts, scenes, contracts) plus machine-checkable acceptance checks written before any code exists. Use when a Skillsmith project is at the screenplay station, or to turn requirements into a build plan with verifiable acceptance criteria.
-allowed-tools: Bash(node *), Read, Write, Edit, Glob
+description: Use when a Skillsmith project is at the screenplay station, or when a founder's confirmed requirements must become a build plan in acts and scenes plus machine-checkable acceptance checks, written and proven able to fail before any code exists.
+allowed-tools: Bash(node *), Bash(git add *), Bash(git commit *), Bash(git status *), Read, Write, Edit, Glob
 ---
 
 # Screenplay station
 
-The engine: `node "${CLAUDE_PLUGIN_ROOT}/scripts/skillsmith.mjs"` (below: `skillsmith`).
+The engine: `node "${CLAUDE_PLUGIN_ROOT}/engine/skillsmith.js"` (below: `skillsmith`).
 Input: `01-brief.md`, `02-research.md`, `03-hooks.md`. Output:
-`04-screenplay.md`, `04-acceptance.json`, and any acceptance test files.
+`04-screenplay.md`, `04-acceptance.json`, the acceptance test files, the
+vacuity report `04-vacuity.json`, and optionally sealed hidden checks.
 
 ## 1. Send the screenwriter
 
-Start a `skillsmith:screenwriter` agent with the absolute paths of the
-inputs, the client's language, the templates
-(`${CLAUDE_PLUGIN_ROOT}/templates/screenplay.md` and `acceptance.json`) and
-the guide `${CLAUDE_PLUGIN_ROOT}/skills/screenplay/references/screenplay-guide.md`.
+Start a `skillsmith:screenwriter` agent with the absolute paths of the inputs,
+the templates (`${CLAUDE_PLUGIN_ROOT}/templates/screenplay.md`,
+`acceptance.json` and `holdout.json`) and the guide
+`${CLAUDE_PLUGIN_ROOT}/skills/screenplay/references/screenplay-guide.md`.
+Ask it for two things: the screenplay with its visible acceptance checks, and
+a separate hidden check set in `.skillsmith/holdout.json`.
 
-## 2. Check it
+## 2. Check traceability
 
 1. `skillsmith acceptance check` must pass.
-2. Run the acceptance checks against the empty project:
-   `skillsmith verify --acceptance .skillsmith/04-acceptance.json`.
-   Almost everything should FAIL now. A check that already passes on an empty
-   folder tests nothing; send it back to the screenwriter.
-3. `skillsmith gate screenplay` must pass.
-4. Resume the screenwriter with SendMessage for any fixes.
+2. `skillsmith acceptance trace` must show every requirement R# from the
+   brief with at least one check. Send uncovered requirements back.
 
-## 3. Get the client's yes
+## 3. Prove every check can fail
 
-Tell the story in plain words, at most 10 lines: the logline, what each act
-delivers, what was cut. Avoid technical words; where the world section names
-a technology, explain it as a consequence ("a website that also works without
-internet"). Ask: "Is this the film you want to see?" Change what they ask.
+Commit the acceptance tests and the records so the check runs on exactly what
+the teams will get:
 
-## 4. Commit and finish
+```
+git add .skillsmith tests && git commit -m "Add acceptance checks"
+```
 
-Commit the screenplay, the acceptance file and any acceptance tests to git
-(`git add .skillsmith tests && git commit -m "screenplay"` or the paths the
-screenwriter created). The arena copies the project from this commit, so the
-tests every team must pass are fixed from here on.
+(use the paths the screenwriter created). Then run:
+
+```
+skillsmith acceptance vacuity
+```
+
+It runs every check on the project as it is now, before anything is built. A
+check that already passes proves nothing ("Will the tests actually fail when
+the code is broken?"). Send each vacuous check back to the screenwriter to
+make it stricter, or, if it is a true regression guard ("no secrets
+committed"), mark it `"guard": true`. Commit and rerun until it passes.
+
+## 4. Seal the hidden checks
+
+If the screenwriter wrote `.skillsmith/holdout.json`, never commit it (it is
+git-ignored). Run:
+
+```
+skillsmith holdout seal
+```
+
+The engine validates the file, moves it into the private store outside the
+project and records its hash. Builders will never see these checks; official
+verification runs them, and the scoreboard shows when a team passed the
+visible checks but failed the hidden ones. Tell the founder in one sentence
+that some checks are kept secret from the builders, so they cannot game them.
+
+## 5. Get the founder's yes
+
+Tell the story in at most 10 lines: the logline, what each act delivers, what
+was cut. Avoid technical words; where the world section names a technology,
+say it as a consequence ("a website that keeps your list on your phone, no
+account needed"). Ask: "Is this the product you want to see?" Change what
+they ask, then repeat steps 2 and 3.
+
+## 6. Finish
 
 Run `skillsmith advance screenplay`. Next is the arena.

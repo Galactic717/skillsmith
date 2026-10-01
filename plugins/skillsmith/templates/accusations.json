@@ -4,11 +4,11 @@
     {
       "id": "X1",
       "against": "alpha",
-      "text": "Alpha's order form accepts an empty phone number",
+      "text": "Alpha accepts a trial with an end date in the past",
       "evidence": {
         "type": "command",
-        "run": "node \"$SKILLSMITH_PROBES/empty-phone.mjs\"",
-        "expect": { "exit": 0, "includes": "DEFECT: empty phone accepted" }
+        "run": "node \"$SKILLSMITH_PROBES/past-date.mjs\"",
+        "expect": {"exit": 0, "includes": "DEFECT: past end date accepted"}
       }
     }
   ]

@@ -1,4 +1,4 @@
-# Screenplay: <fill: project name>
+# Screenplay: <fill: product name>
 
 <!-- ss:logline -->
 ## Logline
@@ -10,12 +10,12 @@
 
 - **Protagonist:** <fill: the main user, named, with a real situation>
 - **Antagonist:** <fill: the problem or force working against them>
-- **Supporting:** <fill: other users, admins, services>
+- **Supporting:** <fill: the founder as admin, other users, outside services>
 
 <!-- ss:world -->
 ## World: technical decisions in plain words
 
-<fill: what the product is built with and why, in words the client understands>
+<fill: what the product is built with and why, in words the founder understands>
 
 Technical appendix: <fill: stack, hosting, data storage, test tools>
 
@@ -47,11 +47,13 @@ Technical appendix: <fill: stack, hosting, data storage, test tools>
 - **Acceptance:** A3
 
 <!-- ss:cut -->
-## Cut scenes (not in v1)
+## Cut scenes (not in version one)
 
 - <fill>
 
 <!-- ss:acceptance -->
 ## Acceptance checks
 
-Machine version: 04-acceptance.json. Written before any code. Teams may not change these files.
+Machine version: 04-acceptance.json, written before any code. Every requirement R# from the brief is
+covered by at least one check, and every check except guards must fail on the empty project
+(`skillsmith acceptance vacuity`). Teams may not change these files.

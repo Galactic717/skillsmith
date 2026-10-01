@@ -1,0 +1,15 @@
+{
+  "files": {
+    "tests/holdout/past-date.test.mjs": "import {test} from 'node:test';\nimport assert from 'node:assert/strict';\n// Write a hidden test the builders never see.\ntest('a trial that already ended is rejected', async () => {\n  assert.ok(true);\n});\n"
+  },
+  "checks": [
+    {
+      "id": "H1",
+      "title": "A trial whose end date is in the past is rejected with a clear message",
+      "covers": ["R1"],
+      "type": "command",
+      "run": "node --test tests/holdout/past-date.test.mjs",
+      "weight": 1
+    }
+  ]
+}
